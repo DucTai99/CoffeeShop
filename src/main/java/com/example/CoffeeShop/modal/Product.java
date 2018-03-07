@@ -3,11 +3,13 @@ package com.example.CoffeeShop.modal;
 import java.sql.Date;
 
 public class Product {
-    private int id;
+    private int id ;
     private String productName;
     private TypeProduct typeProduct;
     private int sale;
     private String image;
+    private int price;
+    private SizeProduct size;
     private boolean favorite;
     private boolean actived;
     private Date createDate;

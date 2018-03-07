@@ -1,7 +1,7 @@
 package com.example.CoffeeShop.controller;
 
 import com.example.CoffeeShop.modal.Product;
-import com.example.CoffeeShop.service.ProductService;
+import com.example.CoffeeShop.dao.ProductDAO;
 import com.example.CoffeeShop.util.ConnectionUtils;
 
 import javax.servlet.*;
@@ -17,36 +17,41 @@ import java.util.ArrayList;
 public class IndexController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String sql = "SELECT * from `user` WHERE id = 1";
-        ResultSet rs = null;
-        Connection connection = null;
-        try {
-//            connection = ConnectionDB.connection();
-            connection = ConnectionUtils.getConnection();
-//            rs = ConnectionDB.connect().executeQuery(sql);
-            rs = connection.createStatement().executeQuery(sql);
-            rs.last();
-            int i = rs.getRow();
-            if (rs != null && i == 1) {
-                rs.first() ;
-                String name = rs.getString(2) ;
-                request.setAttribute("tenUser",name);
-                request.getRequestDispatcher("client/index.jsp").forward(request,response);
-                System.out.println();
-            }
-            else  {
-                response.sendRedirect("client/shopDetail.jsp");
-            }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        ProductService productService = new ProductService();
-        ArrayList<Product> products = productService.getAllProduct();
-        for (Product product : products){
+//        String sql = "SELECT * from `user` WHERE id = 1";
+//        ResultSet rs = null;
+//        Connection connection = null;
+//        try {
+////            connection = ConnectionDB.connection();
+//            connection = ConnectionUtils.getConnection();
+////            rs = ConnectionDB.connect().executeQuery(sql);
+//            rs = connection.createStatement().executeQuery(sql);
+//            rs.last();
+//            int i = rs.getRow();
+//            if (rs != null && i == 1) {
+//                rs.first() ;
+//                String name = rs.getString(2) ;
+//                request.setAttribute("tenUser",name);
+//                request.getRequestDispatcher("client/index.jsp").forward(request,response);
+//                System.out.println();
+//            }
+//            else  {
+//                response.sendRedirect("client/shopDetail.jsp");
+//            }
+//
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+        ProductDAO productDAO = new ProductDAO();
+        ArrayList<Product> listFavoite = productDAO.getAllFavoriteProduct();
+        request.setAttribute("listFavorite",listFavoite);
+        request.getRequestDispatcher("client/index.jsp").forward(request,response);
+        for (Product product : listFavoite){
             System.out.println(product.toString());
+        }
+        for (int i = 0; i < listFavoite.size(); i++) {
+            System.out.println("a--- " + listFavoite.get(i));
         }
     }
 

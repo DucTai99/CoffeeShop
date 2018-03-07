@@ -11,15 +11,6 @@ public class ConnectionDB {
     static String dbName;
     static String userName;
     static String password;
-//    public static Statement connect() throws ClassNotFoundException, SQLException {
-//        if (connection == null || connection.isClosed()) {
-//            Class.forName("com.mysql.jdbc.Driver");
-//            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/CoffeeShop?useUnicode=true&characterEncoding=utf-8", "root", "");
-//            return connection.createStatement();
-//        } else {
-//            return connection.createStatement();
-//        }
-//    }
 
     public static Connection connect() throws SQLException, ClassNotFoundException {
         if (connection == null || connection.isClosed()) {
