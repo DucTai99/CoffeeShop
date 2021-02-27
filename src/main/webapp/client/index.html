@@ -6,14 +6,22 @@
     <meta name="keywords" content="Ogani, unica, creative, html" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Ogani | Template</title>
+    <title>Coffee Shop</title>
 
     <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&display=swap"
       rel="stylesheet"
     />
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Icons"
+      rel="stylesheet"
+    />
     <!-- Css Styles -->
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
@@ -35,18 +43,15 @@
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
       <div class="humberger__menu__logo">
-        <a href="#"><img src="img/logo.png" alt="" /></a>
+        <a href="#"><img src="img/Logo-Coffee.png" alt="" /></a>
       </div>
       <div class="humberger__menu__cart">
         <ul>
           <li>
-            <a href="#"><i class="fa fa-heart"></i> <span>1</span></a>
-          </li>
-          <li>
-            <a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a>
+            <a href="#"><i class="fa fa-shopping-cart"></i> <span>3</span></a>
           </li>
         </ul>
-        <div class="header__cart__price">item: <span>$150.00</span></div>
+        <div class="header__cart__price">total: <span>150.000đ</span></div>
       </div>
       <div class="humberger__menu__widget">
         <div class="header__top__right__language">
@@ -64,18 +69,17 @@
       </div>
       <nav class="humberger__menu__nav mobile-menu">
         <ul>
-          <li class="active"><a href="./index.html">Trang chủ</a></li>
-          <li><a href="./shop-grid.html">Shop</a></li>
+          <li class="active"><a href="./index.html">Home</a></li>
           <li>
-            <a href="#">Pages</a>
+            <a href="#">Products</a>
             <ul class="header__menu__dropdown">
-              <li><a href="./shop-details.html">Shop Details</a></li>
-              <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-              <li><a href="./checkout.html">Check Out</a></li>
-              <li><a href="./blog-details.html">Blog Details</a></li>
+              <li><a href="./shop-details.html">Coffee</a></li>
+              <li><a href="./shoping-cart.html">Tea</a></li>
+              <li><a href="./checkout.html">Milk Tea</a></li>
+              <li><a href="./blog-details.html">Bakery</a></li>
             </ul>
           </li>
-          <li><a href="./blog.html">Blog</a></li>
+          <li><a href="#">Member Card</a></li>
           <li><a href="./contact.html">Contact</a></li>
         </ul>
       </nav>
@@ -134,29 +138,35 @@
         </div>
       </div>
       <div class="container">
-        <div class="row">
+        <div class="row" style="align-items: center">
           <div class="col-lg-3">
             <div class="header__logo">
-              <a href="./index.html"><img src="img/logo.png" alt="" /></a>
+              <a href="./index.html"
+                ><img src="img/Logo-Coffee.png" alt=""
+              /></a>
             </div>
           </div>
-          <div class="col-lg-6">
-            <nav class="header__menu">
+          <div class="col-lg-7">
+            <nav
+              class="header__menu"
+              style="display: flex; justify-content: center"
+            >
               <ul>
                 <li class="active">
                   <a href="./index.html" langkey="nav_home">Home</a>
                 </li>
-                <li><a href="./shop-grid.html" langkey="nav_shop">Shop</a></li>
                 <li>
-                  <a href="#">Pages</a>
+                  <a href="./shop-grid.html" langkey="nav_shop">Products</a>
                   <ul class="header__menu__dropdown">
-                    <li><a href="./shop-details.html">Shop Details</a></li>
-                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                    <li><a href="./checkout.html">Check Out</a></li>
-                    <li><a href="./blog-details.html">Blog Details</a></li>
+                    <li><a href="./shop-details.html">Coffee</a></li>
+                    <li><a href="./shoping-cart.html">Tea</a></li>
+                    <li><a href="./checkout.html">Bakery</a></li>
+                    <li><a href="./checkout.html">Milk Tea</a></li>
                   </ul>
                 </li>
-                <li><a href="./blog.html">Blog</a></li>
+                <!-- <li><a href="./shop-details.html">Coffee</a></li>
+                <li><a href="./blog.html">Tea</a></li> -->
+                <li><a href="./blog.html">Member Card</a></li>
                 <li>
                   <a href="./contact.html" langkey="nav_contact">Contact</a>
                 </li>
@@ -164,19 +174,63 @@
             </nav>
             <input type="hidden" id="langCode" value="en" />
           </div>
-          <div class="col-lg-3">
+          <div class="col-lg-2">
             <div class="header__cart">
               <ul>
-                <li>
-                  <a href="#"><i class="fa fa-heart"></i> <span>1</span></a>
-                </li>
-                <li>
-                  <a href="#"
-                    ><i class="fa fa-shopping-bag"></i> <span>3</span></a
+                <li class="coffee-cart">
+                  <a href="#">
+                    <p>Cart</p>
+                    <div class="coffee-cart-content">
+                      <i class="fa fa-shopping-cart"></i>
+                      <span>2</span>
+                    </div>
+                  </a>
+                  <div
+                    class="hidden-info-cart animate__animated animate__fadeInUp"
                   >
+                    <div class="content-item-cart-nav">
+                      <div class="item-in-cart-nav">
+                        <div class="img-in-cart-nav">
+                          <img src="img/product/product-5.jpg" alt="" />
+                        </div>
+                        <div class="info-in-cart-nav">
+                          <a href="#">Trà sữa chân châu đường đen</a>
+                          <p>
+                            <span>5</span> x <span>50.000đ</span>
+                            <span class="old-price">75.000đ</span>
+                          </p>
+                        </div>
+                        <a href="#" class="material-icons">delete_forever</a>
+                      </div>
+                      <div class="item-in-cart-nav">
+                        <div class="img-in-cart-nav">
+                          <img src="img/product/product-5.jpg" alt="" />
+                        </div>
+                        <div class="info-in-cart-nav">
+                          <a href="#">Trà sữa chân châu đường đen</a>
+                          <p>
+                            <span>5</span> x <span>50.000đ</span>
+                            <span class="old-price">75.000đ</span>
+                          </p>
+                        </div>
+                        <a href="#" class="material-icons">delete_forever</a>
+                      </div>
+                    </div>
+
+                    <div
+                      style="
+                        margin: 10px 0px;
+                        display: flex;
+                        justify-content: space-between;
+                      "
+                    >
+                      <h4 style="color: red">Tổng :</h4>
+                      <h4 style="color: red">100.000đ</h4>
+                    </div>
+                    <a class="check-out-cart-nav" href="#">Thanh toán</a>
+                  </div>
                 </li>
               </ul>
-              <div class="header__cart__price">item: <span>$150.00</span></div>
             </div>
           </div>
         </div>
@@ -198,17 +252,10 @@
                 <span>All departments</span>
               </div>
               <ul>
-                <li><a href="#">Fresh Meat</a></li>
-                <li><a href="#">Vegetables</a></li>
-                <li><a href="#">Fruit & Nut Gifts</a></li>
-                <li><a href="#">Fresh Berries</a></li>
-                <li><a href="#">Ocean Foods</a></li>
-                <li><a href="#">Butter & Eggs</a></li>
-                <li><a href="#">Fastfood</a></li>
-                <li><a href="#">Fresh Onion</a></li>
-                <li><a href="#">Papayaya & Crisps</a></li>
-                <li><a href="#">Oatmeal</a></li>
-                <li><a href="#">Fresh Bananas</a></li>
+                <li><a href="#">Coffee</a></li>
+                <li><a href="#">Tea</a></li>
+                <li><a href="#">Milk Tea</a></li>
+                <li><a href="#">Bakery</a></li>
               </ul>
             </div>
           </div>
@@ -216,11 +263,8 @@
             <div class="hero__search">
               <div class="hero__search__form">
                 <form action="#">
-                  <div class="hero__search__categories">
-                    All Categories
-                    <span class="arrow_carrot-down"></span>
-                  </div>
-                  <input type="text" placeholder="What do yo u need?" />
+                  <div class="hero__search__categories">All Categories</div>
+                  <input type="text" placeholder="What do you need?" />
                   <button type="submit" class="site-btn">SEARCH</button>
                 </form>
               </div>
@@ -304,32 +348,35 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="section-title">
-              <h2>Featured Product</h2>
+              <h2>Favorite Product</h2>
             </div>
-            <div class="featured__controls">
+            <!-- <div class="featured__controls">
               <ul>
                 <li class="active" data-filter="*">All</li>
-                <li data-filter=".oranges">Oranges</li>
-                <li data-filter=".fresh-meat">Fresh Meat</li>
-                <li data-filter=".vegetables">Vegetables</li>
-                <li data-filter=".fastfood">Fastfood</li>
+                <li data-filter=".oranges">Coffee</li>
+                <li data-filter=".fresh-meat">Tea</li>
+                <li data-filter=".fresh-meat">Milk Tea</li>
+                <li data-filter=".fastfood">Bakery</li>
               </ul>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="row featured__filter">
-          <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="featured__item">
               <div
                 class="featured__item__pic set-bg"
                 data-setbg="img/featured/feature-1.jpg"
               >
+                <div class="sale-item">
+                  <img src="img/sale.png" alt="" />
+                  <p>30%</p>
+                </div>
                 <ul class="featured__item__pic__hover">
                   <li>
-                    <a href="#"><i class="fa fa-heart"></i></a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="fa fa-retweet"></i></a>
+                    <a href="#" data-toggle="modal" data-target="#productModal1"
+                      ><i class="fa fa-retweet"></i
+                    ></a>
                   </li>
                   <li>
                     <a href="#"><i class="fa fa-shopping-cart"></i></a>
@@ -337,23 +384,36 @@
                 </ul>
               </div>
               <div class="featured__item__text">
-                <h6><a href="#">Crab Pool Security</a></h6>
-                <h5>$30.00</h5>
+                <h6><a href="#">Trà sữa chân châu đường đen</a></h6>
+                <h5>
+                  30.000đ
+                  <span
+                    style="
+                      text-decoration: line-through;
+                      font-size: 14px;
+                      color: #b2b2b2;
+                    "
+                    >50.000đ</span
+                  >
+                </h5>
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fastfood">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="featured__item">
               <div
                 class="featured__item__pic set-bg"
-                data-setbg="img/featured/feature-2.jpg"
+                data-setbg="img/featured/feature-1.jpg"
               >
+                <div class="sale-item">
+                  <img src="img/sale.png" alt="" />
+                  <p>30%</p>
+                </div>
                 <ul class="featured__item__pic__hover">
                   <li>
-                    <a href="#"><i class="fa fa-heart"></i></a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="fa fa-retweet"></i></a>
+                    <a href="#" data-toggle="modal" data-target="#productModal1"
+                      ><i class="fa fa-retweet"></i
+                    ></a>
                   </li>
                   <li>
                     <a href="#"><i class="fa fa-shopping-cart"></i></a>
@@ -361,23 +421,31 @@
                 </ul>
               </div>
               <div class="featured__item__text">
-                <h6><a href="#">Crab Pool Security</a></h6>
-                <h5>$30.00</h5>
+                <h6><a href="#">Trà sữa chân châu đường đen</a></h6>
+                <h5>
+                  30.000đ
+                  <span style="text-decoration: line-through; font-size: 14px"
+                    >50.000đ</span
+                  >
+                </h5>
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fresh-meat">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="featured__item">
               <div
                 class="featured__item__pic set-bg"
-                data-setbg="img/featured/feature-3.jpg"
+                data-setbg="img/featured/feature-1.jpg"
               >
+                <div class="sale-item">
+                  <img src="img/sale.png" alt="" />
+                  <p>30%</p>
+                </div>
                 <ul class="featured__item__pic__hover">
                   <li>
-                    <a href="#"><i class="fa fa-heart"></i></a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="fa fa-retweet"></i></a>
+                    <a href="#" data-toggle="modal" data-target="#productModal1"
+                      ><i class="fa fa-retweet"></i
+                    ></a>
                   </li>
                   <li>
                     <a href="#"><i class="fa fa-shopping-cart"></i></a>
@@ -385,23 +453,31 @@
                 </ul>
               </div>
               <div class="featured__item__text">
-                <h6><a href="#">Crab Pool Security</a></h6>
-                <h5>$30.00</h5>
+                <h6><a href="#">Trà sữa chân châu đường đen</a></h6>
+                <h5>
+                  30.000đ
+                  <span style="text-decoration: line-through; font-size: 14px"
+                    >50.000đ</span
+                  >
+                </h5>
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-4 col-sm-6 mix fastfood oranges">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="featured__item">
               <div
                 class="featured__item__pic set-bg"
-                data-setbg="img/featured/feature-4.jpg"
+                data-setbg="img/featured/feature-1.jpg"
               >
+                <div class="sale-item">
+                  <img src="img/sale.png" alt="" />
+                  <p>30%</p>
+                </div>
                 <ul class="featured__item__pic__hover">
                   <li>
-                    <a href="#"><i class="fa fa-heart"></i></a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="fa fa-retweet"></i></a>
+                    <a href="#" data-toggle="modal" data-target="#productModal1"
+                      ><i class="fa fa-retweet"></i
+                    ></a>
                   </li>
                   <li>
                     <a href="#"><i class="fa fa-shopping-cart"></i></a>
@@ -409,23 +485,31 @@
                 </ul>
               </div>
               <div class="featured__item__text">
-                <h6><a href="#">Crab Pool Security</a></h6>
-                <h5>$30.00</h5>
+                <h6><a href="#">Trà sữa chân châu đường đen</a></h6>
+                <h5>
+                  30.000đ
+                  <span style="text-decoration: line-through; font-size: 14px"
+                    >50.000đ</span
+                  >
+                </h5>
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-4 col-sm-6 mix fresh-meat vegetables">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="featured__item">
               <div
                 class="featured__item__pic set-bg"
-                data-setbg="img/featured/feature-5.jpg"
+                data-setbg="img/featured/feature-1.jpg"
               >
+                <div class="sale-item">
+                  <img src="img/sale.png" alt="" />
+                  <p>30%</p>
+                </div>
                 <ul class="featured__item__pic__hover">
                   <li>
-                    <a href="#"><i class="fa fa-heart"></i></a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="fa fa-retweet"></i></a>
+                    <a href="#" data-toggle="modal" data-target="#productModal1"
+                      ><i class="fa fa-retweet"></i
+                    ></a>
                   </li>
                   <li>
                     <a href="#"><i class="fa fa-shopping-cart"></i></a>
@@ -433,23 +517,31 @@
                 </ul>
               </div>
               <div class="featured__item__text">
-                <h6><a href="#">Crab Pool Security</a></h6>
-                <h5>$30.00</h5>
+                <h6><a href="#">Trà sữa chân châu đường đen</a></h6>
+                <h5>
+                  30.000đ
+                  <span style="text-decoration: line-through; font-size: 14px"
+                    >50.000đ</span
+                  >
+                </h5>
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fastfood">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="featured__item">
               <div
                 class="featured__item__pic set-bg"
-                data-setbg="img/featured/feature-6.jpg"
+                data-setbg="img/featured/feature-1.jpg"
               >
+                <div class="sale-item">
+                  <img src="img/sale.png" alt="" />
+                  <p>30%</p>
+                </div>
                 <ul class="featured__item__pic__hover">
                   <li>
-                    <a href="#"><i class="fa fa-heart"></i></a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="fa fa-retweet"></i></a>
+                    <a href="#" data-toggle="modal" data-target="#productModal1"
+                      ><i class="fa fa-retweet"></i
+                    ></a>
                   </li>
                   <li>
                     <a href="#"><i class="fa fa-shopping-cart"></i></a>
@@ -457,23 +549,31 @@
                 </ul>
               </div>
               <div class="featured__item__text">
-                <h6><a href="#">Crab Pool Security</a></h6>
-                <h5>$30.00</h5>
+                <h6><a href="#">Trà sữa chân châu đường đen</a></h6>
+                <h5>
+                  30.000đ
+                  <span style="text-decoration: line-through; font-size: 14px"
+                    >50.000đ</span
+                  >
+                </h5>
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-4 col-sm-6 mix fresh-meat vegetables">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="featured__item">
               <div
                 class="featured__item__pic set-bg"
-                data-setbg="img/featured/feature-7.jpg"
+                data-setbg="img/featured/feature-1.jpg"
               >
+                <div class="sale-item">
+                  <img src="img/sale.png" alt="" />
+                  <p>30%</p>
+                </div>
                 <ul class="featured__item__pic__hover">
                   <li>
-                    <a href="#"><i class="fa fa-heart"></i></a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="fa fa-retweet"></i></a>
+                    <a href="#" data-toggle="modal" data-target="#productModal1"
+                      ><i class="fa fa-retweet"></i
+                    ></a>
                   </li>
                   <li>
                     <a href="#"><i class="fa fa-shopping-cart"></i></a>
@@ -481,23 +581,31 @@
                 </ul>
               </div>
               <div class="featured__item__text">
-                <h6><a href="#">Crab Pool Security</a></h6>
-                <h5>$30.00</h5>
+                <h6><a href="#">Trà sữa chân châu đường đen</a></h6>
+                <h5>
+                  30.000đ
+                  <span style="text-decoration: line-through; font-size: 14px"
+                    >50.000đ</span
+                  >
+                </h5>
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-4 col-sm-6 mix fastfood vegetables">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="featured__item">
               <div
                 class="featured__item__pic set-bg"
-                data-setbg="img/featured/feature-8.jpg"
+                data-setbg="img/featured/feature-1.jpg"
               >
+                <div class="sale-item">
+                  <img src="img/sale.png" alt="" />
+                  <p>30%</p>
+                </div>
                 <ul class="featured__item__pic__hover">
                   <li>
-                    <a href="#"><i class="fa fa-heart"></i></a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="fa fa-retweet"></i></a>
+                    <a href="#" data-toggle="modal" data-target="#productModal1"
+                      ><i class="fa fa-retweet"></i
+                    ></a>
                   </li>
                   <li>
                     <a href="#"><i class="fa fa-shopping-cart"></i></a>
@@ -505,8 +613,13 @@
                 </ul>
               </div>
               <div class="featured__item__text">
-                <h6><a href="#">Crab Pool Security</a></h6>
-                <h5>$30.00</h5>
+                <h6><a href="#">Trà sữa chân châu đường đen</a></h6>
+                <h5>
+                  30.000đ
+                  <span style="text-decoration: line-through; font-size: 14px"
+                    >50.000đ</span
+                  >
+                </h5>
               </div>
             </div>
           </div>
@@ -739,7 +852,7 @@
     <!-- Latest Product Section End -->
 
     <!-- Blog Section Begin -->
-    <section class="from-blog spad">
+    <!-- <section class="from-blog spad">
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
@@ -805,7 +918,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     <!-- Blog Section End -->
 
     <!-- Footer Section Begin -->
@@ -815,7 +928,9 @@
           <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="footer__about">
               <div class="footer__about__logo">
-                <a href="./index.html"><img src="img/logo.png" alt="" /></a>
+                <a href="./index.html"
+                  ><img src="img/Logo-Coffee.png" alt=""
+                /></a>
               </div>
               <ul>
                 <li>Address: 60-49 Road 11378 New York</li>
@@ -889,7 +1004,65 @@
       </div>
     </footer>
     <!-- Footer Section End -->
-
+    <!-- Modal -->
+    <div class="modal fade" id="productModal1" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="modal-product">
+              <div class="product-images">
+                <div class="main-image images">
+                  <img alt="" src="img/product/product-10.jpg" />
+                  <!-- <% if (listSach.get(i).getKhuyenMai() > 0) { %> -->
+                  <div class="sale-item-modal">
+                    <img src="img/sale.png" alt="" />
+                    <p>30%</p>
+                  </div>
+                  <!-- <% }%> -->
+                </div>
+              </div>
+              <div class="product-info">
+                <h1 style="font-size: 26px">Sữa tươi chân châu đường đen</h1>
+                <div class="price-box">
+                  <!-- <% if (listSach.get(i).getKhuyenMai() > 0) { %> -->
+                  <p class="s-price">
+                    <span class="special-price"
+                      ><span class="amount" style="font-size: 25px"
+                        >850.000đ</span
+                      ></span
+                    >
+                    <span style="color: #b2b2b2; text-decoration: line-through"
+                      >500.000đ</span
+                    >
+                  </p>
+                  <!-- <% } else {%>
+                                <p class="s-price"><span class="special-price"><span
+                                        class="amount" style="font-size: 25px"><%=listSach.get(i).getGia()%>.000đ</span></span>
+                                </p>
+                                <% }%> -->
+                </div>
+                <a href="#" class="see-all">Xem chi tiết</a>
+                <div class="quick-add-to-cart">
+                  <a class="single_add_to_cart_button" href="%">Mua Ngay </a>
+                </div>
+                <div style="height: 200px; overflow-y: scroll">Ngon cực kì</div>
+              </div>
+              <!-- .product-info -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Js Plugins -->
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
