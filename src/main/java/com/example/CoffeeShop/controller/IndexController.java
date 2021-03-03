@@ -1,6 +1,8 @@
 package com.example.CoffeeShop.controller;
 
-import com.example.CoffeeShop.database.ConnectionDB;
+import com.example.CoffeeShop.modal.Product;
+import com.example.CoffeeShop.service.ProductService;
+import com.example.CoffeeShop.util.ConnectionUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -9,6 +11,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 @WebServlet(name = "IndexController", value = "/IndexController")
 public class IndexController extends HttpServlet {
@@ -18,7 +21,8 @@ public class IndexController extends HttpServlet {
         ResultSet rs = null;
         Connection connection = null;
         try {
-            connection = ConnectionDB.connection();
+//            connection = ConnectionDB.connection();
+            connection = ConnectionUtils.getConnection();
 //            rs = ConnectionDB.connect().executeQuery(sql);
             rs = connection.createStatement().executeQuery(sql);
             rs.last();
@@ -39,7 +43,11 @@ public class IndexController extends HttpServlet {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
+        ProductService productService = new ProductService();
+        ArrayList<Product> products = productService.getAllProduct();
+        for (Product product : products){
+            System.out.println(product.toString());
+        }
     }
 
     @Override

@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.example.CoffeeShop.util.UrlUtils" %><%--
   Created by IntelliJ IDEA.
   User: ASUS
   Date: 2/28/2021
@@ -20,11 +20,20 @@
         rel="stylesheet"
 />
 <!-- Css Styles -->
-<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
-<link rel="stylesheet" href="css/font-awesome.min.css" type="text/css"/>
-<link rel="stylesheet" href="css/elegant-icons.css" type="text/css"/>
-<link rel="stylesheet" href="css/nice-select.css" type="text/css"/>
-<link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css"/>
-<link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css"/>
-<link rel="stylesheet" href="css/slicknav.min.css" type="text/css"/>
-<link rel="stylesheet" href="css/style.css" type="text/css"/>
+<link rel="stylesheet" href=<%= UrlUtils.fullPathClient("css/bootstrap.min.css")%>
+        type="text/css"/>
+<link rel="stylesheet" href=<%= UrlUtils.fullPathClient("css/font-awesome.min.css")%>
+        type="text/css"/>
+<link rel="stylesheet" href=<%= UrlUtils.fullPathClient("css/elegant-icons.css")%>
+        type="text/css"/>
+<link rel="stylesheet" href=<%= UrlUtils.fullPathClient("css/nice-select.css")%>
+        type="text/css"/>
+<link rel="stylesheet" href=<%= UrlUtils.fullPathClient("css/jquery-ui.min.css")%>
+        type="text/css"/>
+<link rel="stylesheet" href=<%= UrlUtils.fullPathClient("css/owl.carousel.min.css")%>
+        type="text/css"/>
+<link rel="stylesheet" href=<%= UrlUtils.fullPathClient("css/slicknav.min.css")%> type="text/css"/>
+
+<link rel="stylesheet" href=<%= UrlUtils.fullPathClient("css/style.css")%>
+        type="text/css"/>
+<%--=> "http://localhost:8080/CoffeeShop/client/css/style.css"--%>

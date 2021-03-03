@@ -1,4 +1,6 @@
-package com.example.CoffeeShop.database;
+package com.example.CoffeeShop.util;
+
+import com.example.CoffeeShop.database.ConnectionDB;
 
 import java.sql.Connection;
 import java.sql.SQLException;
