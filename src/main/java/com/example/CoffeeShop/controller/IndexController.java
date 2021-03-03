@@ -6,6 +6,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -15,8 +16,11 @@ public class IndexController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String sql = "SELECT * from `user` WHERE id = 1";
         ResultSet rs = null;
+        Connection connection = null;
         try {
-            rs = ConnectionDB.connect().executeQuery(sql);
+            connection = ConnectionDB.connection();
+//            rs = ConnectionDB.connect().executeQuery(sql);
+            rs = connection.createStatement().executeQuery(sql);
             rs.last();
             int i = rs.getRow();
             if (rs != null && i == 1) {
@@ -24,7 +28,7 @@ public class IndexController extends HttpServlet {
                 String name = rs.getString(2) ;
                 request.setAttribute("tenUser",name);
                 request.getRequestDispatcher("client/index.jsp").forward(request,response);
-
+                System.out.println();
             }
             else  {
                 response.sendRedirect("client/shopDetail.jsp");
