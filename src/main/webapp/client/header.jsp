@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.example.CoffeeShop.util.UrlUtils" %><%--
   Created by IntelliJ IDEA.
   User: ASUS
   Date: 2/28/2021
@@ -10,7 +10,7 @@
 <div class="humberger__menu__overlay"></div>
 <div class="humberger__menu__wrapper">
     <div class="humberger__menu__logo">
-        <a href="#"><img src="img/Logo-Coffee.png" alt="" /></a>
+        <a href="#"><img src=<%=UrlUtils.fullPathClient("img/Logo-Coffee.png")%> alt="" /></a>
     </div>
     <div class="humberger__menu__cart">
         <ul>
@@ -22,7 +22,7 @@
     </div>
     <div class="humberger__menu__widget">
         <div class="header__top__right__language">
-            <img src="img/language.png" alt="" />
+            <img src=<%=UrlUtils.fullPathClient("img/language.png")%> alt="" />
             <div>English</div>
             <span class="arrow_carrot-down"></span>
             <ul>
@@ -88,7 +88,7 @@
                             <a href="#"><i class="fa fa-pinterest-p"></i></a>
                         </div>
                         <div class="header__top__right__language">
-                            <img src="img/language.png" alt="" />
+                            <img src=<%=UrlUtils.fullPathClient("img/language.png")%> alt="" />
                             <div>English</div>
                             <span class="arrow_carrot-down"></span>
                             <ul>
@@ -109,7 +109,7 @@
             <div class="col-lg-3">
                 <div class="header__logo">
                     <a href="./index.jps"
-                    ><img src="img/Logo-Coffee.png" alt=""
+                    ><img src=<%=UrlUtils.fullPathClient("img/Logo-Coffee.png")%> alt=""
                     /></a>
                 </div>
             </div>
@@ -156,22 +156,22 @@
                                     class="hidden-info-cart animate__animated animate__fadeInUp"
                             >
                                 <div class="content-item-cart-nav">
+<%--                                    <div class="item-in-cart-nav">--%>
+<%--                                        <div class=img-in-cart-nav">--%>
+<%--                                            <img src=<%=UrlUtils.fullPathClient("img/product/product-5.jpg")%> alt="" />--%>
+<%--                                        </div>--%>
+<%--                                        <div class="info-in-cart-nav">--%>
+<%--                                            <a href="#">Trà sữa chân châu đường đen</a>--%>
+<%--                                            <p>--%>
+<%--                                                <span>5</span> x <span>50.000đ</span>--%>
+<%--                                                <span class="old-price">75.000đ</span>--%>
+<%--                                            </p>--%>
+<%--                                        </div>--%>
+<%--                                        <a href="#" class="material-icons">delete_forever</a>--%>
+<%--                                    </div>--%>
                                     <div class="item-in-cart-nav">
                                         <div class="img-in-cart-nav">
-                                            <img src="img/product/product-5.jpg" alt="" />
-                                        </div>
-                                        <div class="info-in-cart-nav">
-                                            <a href="#">Trà sữa chân châu đường đen</a>
-                                            <p>
-                                                <span>5</span> x <span>50.000đ</span>
-                                                <span class="old-price">75.000đ</span>
-                                            </p>
-                                        </div>
-                                        <a href="#" class="material-icons">delete_forever</a>
-                                    </div>
-                                    <div class="item-in-cart-nav">
-                                        <div class="img-in-cart-nav">
-                                            <img src="img/product/product-5.jpg" alt="" />
+                                            <img src=<%=UrlUtils.fullPathClient("img/product/product-5.jpg")%> alt="" />
                                         </div>
                                         <div class="info-in-cart-nav">
                                             <a href="#">Trà sữa chân châu đường đen</a>

@@ -43,16 +43,16 @@ public class IndexController extends HttpServlet {
 //        } catch (ClassNotFoundException e) {
 //            e.printStackTrace();
 //        }
-        ProductDAO productDAO = new ProductDAO();
-        ArrayList<Product> listFavoite = productDAO.getAllFavoriteProduct();
+//        ProductDAO productDAO = new ProductDAO();
+        ArrayList<Product> listFavoite = ProductDAO.getAllFavoriteProduct();
         request.setAttribute("listFavorite",listFavoite);
         request.getRequestDispatcher("client/index.jsp").forward(request,response);
         for (Product product : listFavoite){
             System.out.println(product.toString());
         }
-        for (int i = 0; i < listFavoite.size(); i++) {
-            System.out.println("a--- " + listFavoite.get(i));
-        }
+//        for (int i = 0; i < listFavoite.size(); i++) {
+//            System.out.println("a--- " + listFavoite.get(i));
+//        }
     }
 
     @Override

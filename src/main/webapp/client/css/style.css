@@ -3659,7 +3659,8 @@ ol {
   max-height: 100%;
 }
 .content-item-cart-nav {
-  height: 220px;
+  min-height: 120px;
+  max-height: 220px;
   overflow-y: scroll;
 }
 .content-item-cart-nav::-webkit-scrollbar-track {

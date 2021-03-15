@@ -1,15 +1,15 @@
 package com.example.CoffeeShop.modal;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class Product {
-    private int id ;
+    private int id;
     private String productName;
     private TypeProduct typeProduct;
     private int sale;
     private String image;
-    private int price;
-    private SizeProduct size;
+    private ArrayList<PriceProduct> priceProducts;
     private boolean favorite;
     private boolean actived;
     private Date createDate;
@@ -17,12 +17,13 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id, String productName, TypeProduct typeProduct, int sale, String image, boolean favorite, boolean actived, Date createDate) {
+    public Product(int id, String productName, TypeProduct typeProduct, int sale, String image, ArrayList<PriceProduct> priceProducts, boolean favorite, boolean actived, Date createDate) {
         this.id = id;
         this.productName = productName;
         this.typeProduct = typeProduct;
         this.sale = sale;
         this.image = image;
+        this.priceProducts = priceProducts;
         this.favorite = favorite;
         this.actived = actived;
         this.createDate = createDate;
@@ -92,14 +93,40 @@ public class Product {
         this.createDate = createDate;
     }
 
+    public ArrayList<PriceProduct> getPriceProducts() {
+        return priceProducts;
+    }
+
+    public void setPriceProducts(ArrayList<PriceProduct> priceProducts) {
+        this.priceProducts = priceProducts;
+    }
+
+    public int getSalePrice(int sizePrice){
+        double salePercent = (100.0 - this.sale) / 100.0;
+        int price = (int) Math.ceil(sizePrice * salePercent);
+        return price;
+    }
+
     @Override
     public String toString() {
+        String price = "";
+        String type = "";
+        if (priceProducts.size() != 0){
+            for (PriceProduct p : priceProducts) {
+                price = price + p.getSizeProduct().getSizeName() + "-" + p.getPrice();
+            }
+        }
+        if (typeProduct != null){
+            type = typeProduct.getTypeProduct();
+        }
+
         return "Product{" +
                 "id=" + id +
                 ", productName='" + productName + '\'' +
-                ", typeProduct=" + typeProduct +
+                ", typeProduct=" + type +
                 ", sale=" + sale +
                 ", image='" + image + '\'' +
+                ", size&price=" + price +
                 ", favorite=" + favorite +
                 ", actived=" + actived +
                 ", createDate=" + createDate +

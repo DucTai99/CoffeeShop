@@ -1,25 +1,25 @@
 package com.example.CoffeeShop.modal;
 
 public class PriceProduct {
-    private Product product;
+    private int idProduct;
     private SizeProduct sizeProduct;
     private int price;
 
     public PriceProduct() {
     }
 
-    public PriceProduct(Product product, SizeProduct sizeProduct, int price) {
-        this.product = product;
+    public PriceProduct(int idProduct, SizeProduct sizeProduct, int price) {
+        this.idProduct = idProduct;
         this.sizeProduct = sizeProduct;
         this.price = price;
     }
 
-    public Product getProduct() {
-        return product;
+    public int getIdProduct() {
+        return idProduct;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setIdProduct(int idProduct) {
+        this.idProduct = idProduct;
     }
 
     public SizeProduct getSizeProduct() {

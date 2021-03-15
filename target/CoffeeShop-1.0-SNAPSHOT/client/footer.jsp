@@ -13,7 +13,7 @@
                 <div class="footer__about">
                     <div class="footer__about__logo">
                         <a href="./index.jps"
-                        ><img src="img/Logo-Coffee.png" alt=""
+                        ><img src=<%=UrlUtils.fullPathClient("img/Logo-Coffee.png")%> alt=""
                         /></a>
                     </div>
                     <ul>
@@ -80,7 +80,7 @@
                         </p>
                     </div>
                     <div class="footer__copyright__payment">
-                        <img src="img/payment-item.png" alt="" />
+                        <img src=<%=UrlUtils.fullPathClient("img/payment-item.png")%> alt="" />
                     </div>
                 </div>
             </div>
