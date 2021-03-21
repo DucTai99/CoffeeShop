@@ -18,10 +18,7 @@
 </head>
 
 <body>
-<!-- Page Preloder -->
-<div id="preloder">
-    <div class="loader"></div>
-</div>
+
 <%@include file="header.jsp" %>
 <%--    <!-- Header Section End -->--%>
 
