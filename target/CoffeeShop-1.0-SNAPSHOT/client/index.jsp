@@ -153,7 +153,7 @@
                 <div class="featured__item">
                     <div
                             class="featured__item__pic set-bg"
-                            data-setbg=<%=UrlUtils.fullPathClient("img/featured/feature-1.jpg")%>
+                            data-setbg=<%=UrlUtils.fullPathClient(product.getImage())%>
 
                     >
                         <% if (product.getSale() != 0) {%>
@@ -175,7 +175,7 @@
                         </ul>
                     </div>
                     <div class="featured__item__text">
-                        <h6><a href="#"><%=product.getProductName()%>
+                        <h6><a href=<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + product.getId())%>><%=product.getProductName()%>
                         </a></h6>
                         <%
                             int priceProduct = product.getPriceProducts().get(0).getPrice();

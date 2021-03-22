@@ -1,3 +1,6 @@
+<%@ page import="com.example.CoffeeShop.modal.Product" %>
+<%@ page import="java.text.NumberFormat" %>
+<%@ page import="java.util.Locale" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -16,7 +19,11 @@
 <body>
 
 <%@include file="header.jsp" %>
-
+<%
+    Product product = (Product) request.getAttribute("product");
+    Locale localeVN = new Locale("vi", "VN");
+    NumberFormat vnPrice = NumberFormat.getInstance(localeVN);
+%>
 <!-- Hero Section Begin -->
 <section class="hero hero-normal">
     <div class="container">
@@ -91,46 +98,18 @@
                     <div class="product__details__pic__item">
                         <img
                                 class="product__details__pic__item--large"
-                                src=<%=UrlUtils.fullPathClient("img/product/details/product-details-1.jpg")%>
+                                src=<%=UrlUtils.fullPathClient(product.getImage())%>
                                 alt=""
                         />
                     </div>
-                    <!-- <div class="product__details__pic__slider owl-carousel">
-                      <img
-                        data-imgbigurl="img/product/details/product-details-2.jpg"
-                        src="img/product/details/thumb-1.jpg"
-                        alt=""
-                      />
-                      <img
-                        data-imgbigurl="img/product/details/product-details-3.jpg"
-                        src="img/product/details/thumb-2.jpg"
-                        alt=""
-                      />
-                      <img
-                        data-imgbigurl="img/product/details/product-details-5.jpg"
-                        src="img/product/details/thumb-3.jpg"
-                        alt=""
-                      />
-                      <img
-                        data-imgbigurl="img/product/details/product-details-4.jpg"
-                        src="img/product/details/thumb-4.jpg"
-                        alt=""
-                      />
-                    </div> -->
+
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="product__details__text">
-                    <h3>Vetgetable’s Package</h3>
-                    <!-- <div class="product__details__rating">
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star-half-o"></i>
-                      <span>(18 reviews)</span>
-                    </div> -->
-                    <div class="product__details__price">$50.00</div>
+                    <h3><%=product.getProductName()%></h3>
+
+                    <div class="product__details__price"><%= vnPrice.format(product.getPriceProducts().get(1).getPrice())%></div>
                     <p>
                         Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.
                         Vestibulum ac diam sit amet quam vehicula elementum sed sit amet

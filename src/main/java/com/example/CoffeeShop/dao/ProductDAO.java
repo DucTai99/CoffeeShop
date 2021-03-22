@@ -130,7 +130,6 @@ public class ProductDAO {
             listProduct = new ArrayList<Product>();
             // khoi tao 1 list chua tat ca Gia San Pham
             ArrayList<PriceProduct> listAllPrice = new ArrayList<PriceProduct>();
-            Outer:
             while (resultSet.next()) {
                 // gan id San Pham
                 int idProduct = resultSet.getInt(1);
@@ -143,6 +142,7 @@ public class ProductDAO {
                         break;
                     }
                 }
+                // nếu product chưa tồn tại thì mình thực hiện cu lệnh if còn không là else
                 if (!productIsExist) {
                     // khoi tao 1 product moi
                     Product product = new Product();
@@ -188,7 +188,7 @@ public class ProductDAO {
             }
             // duyet tat ca san pham trong list product
             for (Product p : listProduct) {
-                // khoi tao 1 list chua size va price cua san pham
+                // khoi tao 1 list chua size va price 4cua san pham
                 ArrayList<PriceProduct> listPriceProduct = new ArrayList<PriceProduct>();
                 // duyet tat ca size va price cua tat ca san pham
                 for (PriceProduct pp : listAllPrice) {
@@ -211,7 +211,69 @@ public class ProductDAO {
     }
 
     public static Product getProductById(int id) {
+        String sql = "SELECT * FROM `product` AS p \n" +
+                "INNER JOIN typeproduct AS tp ON p.type = tp.id_type_product \n" +
+                "INNER JOIN priceproduct AS pp ON p.id_product = pp.product_id \n" +
+                "INNER JOIN sizeproduct AS sp ON pp.size_id = sp.id_size_product \n" +
+                "WHERE p.actived = 1 AND p.id_product = ?";
+        Connection connection = null;
         Product product = new Product();
+        try {
+            // ket noi voi database
+            connection = ConnectionUtils.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            ArrayList<PriceProduct> listPriceProduct = new ArrayList<PriceProduct>();
+            boolean productExist = false;
+            while (resultSet.next()) {
+                if (!productExist){
+                    productExist = true;
+                    product.setId(resultSet.getInt(1));
+                    product.setProductName(resultSet.getString(2));
+                    // khoi tao 1 loai cua san pham
+                    TypeProduct typeProduct = new TypeProduct();
+                    typeProduct.setId(resultSet.getInt(9));
+                    typeProduct.setTypeProduct(resultSet.getString(10));
+                    product.setTypeProduct(typeProduct);
+                    product.setSale(resultSet.getInt(4));
+                    product.setImage(resultSet.getString(5));
+                    product.setFavorite((resultSet.getInt(6) == 1) ? true : false);
+                    product.setActived((resultSet.getInt(7) == 1) ? true : false);
+                    product.setCreateDate(resultSet.getDate(8));
+                    // khoi tao 1 size cua san pham
+                    SizeProduct sizeProduct = new SizeProduct();
+                    sizeProduct.setId(resultSet.getInt(14));
+                    sizeProduct.setSizeName(resultSet.getString(15));
+                    // khoi tao 1 gia tien cua 1 size cua san pham
+                    PriceProduct priceProduct = new PriceProduct();
+                    priceProduct.setIdProduct(resultSet.getInt(1));
+                    priceProduct.setSizeProduct(sizeProduct);
+                    priceProduct.setPrice(resultSet.getInt(13));
+                    // them gia tien cua 1 size vao list chua tat ca gia san pham
+                    listPriceProduct.add(priceProduct);
+                }
+                else {
+                    // khoi tao 1 size cua san pham
+                    SizeProduct sizeProduct = new SizeProduct();
+                    sizeProduct.setId(resultSet.getInt(14));
+                    sizeProduct.setSizeName(resultSet.getString(15));
+                    // khoi tao 1 gia tien cua 1 size cua san pham
+                    PriceProduct priceProduct = new PriceProduct();
+                    priceProduct.setIdProduct(resultSet.getInt(1));
+                    priceProduct.setSizeProduct(sizeProduct);
+                    priceProduct.setPrice(resultSet.getInt(13));
+                    // them gia tien cua 1 size vao list chua tat ca gia san pham
+                    listPriceProduct.add(priceProduct);
+                }
+            }
+            product.setPriceProducts(listPriceProduct);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         return product;
     }
 
@@ -324,8 +386,8 @@ public class ProductDAO {
                 "FROM `product` AS p INNER JOIN productsincart AS pandc ON p.id_product = pandc.product_id\n" +
                 "INNER JOIN cart AS c ON pandc.cart_id = c.id_cart\n" +
                 "INNER JOIN bill AS b ON c.id_cart = b.cart_id \n" +
-                "ORDER BY bought DESC\n" +
-                "LIMIT 4" ;
+                "ORDER BY bought DESC\n"
+                 ;
         ArrayList<Product> listProduct = null;
         Connection connection = null;
         try {
