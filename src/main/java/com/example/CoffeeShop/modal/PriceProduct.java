@@ -1,5 +1,7 @@
 package com.example.CoffeeShop.modal;
 
+import java.util.ArrayList;
+
 public class PriceProduct {
     private int idProduct;
     private SizeProduct sizeProduct;
@@ -37,4 +39,6 @@ public class PriceProduct {
     public void setPrice(int price) {
         this.price = price;
     }
+
+
 }

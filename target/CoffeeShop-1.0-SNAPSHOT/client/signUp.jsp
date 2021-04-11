@@ -14,15 +14,16 @@
             rel="stylesheet"
     />
     <link
-            rel="stylesheet"
-            href="fonts/material-icon/css/material-design-iconic-font.min.css"
+            href=<%=UrlUtils.fullPathClient("fonts/material-icon/css/material-design-iconic-font.min.css")%>
+                    rel="stylesheet"
     />
     <link
             href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&display=swap"
             rel="stylesheet"
     />
+
     <!-- Main css -->
-    <link rel="stylesheet" href="css/login.css"/>
+    <link href=<%=UrlUtils.fullPathClient("css/login.css")%> rel="stylesheet"/>
 </head>
 <body>
 <div class="main">
@@ -31,7 +32,9 @@
         <div class="container">
             <div class="signup-content">
                 <div class="close-form">
-                    <span class="material-icons"> close </span>
+                    <a href="<%=UrlUtils.pathHost("IndexController")%>">
+                        <span class="material-icons"> close </span>
+                    </a>
                 </div>
                 <div class="signup-form">
                     <h2 class="form-title">Sign up</h2>
@@ -114,7 +117,7 @@
                 </div>
                 <div class="signup-image">
                     <figure>
-                        <img alt="sing up image" src=<%=UrlUtils.fullPathClient("img/signup-image.jpg")%>/>
+                        <img src=<%=UrlUtils.fullPathClient("img/signup.jpg")%> alt="sing-up-image"/>
                     </figure>
                     <a href="#" class="signup-image-link">I am already member</a>
                 </div>

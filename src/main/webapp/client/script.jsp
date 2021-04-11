@@ -20,3 +20,4 @@
 <script src= <%= UrlUtils.fullPathClient("js/mixitup.min.js")%>></script>
 <script src= <%= UrlUtils.fullPathClient("js/owl.carousel.min.js")%>></script>
 <script src= <%= UrlUtils.fullPathClient("js/main.js")%>></script>
+<script src= <%= UrlUtils.fullPathClient("js/clientAjax.js")%>></script>

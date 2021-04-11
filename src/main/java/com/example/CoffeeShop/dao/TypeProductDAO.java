@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TypeProductDAO {
     public static TypeProduct getTypeProduct(int productType) {
@@ -34,4 +35,31 @@ public class TypeProductDAO {
         return typeProduct;
     }
 
+    public static List<TypeProduct> getAllTypeProduct(){
+        String sql = "SELECT * FROM `typeproduct`";
+        List<TypeProduct> listTypeProduct = null;
+        Connection connection = null;
+        try {
+            // ket noi voi database
+            connection = ConnectionUtils.getConnection();
+            // thuc hien truy van sql
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            // thuc hien luu tat ca du lieu tu sql
+            ResultSet resultSet = preparedStatement.executeQuery();
+            // khoi tao 1 list chua tat ca loai san Pham
+            listTypeProduct = new ArrayList<TypeProduct>();
+            while (resultSet.next()){
+                TypeProduct typeProduct = new TypeProduct();
+                typeProduct.setId(resultSet.getInt("id_type_product"));
+                typeProduct.setTypeProduct(resultSet.getString("type_product"));
+                listTypeProduct.add(typeProduct);
+            }
+            ConnectionUtils.closeQuietly(connection);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return listTypeProduct;
+    }
 }

@@ -1,3 +1,7 @@
+<%@ page import="com.example.CoffeeShop.modal.Product" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="java.text.NumberFormat" %>
+<%@ page import="com.example.CoffeeShop.modal.SizeProduct" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -15,7 +19,19 @@
 
 <body>
 <%@include file="header.jsp" %>
-
+<%
+    List<Product> listAllProduct = (List<Product>) request.getAttribute("listAllProduct");
+    List<Product> listLatest = (List<Product>) request.getAttribute("listLatest");
+    List<Product> listProductType = (List<Product>) request.getAttribute("listProductType");
+    List<Product> listProductPage = (List<Product>) request.getAttribute("listProductPage");
+    List<Product> listAllSaleProduct = (List<Product>) request.getAttribute("listAllSaleProduct");
+    List<SizeProduct> listSizeProduct = (List<SizeProduct>) request.getAttribute("listSizeProduct");
+    int numberOfPage = (int) request.getAttribute("numberOfPage");
+    int idType = (int) request.getAttribute("idType");
+    int pageCurrent = (int) request.getAttribute("pageCurrent");
+    String pageIndex = (pageCurrent == 1) ? "" : "&page=";
+    String typeIndex = (idType == 0) ? "" : "&idType=";
+%>
 <!-- Hero Section Begin -->
 <section class="hero hero-normal">
     <div class="container">
@@ -27,10 +43,11 @@
                         <span>All departments</span>
                     </div>
                     <ul>
-                        <li><a href="#">Coffee</a></li>
-                        <li><a href="#">Tea</a></li>
-                        <li><a href="#">Milk Tea</a></li>
-                        <li><a href="#">Bakery</a></li>
+                        <%for (TypeProduct typeProduct : listTypeProduct) {%>
+                        <li>
+                            <a href="<%=UrlUtils.pathHost("ShopGridController?idType=" + typeProduct.getId())+"#targetProduct"%>"><%=typeProduct.getTypeProduct()%>
+                            </a></li>
+                        <%}%>
                     </ul>
                 </div>
             </div>
@@ -70,7 +87,7 @@
                 <div class="breadcrumb__text">
                     <h2>Coffee Shop</h2>
                     <div class="breadcrumb__option">
-                        <a href="./index.jsp">Home</a>
+                        <a href="<%=UrlUtils.pathHost("IndexController")%>">Home</a>
                         <span>Products</span>
                     </div>
                 </div>
@@ -89,95 +106,56 @@
                     <div class="sidebar__item">
                         <h4>Department</h4>
                         <ul>
-                            <li><a href="#">Coffee</a></li>
-                            <li><a href="#">Tea</a></li>
-                            <li><a href="#">Milk Tea</a></li>
-                            <li><a href="#">Bakery</a></li>
+                            <%for (TypeProduct typeProduct : listTypeProduct) {%>
+                            <li>
+                                <a href="<%=UrlUtils.pathHost("ShopGridController?idType=" + typeProduct.getId())+"#targetProduct"%>"><%=typeProduct.getTypeProduct()%>
+                                </a></li>
+                            <%}%>
                         </ul>
                     </div>
 
                     <div class="sidebar__item">
                         <h4>Popular Size</h4>
+                        <%for (SizeProduct sizeProduct : listSizeProduct) {%>
                         <div class="sidebar__item__size">
-                            <label for="large">
-                                Large
-                                <input type="radio" id="large"/>
+                            <label for="<%=sizeProduct.getSizeName()%>>">
+                                <%=sizeProduct.getSizeName()%>
+                                <input type="radio" id="<%=sizeProduct.getSizeName()%>"/>
                             </label>
                         </div>
-                        <div class="sidebar__item__size">
-                            <label for="medium">
-                                Medium
-                                <input type="radio" id="medium"/>
-                            </label>
-                        </div>
-                        <div class="sidebar__item__size">
-                            <label for="small">
-                                Small
-                                <input type="radio" id="small"/>
-                            </label>
-                        </div>
+                        <%}%>
                     </div>
                     <div class="sidebar__item">
                         <div class="latest-product__text">
                             <h4>Latest Products</h4>
                             <div class="latest-product__slider owl-carousel">
                                 <div class="latest-prdouct__slider__item">
-                                    <a href="#" class="latest-product__item">
+                                    <% for (int i = 0; i < listLatest.size()/2; i++) {%>
+                                    <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + listLatest.get(i).getId())%>" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src=<%=UrlUtils.fullPathClient("img/latest-product/lp-1.jpg")%> alt=""/>
+                                            <img style="width: 110px; height: 110px" src=<%=UrlUtils.fullPathClient(listLatest.get(i).getImage())%> alt=""/>
                                         </div>
                                         <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
+                                            <h6><%=listLatest.get(i).getProductName()%></h6>
+                                            <%int price = listLatest.get(i).getPriceProducts().get(0).getPrice();%>
+                                            <span><%=((listLatest.get(i).getSale()!=0) ? vnPrice.format(listLatest.get(i).getSalePrice(price)) : vnPrice.format(price))%>đ</span>
                                         </div>
                                     </a>
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="img/latest-product/lp-2.jpg" alt=""/>
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="img/latest-product/lp-3.jpg" alt=""/>
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
+                                    <%}%>
                                 </div>
                                 <div class="latest-prdouct__slider__item">
-                                    <a href="#" class="latest-product__item">
+                                    <% for (int i = listLatest.size()/2; i < listLatest.size(); i++) {%>
+                                    <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + listLatest.get(i).getId())%>" class="latest-product__item">
                                         <div class="latest-product__item__pic">
-                                            <img src="img/latest-product/lp-1.jpg" alt=""/>
+                                            <img style="width: 110px; height: 110px" src=<%=UrlUtils.fullPathClient(listLatest.get(i).getImage())%> alt=""/>
                                         </div>
                                         <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
+                                            <h6><%=listLatest.get(i).getProductName()%></h6>
+                                            <%int price = listLatest.get(i).getPriceProducts().get(0).getPrice();%>
+                                            <span><%=((listLatest.get(i).getSale()!=0) ? vnPrice.format(listLatest.get(i).getSalePrice(price)) : vnPrice.format(price))%>đ</span>
                                         </div>
                                     </a>
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="img/latest-product/lp-2.jpg" alt=""/>
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Crab Pool Security</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="img/latest-product/lp-3.jpg" alt=""/>
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>Trà sen hạt vàng</h6>
-                                            <span>$30.00</span>
-                                        </div>
-                                    </a>
+                                    <%}%>
                                 </div>
                             </div>
                         </div>
@@ -191,25 +169,21 @@
                     </div>
                     <div class="row">
                         <div class="product__discount__slider owl-carousel">
+                            <%for (Product product : listAllSaleProduct) {%>
                             <div class="col-lg-4">
                                 <div class="product__discount__item">
                                     <div
                                             class="product__discount__item__pic set-bg"
-                                            data-setbg=<%=UrlUtils.fullPathClient("img/product/discount/pd-1.jpg")%>
+                                            data-setbg=<%=UrlUtils.fullPathClient(product.getImage())%>
                                     >
                                         <div class="sale-item">
                                             <img src=<%=UrlUtils.fullPathClient("img/sale.png")%> alt=""/>
-                                            <p>30%</p>
+                                            <p><%=product.getSale()%>%</p>
                                         </div>
                                         <ul class="product__item__pic__hover">
-                                            <!-- <li>
-                                              <a href="#"><i class="fa fa-heart"></i></a>
-                                            </li> -->
                                             <li>
-                                                <a
-                                                        href="#"
-                                                        data-toggle="modal"
-                                                        data-target="#productModal1"
+                                                <a href="#" data-toggle="modal"
+                                                   data-target="#productModal<%=product.getId()%>"
                                                 ><i class="fa fa-retweet"></i
                                                 ></a>
                                             </li>
@@ -219,585 +193,108 @@
                                         </ul>
                                     </div>
                                     <div class="product__discount__item__text">
-                                        <span>Tea</span>
-                                        <h5><a href="#">Trà sen hạt vàng</a></h5>
+                                        <span><%=product.getTypeProduct().getTypeProduct()%></span>
+                                        <h5>
+                                            <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + product.getId())%>"><%=product.getProductName()%>
+                                            </a></h5>
+                                        <%
+                                            int priceProduct = product.getPriceProducts().get(0).getPrice();
+                                        %>
                                         <div class="product__item__price">
-                                            30.000đ <span>56.000đ</span>
+                                            <%=vnPrice.format(product.getSalePrice(priceProduct))%>đ
+                                            <span><%=vnPrice.format(priceProduct)%>đ</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="product__discount__item">
-                                    <div
-                                            class="product__discount__item__pic set-bg"
-                                            data-setbg="img/product/discount/pd-1.jpg"
-                                    >
-                                        <div class="sale-item">
-                                            <img src="img/sale.png" alt=""/>
-                                            <p>30%</p>
-                                        </div>
-                                        <ul class="product__item__pic__hover">
-                                            <!-- <li>
-                                              <a href="#"><i class="fa fa-heart"></i></a>
-                                            </li> -->
-                                            <li>
-                                                <a
-                                                        href="#"
-                                                        data-toggle="modal"
-                                                        data-target="#productModal1"
-                                                ><i class="fa fa-retweet"></i
-                                                ></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__discount__item__text">
-                                        <span>Tea</span>
-                                        <h5><a href="#">Trà sen hạt vàng</a></h5>
-                                        <div class="product__item__price">
-                                            30.000đ <span>56.000đ</span>
-                                        </div>
-                                    </div>
+                            <%}%>
+                        </div>
+                    </div>
+                </div>
+                <div id="change">
+                    <div class="filter__item">
+                        <div class="row" id="targetProduct">
+                            <div class="col-lg-4 col-md-5">
+                                <div class="filter__sort">
+                                    <span>Sort By</span>
+                                    <select>
+                                        <option value="0">Default</option>
+                                        <option value="0">Default</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="product__discount__item">
-                                    <div
-                                            class="product__discount__item__pic set-bg"
-                                            data-setbg="img/product/discount/pd-1.jpg"
-                                    >
-                                        <div class="sale-item">
-                                            <img src="img/sale.png" alt=""/>
-                                            <p>30%</p>
-                                        </div>
-                                        <ul class="product__item__pic__hover">
-                                            <!-- <li>
-                                              <a href="#"><i class="fa fa-heart"></i></a>
-                                            </li> -->
-                                            <li>
-                                                <a
-                                                        href="#"
-                                                        data-toggle="modal"
-                                                        data-target="#productModal1"
-                                                ><i class="fa fa-retweet"></i
-                                                ></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__discount__item__text">
-                                        <span>Tea</span>
-                                        <h5><a href="#">Trà sen hạt vàng</a></h5>
-                                        <div class="product__item__price">
-                                            30.000đ <span>56.000đ</span>
-                                        </div>
-                                    </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="filter__found">
+                                    <h6><span><%=listProductType.size()%></span> Products found</h6>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="product__discount__item">
-                                    <div
-                                            class="product__discount__item__pic set-bg"
-                                            data-setbg="img/product/discount/pd-1.jpg"
-                                    >
-                                        <div class="sale-item">
-                                            <img src="img/sale.png" alt=""/>
-                                            <p>30%</p>
-                                        </div>
-                                        <ul class="product__item__pic__hover">
-                                            <!-- <li>
-                                              <a href="#"><i class="fa fa-heart"></i></a>
-                                            </li> -->
-                                            <li>
-                                                <a
-                                                        href="#"
-                                                        data-toggle="modal"
-                                                        data-target="#productModal1"
-                                                ><i class="fa fa-retweet"></i
-                                                ></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__discount__item__text">
-                                        <span>Tea</span>
-                                        <h5><a href="#">Trà sen hạt vàng</a></h5>
-                                        <div class="product__item__price">
-                                            30.000đ <span>56.000đ</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product__discount__item">
-                                    <div
-                                            class="product__discount__item__pic set-bg"
-                                            data-setbg="img/product/discount/pd-1.jpg"
-                                    >
-                                        <div class="sale-item">
-                                            <img src="img/sale.png" alt=""/>
-                                            <p>30%</p>
-                                        </div>
-                                        <ul class="product__item__pic__hover">
-                                            <li>
-                                                <a
-                                                        href="#"
-                                                        data-toggle="modal"
-                                                        data-target="#productModal1"
-                                                ><i class="fa fa-retweet"></i
-                                                ></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__discount__item__text">
-                                        <span>Tea</span>
-                                        <h5><a href="#">Trà sen hạt vàng</a></h5>
-                                        <div class="product__item__price">
-                                            30.000đ <span>56.000đ</span>
-                                        </div>
-                                    </div>
+                            <div class="col-lg-4 col-md-3">
+                                <div class="filter__sort"
+                                     style="display: flex; align-items: center; justify-content: flex-end">
+                                    <span>Type</span>
+                                    <select id="typeProduct">
+                                        <option value="0">All</option>
+                                        <%for (TypeProduct typeProduct : listTypeProduct) {%>
+                                        <option <%=(idType == typeProduct.getId()? "selected" : "")%> value="<%=typeProduct.getId()%>"><%=typeProduct.getTypeProduct()%>
+                                        </option>
+                                        <%}%>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="filter__item">
                     <div class="row">
-                        <div class="col-lg-4 col-md-5">
-                            <div class="filter__sort">
-                                <span>Sort By</span>
-                                <select>
-                                    <option value="0">Default</option>
-                                    <option value="0">Default</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4">
-                            <div class="filter__found">
-                                <h6><span>16</span> Products found</h6>
-                            </div>
-                        </div>
-                        <!-- <div class="col-lg-4 col-md-3">
-                          <div class="filter__option">
-                            <span class="icon_grid-2x2"></span>
-                            <span class="icon_ul"></span>
-                          </div>
-                        </div> -->
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div
-                                    class="product__item__pic set-bg"
-                                    data-setbg=<%=UrlUtils.fullPathClient("img/product/product-1.jpg")%>
-                            >
-                                <div class="sale-item">
-                                    <img src=<%=UrlUtils.fullPathClient("img/sale.png")%> alt=""/>
-                                    <p>30%</p>
+                        <%for (Product product : listProductPage) {%>
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item">
+                                <div
+                                        class="product__item__pic set-bg"
+                                        data-setbg=<%=UrlUtils.fullPathClient(product.getImage())%>
+                                >
+                                    <% if (product.getSale() != 0) {%>
+                                    <div class="sale-item">
+                                        <img src=<%=UrlUtils.fullPathClient("img/sale.png")%> alt=""/>
+                                        <p><%=product.getSale()%>%</p>
+                                    </div>
+                                    <%}%>
+                                    <ul class="product__item__pic__hover">
+                                        <li>
+                                            <a href="#" data-toggle="modal" data-target="#productModal<%=product.getId()%>"
+                                            ><i class="fa fa-retweet"></i
+                                            ></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-shopping-cart"></i></a>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <ul class="product__item__pic__hover">
-                                    <li>
-                                        <a
-                                                href="#"
-                                                data-toggle="modal"
-                                                data-target="#productModal1"
-                                        ><i class="fa fa-retweet"></i
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">Cà Phê Espresso</a></h6>
-                                <h5>
-                                    30.000đ
-                                    <span class="old-price-product">56.000đ</span>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div
-                                    class="product__item__pic set-bg"
-                                    data-setbg="img/product/product-1.jpg"
-                            >
-                                <div class="sale-item">
-                                    <img src="img/sale.png" alt=""/>
-                                    <p>30%</p>
+                                <div class="product__item__text">
+                                    <h6>
+                                        <a href=<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + product.getId())%>><%=product.getProductName()%>
+                                        </a>
+                                    </h6>
+                                    <%int priceProduct = product.getPriceProducts().get(0).getPrice();%>
+                                    <%if (product.getSale() != 0) {%>
+                                    <h5>
+                                        <%=vnPrice.format(product.getSalePrice(priceProduct))%>đ
+                                        <span class="old-price-product"><%=vnPrice.format(priceProduct)%>đ</span>
+                                    </h5>
+                                    <%} else {%>
+                                    <h5><%=vnPrice.format(priceProduct)%>đ</h5>
+                                    <%}%>
                                 </div>
-                                <ul class="product__item__pic__hover">
-                                    <li>
-                                        <a
-                                                href="#"
-                                                data-toggle="modal"
-                                                data-target="#productModal1"
-                                        ><i class="fa fa-retweet"></i
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">Cà Phê Espresso</a></h6>
-                                <h5>
-                                    30.000đ
-                                    <span class="old-price-product">56.000đ</span>
-                                </h5>
                             </div>
                         </div>
+                        <%}%>
                     </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div
-                                    class="product__item__pic set-bg"
-                                    data-setbg="img/product/product-1.jpg"
-                            >
-                                <div class="sale-item">
-                                    <img src="img/sale.png" alt=""/>
-                                    <p>30%</p>
-                                </div>
-                                <ul class="product__item__pic__hover">
-                                    <li>
-                                        <a
-                                                href="#"
-                                                data-toggle="modal"
-                                                data-target="#productModal1"
-                                        ><i class="fa fa-retweet"></i
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">Cà Phê Espresso</a></h6>
-                                <h5>
-                                    30.000đ
-                                    <span class="old-price-product">56.000đ</span>
-                                </h5>
-                            </div>
-                        </div>
+                    <div class="product__pagination">
+                        <%for (int i = 1; i <= numberOfPage; i++) {%>
+                        <a style="<%=(i == pageCurrent) ? "background: #6b3906; color: #ffffff" : ""%>" data-page = <%=i%> href="#"><%=i%>
+                        </a>
+                        <%}%>
+                        <%int nextPage = (pageCurrent + 1 > numberOfPage) ? numberOfPage : pageCurrent + 1;%>
+                        <a data-page = <%=nextPage%> href="#"><i class="fa fa-long-arrow-right"></i></a>
                     </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div
-                                    class="product__item__pic set-bg"
-                                    data-setbg="img/product/product-1.jpg"
-                            >
-                                <div class="sale-item">
-                                    <img src="img/sale.png" alt=""/>
-                                    <p>30%</p>
-                                </div>
-                                <ul class="product__item__pic__hover">
-                                    <li>
-                                        <a
-                                                href="#"
-                                                data-toggle="modal"
-                                                data-target="#productModal1"
-                                        ><i class="fa fa-retweet"></i
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">Cà Phê Espresso</a></h6>
-                                <h5>
-                                    30.000đ
-                                    <span class="old-price-product">56.000đ</span>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div
-                                    class="product__item__pic set-bg"
-                                    data-setbg="img/product/product-1.jpg"
-                            >
-                                <div class="sale-item">
-                                    <img src="img/sale.png" alt=""/>
-                                    <p>30%</p>
-                                </div>
-                                <ul class="product__item__pic__hover">
-                                    <li>
-                                        <a
-                                                href="#"
-                                                data-toggle="modal"
-                                                data-target="#productModal1"
-                                        ><i class="fa fa-retweet"></i
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">Cà Phê Espresso</a></h6>
-                                <h5>
-                                    30.000đ
-                                    <span class="old-price-product">56.000đ</span>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div
-                                    class="product__item__pic set-bg"
-                                    data-setbg="img/product/product-1.jpg"
-                            >
-                                <div class="sale-item">
-                                    <img src="img/sale.png" alt=""/>
-                                    <p>30%</p>
-                                </div>
-                                <ul class="product__item__pic__hover">
-                                    <li>
-                                        <a
-                                                href="#"
-                                                data-toggle="modal"
-                                                data-target="#productModal1"
-                                        ><i class="fa fa-retweet"></i
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">Cà Phê Espresso</a></h6>
-                                <h5>
-                                    30.000đ
-                                    <span class="old-price-product">56.000đ</span>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div
-                                    class="product__item__pic set-bg"
-                                    data-setbg="img/product/product-1.jpg"
-                            >
-                                <div class="sale-item">
-                                    <img src="img/sale.png" alt=""/>
-                                    <p>30%</p>
-                                </div>
-                                <ul class="product__item__pic__hover">
-                                    <li>
-                                        <a
-                                                href="#"
-                                                data-toggle="modal"
-                                                data-target="#productModal1"
-                                        ><i class="fa fa-retweet"></i
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">Cà Phê Espresso</a></h6>
-                                <h5>
-                                    30.000đ
-                                    <span class="old-price-product">56.000đ</span>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div
-                                    class="product__item__pic set-bg"
-                                    data-setbg="img/product/product-1.jpg"
-                            >
-                                <div class="sale-item">
-                                    <img src="img/sale.png" alt=""/>
-                                    <p>30%</p>
-                                </div>
-                                <ul class="product__item__pic__hover">
-                                    <li>
-                                        <a
-                                                href="#"
-                                                data-toggle="modal"
-                                                data-target="#productModal1"
-                                        ><i class="fa fa-retweet"></i
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">Cà Phê Espresso</a></h6>
-                                <h5>
-                                    30.000đ
-                                    <span class="old-price-product">56.000đ</span>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div
-                                    class="product__item__pic set-bg"
-                                    data-setbg="img/product/product-1.jpg"
-                            >
-                                <div class="sale-item">
-                                    <img src="img/sale.png" alt=""/>
-                                    <p>30%</p>
-                                </div>
-                                <ul class="product__item__pic__hover">
-                                    <li>
-                                        <a
-                                                href="#"
-                                                data-toggle="modal"
-                                                data-target="#productModal1"
-                                        ><i class="fa fa-retweet"></i
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">Cà Phê Espresso</a></h6>
-                                <h5>
-                                    30.000đ
-                                    <span class="old-price-product">56.000đ</span>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div
-                                    class="product__item__pic set-bg"
-                                    data-setbg="img/product/product-1.jpg"
-                            >
-                                <div class="sale-item">
-                                    <img src="img/sale.png" alt=""/>
-                                    <p>30%</p>
-                                </div>
-                                <ul class="product__item__pic__hover">
-                                    <li>
-                                        <a
-                                                href="#"
-                                                data-toggle="modal"
-                                                data-target="#productModal1"
-                                        ><i class="fa fa-retweet"></i
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">Cà Phê Espresso</a></h6>
-                                <h5>
-                                    30.000đ
-                                    <span class="old-price-product">56.000đ</span>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div
-                                    class="product__item__pic set-bg"
-                                    data-setbg="img/product/product-1.jpg"
-                            >
-                                <div class="sale-item">
-                                    <img src="img/sale.png" alt=""/>
-                                    <p>30%</p>
-                                </div>
-                                <ul class="product__item__pic__hover">
-                                    <li>
-                                        <a
-                                                href="#"
-                                                data-toggle="modal"
-                                                data-target="#productModal1"
-                                        ><i class="fa fa-retweet"></i
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">Cà Phê Espresso</a></h6>
-                                <h5>
-                                    30.000đ
-                                    <span class="old-price-product">56.000đ</span>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div
-                                    class="product__item__pic set-bg"
-                                    data-setbg="img/product/product-1.jpg"
-                            >
-                                <div class="sale-item">
-                                    <img src="img/sale.png" alt=""/>
-                                    <p>30%</p>
-                                </div>
-                                <ul class="product__item__pic__hover">
-                                    <li>
-                                        <a
-                                                href="#"
-                                                data-toggle="modal"
-                                                data-target="#productModal1"
-                                        ><i class="fa fa-retweet"></i
-                                        ></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">Cà Phê Espresso</a></h6>
-                                <h5>
-                                    30.000đ
-                                    <span class="old-price-product">56.000đ</span>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="product__pagination">
-                    <a href="#">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -809,7 +306,8 @@
 <%@include file="footer.jsp" %>
 <!-- Footer Section End -->
 <!-- Modal -->
-<div class="modal fade" id="productModal1" tabindex="-1" role="dialog">
+<%for (Product product : listAllProduct) {%>
+<div class="modal fade" id="productModal<%=product.getId()%>" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -826,31 +324,41 @@
                 <div class="modal-product">
                     <div class="product-images">
                         <div class="main-image images">
-                            <img alt="" src=<%=UrlUtils.fullPathClient("img/product/product-10.jpg")%>/>
+                            <img src="<%=UrlUtils.fullPathClient(product.getImage())%>">
+                            <%if (product.getSale() != 0) {%>
                             <div class="sale-item-modal">
                                 <img src=<%=UrlUtils.fullPathClient("img/sale.png")%> alt=""/>
-                                <p>30%</p>
+                                <p><%=product.getSale()%>%</p>
                             </div>
+                            <%}%>
                         </div>
                     </div>
                     <div class="product-info">
-                        <h1 style="font-size: 26px">Sữa tươi chân châu đường đen</h1>
+                        <h1 style="font-size: 26px"><%=product.getProductName()%>
+                        </h1>
+                        <%
+                            int priceProduct = product.getPriceProducts().get(0).getPrice();
+                        %>
                         <div class="price-box">
                             <p class="s-price">
-                    <span class="special-price"
-                    ><span class="amount" style="font-size: 25px"
-                    >850.000đ</span
-                    ></span
-                    >
-                                <span style="color: #b2b2b2; text-decoration: line-through"
-                                >500.000đ</span
-                                >
+                                <%if (product.getSale() != 0) {%>
+                                <span class="special-price">
+                                    <span class="amount"
+                                          style="font-size: 25px"><%=vnPrice.format(product.getSalePrice(priceProduct))%>đ</span>
+                                </span>
+                                <span style="color: #b2b2b2; text-decoration: line-through"><%=vnPrice.format(priceProduct)%>đ</span>
+                                <%} else {%>
+                                <span class="special-price">
+                                    <span class="amount"
+                                          style="font-size: 25px"><%=vnPrice.format(priceProduct)%>đ</span>
+                                </span>
+                                <%}%>
                             </p>
-
                         </div>
-                        <a href="#" class="see-all">Xem chi tiết</a>
+                        <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + product.getId())%>"
+                           class="see-all">Xem chi tiết</a>
                         <div class="quick-add-to-cart">
-                            <a class="single_add_to_cart_button" href="%">Mua Ngay </a>
+                            <a class="single_add_to_cart_button" href="#">Mua Ngay </a>
                         </div>
                         <div style="height: 200px; overflow-y: scroll">Ngon cực kì</div>
                     </div>
@@ -860,6 +368,7 @@
         </div>
     </div>
 </div>
+<%}%>
 <!-- Js Plugins -->
 <%@include file="script.jsp" %>
 </body>

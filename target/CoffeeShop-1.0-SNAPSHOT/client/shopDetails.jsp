@@ -21,8 +21,7 @@
 <%@include file="header.jsp" %>
 <%
     Product product = (Product) request.getAttribute("product");
-    Locale localeVN = new Locale("vi", "VN");
-    NumberFormat vnPrice = NumberFormat.getInstance(localeVN);
+    List<Product> listRelated = (List<Product>) request.getAttribute("listRelated");
 %>
 <!-- Hero Section Begin -->
 <section class="hero hero-normal">
@@ -35,10 +34,11 @@
                         <span>All departments</span>
                     </div>
                     <ul>
-                        <li><a href="#">Coffee</a></li>
-                        <li><a href="#">Tea</a></li>
-                        <li><a href="#">Milk Tea</a></li>
-                        <li><a href="#">Bakery</a></li>
+                        <%for (TypeProduct typeProduct : listTypeProduct) {%>
+                        <li>
+                            <a href="<%=UrlUtils.pathHost("ShopGridController?idType=" + typeProduct.getId())+"#targetProduct"%>"><%=typeProduct.getTypeProduct()%>
+                            </a></li>
+                        <%}%>
                     </ul>
                 </div>
             </div>
@@ -78,9 +78,9 @@
                 <div class="breadcrumb__text">
                     <h2>Product Detail</h2>
                     <div class="breadcrumb__option">
-                        <a href="./index.jsp">Home</a>
-                        <a href="./index.jsp">Products</a>
-                        <span>Product Detail</span>
+                        <a href="<%=UrlUtils.pathHost("IndexController")%>">Home</a>
+                        <a href="<%=UrlUtils.pathHost("ShopGridController")%>">Products</a>
+                        <span><%=product.getProductName()%></span>
                     </div>
                 </div>
             </div>
@@ -99,22 +99,58 @@
                         <img
                                 class="product__details__pic__item--large"
                                 src=<%=UrlUtils.fullPathClient(product.getImage())%>
-                                alt=""
+                                        alt=""
                         />
+                        <%if (product.getSale() > 0) {%>
+                        <div class="sale-item">
+                            <img src=<%=UrlUtils.fullPathClient("img/sale.png")%> alt=""/>
+                            <p><%=product.getSale()%>%</p>
+                        </div>
+                        <%}%>
                     </div>
 
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="product__details__text">
-                    <h3><%=product.getProductName()%></h3>
-
-                    <div class="product__details__price"><%= vnPrice.format(product.getPriceProducts().get(1).getPrice())%></div>
+                    <h3><%=product.getProductName()%>
+                    </h3>
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <%for (int i = 0; i < product.getPriceProducts().size(); i++) {%>
+                        <li class="nav-item">
+                            <a
+                                    class=<%=(i == 0) ? "'nav-link active'" : "nav-link"%>
+                                            id=<%="pills-tab-" + product.getPriceProducts().get(i).getSizeProduct().getSizeName()%>
+                                    data-toggle="pill"
+                                    href=<%="#pills-"+product.getPriceProducts().get(i).getSizeProduct().getSizeName()%>
+                                            role="tab"
+                                    aria-controls=<%="pills-"+product.getPriceProducts().get(i).getSizeProduct().getSizeName()%>
+                                            aria-selected=<%=(i == 0) ? "true" : "false"%>
+                            ><%=product.getPriceProducts().get(i).getSizeProduct().getSizeName()%>
+                            </a>
+                        </li>
+                        <%}%>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        <%for (int i = 0; i < product.getPriceProducts().size(); i++) {%>
+                        <div
+                                class=<%=(i == 0) ? "'tab-pane fade show active'" : "'tab-pane fade'"%>
+                                        id=<%="pills-" + product.getPriceProducts().get(i).getSizeProduct().getSizeName()%>
+                                role="tabpanel"
+                                aria-labelledby=<%="pills-tab-" + product.getPriceProducts().get(i).getSizeProduct().getSizeName()%>
+                        >
+                            <%int price = product.getPriceProducts().get(i).getPrice();%>
+                            <%if (product.getSale() > 0) {%>
+                            <%=vnPrice.format(product.getSalePrice(price))%>đ <span
+                                class="old-price-product"><%=vnPrice.format(price)%>đ</span>
+                            <%} else {%>
+                            <%=vnPrice.format(price)%>đ
+                            <%}%>
+                        </div>
+                        <%}%>
+                    </div>
                     <p>
-                        Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.
-                        Vestibulum ac diam sit amet quam vehicula elementum sed sit amet
-                        dui. Sed porttitor lectus nibh. Vestibulum ac diam sit amet quam
-                        vehicula elementum sed sit amet dui. Proin eget tortor risus.
+                        Rất là ngon
                     </p>
                     <div class="product__details__quantity">
                         <div class="quantity">
@@ -124,16 +160,11 @@
                         </div>
                     </div>
                     <a href="#" class="primary-btn">ADD TO CARD</a>
-                    <!-- <a href="#" class="heart-icon"
-                      ><span class="icon_heart_alt"></span
-                    ></a> -->
                     <ul>
-                        <!-- <li><b>Availability</b> <span>In Stock</span></li> -->
                         <li>
                             <b>Shipping</b>
-                            <span>01 day shipping. <samp>Free pickup today</samp></span>
+                            <span>01 day shipping. <span>Free pickup today</span></span>
                         </li>
-                        <!-- <li><b>Weight</b> <span>0.5 kg</span></li> -->
                         <li>
                             <b>Share on</b>
                             <div class="share">
@@ -146,129 +177,6 @@
                     </ul>
                 </div>
             </div>
-<%--            <div class="col-lg-12">--%>
-<%--                <div class="product__details__tab">--%>
-<%--                    <ul class="nav nav-tabs" role="tablist">--%>
-<%--                        <li class="nav-item">--%>
-<%--                            <a--%>
-<%--                                    class="nav-link active"--%>
-<%--                                    data-toggle="tab"--%>
-<%--                                    href="#tabs-1"--%>
-<%--                                    role="tab"--%>
-<%--                                    aria-selected="true"--%>
-<%--                            >Description</a--%>
-<%--                            >--%>
-<%--                        </li>--%>
-<%--                        <!-- <li class="nav-item">--%>
-<%--                          <a--%>
-<%--                            class="nav-link"--%>
-<%--                            data-toggle="tab"--%>
-<%--                            href="#tabs-2"--%>
-<%--                            role="tab"--%>
-<%--                            aria-selected="false"--%>
-<%--                            >Information</a--%>
-<%--                          >--%>
-<%--                        </li> -->--%>
-<%--                        <!-- <li class="nav-item">--%>
-<%--                          <a--%>
-<%--                            class="nav-link"--%>
-<%--                            data-toggle="tab"--%>
-<%--                            href="#tabs-3"--%>
-<%--                            role="tab"--%>
-<%--                            aria-selected="false"--%>
-<%--                            >Reviews <span>(1)</span></a--%>
-<%--                          >--%>
-<%--                        </li> -->--%>
-<%--                    </ul>--%>
-<%--&lt;%&ndash;                    <div class="tab-content">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                        <div class="tab-pane active" id="tabs-1" role="tabpanel">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                            <div class="product__details__tab__desc">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                <h6>Products Infomation</h6>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                <p>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    Vestibulum ac diam sit amet quam vehicula elementum sed&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    sit amet dui. Pellentesque in ipsum id orci porta dapibus.&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    Proin eget tortor risus. Vivamus suscipit tortor eget&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    felis porttitor volutpat. Vestibulum ac diam sit amet quam&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    vehicula elementum sed sit amet dui. Donec rutrum congue&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    leo eget malesuada. Vivamus suscipit tortor eget felis&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    porttitor volutpat. Curabitur arcu erat, accumsan id&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    imperdiet et, porttitor at sem. Praesent sapien massa,&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    convallis a pellentesque nec, egestas non nisi. Vestibulum&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    ac diam sit amet quam vehicula elementum sed sit amet dui.&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    Vestibulum ante ipsum primis in faucibus orci luctus et&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    ultrices posuere cubilia Curae; Donec velit neque, auctor&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    sit amet aliquam vel, ullamcorper sit amet ligula. Proin&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    eget tortor risus.&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                </p>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                <p>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    Praesent sapien massa, convallis a pellentesque nec,&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    egestas non nisi. Lorem ipsum dolor sit amet, consectetur&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    adipiscing elit. Mauris blandit aliquet elit, eget&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    tincidunt nibh pulvinar a. Cras ultricies ligula sed magna&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    dictum porta. Cras ultricies ligula sed magna dictum&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    porta. Sed porttitor lectus nibh. Mauris blandit aliquet&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    sit amet quam vehicula elementum sed sit amet dui. Sed&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    porttitor lectus nibh. Vestibulum ac diam sit amet quam&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    vehicula elementum sed sit amet dui. Proin eget tortor&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                    risus.&ndash;%&gt;--%>
-<%--&lt;%&ndash;                                </p>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                            </div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                        </div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                        <!-- <div class="tab-pane" id="tabs-2" role="tabpanel">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                          <div class="product__details__tab__desc">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                            <h6>Products Infomation</h6>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                            <p>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              Vestibulum ac diam sit amet quam vehicula elementum sed&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              sit amet dui. Pellentesque in ipsum id orci porta dapibus.&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              Proin eget tortor risus. Vivamus suscipit tortor eget&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              felis porttitor volutpat. Vestibulum ac diam sit amet quam&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              vehicula elementum sed sit amet dui. Donec rutrum congue&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              leo eget malesuada. Vivamus suscipit tortor eget felis&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              porttitor volutpat. Curabitur arcu erat, accumsan id&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              imperdiet et, porttitor at sem. Praesent sapien massa,&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              convallis a pellentesque nec, egestas non nisi. Vestibulum&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              ac diam sit amet quam vehicula elementum sed sit amet dui.&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              Vestibulum ante ipsum primis in faucibus orci luctus et&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              ultrices posuere cubilia Curae; Donec velit neque, auctor&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              sit amet aliquam vel, ullamcorper sit amet ligula. Proin&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              eget tortor risus.&ndash;%&gt;--%>
-<%--&lt;%&ndash;                            </p>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                            <p>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              Praesent sapien massa, convallis a pellentesque nec,&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              egestas non nisi. Lorem ipsum dolor sit amet, consectetur&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              adipiscing elit. Mauris blandit aliquet elit, eget&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              tincidunt nibh pulvinar a. Cras ultricies ligula sed magna&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              dictum porta. Cras ultricies ligula sed magna dictum&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              porta. Sed porttitor lectus nibh. Mauris blandit aliquet&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              elit, eget tincidunt nibh pulvinar a.&ndash;%&gt;--%>
-<%--&lt;%&ndash;                            </p>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                          </div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                        </div> -->&ndash;%&gt;--%>
-<%--&lt;%&ndash;                        <!-- <div class="tab-pane" id="tabs-3" role="tabpanel">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                          <div class="product__details__tab__desc">&ndash;%&gt;--%>
-<%--&lt;%&ndash;                            <h6>Products Infomation</h6>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                            <p>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              Vestibulum ac diam sit amet quam vehicula elementum sed&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              sit amet dui. Pellentesque in ipsum id orci porta dapibus.&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              Proin eget tortor risus. Vivamus suscipit tortor eget&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              felis porttitor volutpat. Vestibulum ac diam sit amet quam&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              vehicula elementum sed sit amet dui. Donec rutrum congue&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              leo eget malesuada. Vivamus suscipit tortor eget felis&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              porttitor volutpat. Curabitur arcu erat, accumsan id&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              imperdiet et, porttitor at sem. Praesent sapien massa,&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              convallis a pellentesque nec, egestas non nisi. Vestibulum&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              ac diam sit amet quam vehicula elementum sed sit amet dui.&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              Vestibulum ante ipsum primis in faucibus orci luctus et&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              ultrices posuere cubilia Curae; Donec velit neque, auctor&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              sit amet aliquam vel, ullamcorper sit amet ligula. Proin&ndash;%&gt;--%>
-<%--&lt;%&ndash;                              eget tortor risus.&ndash;%&gt;--%>
-<%--&lt;%&ndash;                            </p>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                          </div>&ndash;%&gt;--%>
-<%--&lt;%&ndash;                        </div> -->&ndash;%&gt;--%>
-<%--&lt;%&ndash;                    </div>&ndash;%&gt;--%>
-<%--                </div>--%>
-<%--            </div>--%>
         </div>
     </div>
 </section>
@@ -285,22 +193,22 @@
             </div>
         </div>
         <div class="row">
+            <%for (Product p : listRelated){%>
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="product__item">
                     <div
                             class="product__item__pic set-bg"
-                            data-setbg=<%=UrlUtils.fullPathClient("img/product/product-1.jpg")%>
+                            data-setbg=<%=UrlUtils.fullPathClient(p.getImage())%>
                     >
+                        <% if (p.getSale() != 0) {%>
                         <div class="sale-item">
                             <img src=<%=UrlUtils.fullPathClient("img/sale.png")%> alt=""/>
-                            <p>30%</p>
+                            <p><%=p.getSale()%>%</p>
                         </div>
+                        <%}%>
                         <ul class="product__item__pic__hover">
-                            <!-- <li>
-                              <a href="#"><i class="fa fa-heart"></i></a>
-                            </li> -->
                             <li>
-                                <a href="#" data-toggle="modal" data-target="#productModal1"
+                                <a href="#" data-toggle="modal" data-target="#productModal<%=p.getId()%>"
                                 ><i class="fa fa-retweet"></i
                                 ></a>
                             </li>
@@ -310,101 +218,17 @@
                         </ul>
                     </div>
                     <div class="product__item__text">
-                        <h6><a href="#">Trà sữa sen vàng</a></h6>
-                        <h5>$30.00 <span class="old-price-p">56.000đ</span></h5>
+                        <h6><a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + p.getId())%>"><%=p.getProductName()%></a></h6>
+                        <%int priceProduct = p.getPriceProducts().get(0).getPrice();%>
+                        <%if (p.getSale() != 0) {%>
+                        <h5><%=vnPrice.format(p.getSalePrice(priceProduct))%>đ <span class="old-price-p"><%=vnPrice.format(priceProduct)%>đ</span></h5>
+                        <%} else {%>
+                        <h5><%=vnPrice.format(priceProduct)%>đ</h5>
+                        <%}%>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div
-                            class="product__item__pic set-bg"
-                            data-setbg="img/product/product-1.jpg"
-                    >
-                        <div class="sale-item">
-                            <img src="img/sale.png" alt=""/>
-                            <p>30%</p>
-                        </div>
-                        <ul class="product__item__pic__hover">
-                            <!-- <li>
-                              <a href="#"><i class="fa fa-heart"></i></a>
-                            </li> -->
-                            <li>
-                                <a href="#" data-toggle="modal" data-target="#productModal1"
-                                ><i class="fa fa-retweet"></i
-                                ></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Trà sữa sen vàng</a></h6>
-                        <h5>$30.00 <span class="old-price-p">56.000đ</span></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div
-                            class="product__item__pic set-bg"
-                            data-setbg="img/product/product-1.jpg"
-                    >
-                        <div class="sale-item">
-                            <img src="img/sale.png" alt=""/>
-                            <p>30%</p>
-                        </div>
-                        <ul class="product__item__pic__hover">
-                            <!-- <li>
-                              <a href="#"><i class="fa fa-heart"></i></a>
-                            </li> -->
-                            <li>
-                                <a href="#" data-toggle="modal" data-target="#productModal1"
-                                ><i class="fa fa-retweet"></i
-                                ></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Trà sữa sen vàng</a></h6>
-                        <h5>$30.00 <span class="old-price-p">56.000đ</span></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div
-                            class="product__item__pic set-bg"
-                            data-setbg="img/product/product-1.jpg"
-                    >
-                        <div class="sale-item">
-                            <img src="img/sale.png" alt=""/>
-                            <p>30%</p>
-                        </div>
-                        <ul class="product__item__pic__hover">
-                            <!-- <li>
-                              <a href="#"><i class="fa fa-heart"></i></a>
-                            </li> -->
-                            <li>
-                                <a href="#" data-toggle="modal" data-target="#productModal1"
-                                ><i class="fa fa-retweet"></i
-                                ></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Trà sữa sen vàng</a></h6>
-                        <h5>$30.00 <span class="old-price-p">56.000đ</span></h5>
-                    </div>
-                </div>
-            </div>
+            <%}%>
         </div>
     </div>
 </section>
@@ -413,8 +237,8 @@
 <!-- Footer Section Begin -->
 <%@include file="footer.jsp" %>
 <!-- Footer Section End -->
-<!-- Modal -->
-<div class="modal fade" id="productModal1" tabindex="-1" role="dialog">
+<%for (Product p : listRelated) {%>
+<div class="modal fade" id="productModal<%=p.getId()%>" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -431,31 +255,40 @@
                 <div class="modal-product">
                     <div class="product-images">
                         <div class="main-image images">
-                            <img alt="" src=<%=UrlUtils.fullPathClient("img/product/product-10.jpg")%>/>
-
+                            <img src="<%=UrlUtils.fullPathClient(p.getImage())%>">
+                            <%if (p.getSale() != 0) {%>
                             <div class="sale-item-modal">
                                 <img src=<%=UrlUtils.fullPathClient("img/sale.png")%> alt=""/>
-                                <p>30%</p>
+                                <p><%=p.getSale()%>%</p>
                             </div>
+                            <%}%>
                         </div>
                     </div>
                     <div class="product-info">
-                        <h1 style="font-size: 26px">Sữa tươi chân châu đường đen</h1>
+                        <h1 style="font-size: 26px"><%=p.getProductName()%>
+                        </h1>
+                        <%
+                            int priceProduct = p.getPriceProducts().get(0).getPrice();
+                        %>
                         <div class="price-box">
                             <p class="s-price">
-                    <span class="special-price"
-                    ><span class="amount" style="font-size: 25px"
-                    >850.000đ</span
-                    ></span
-                    >
-                                <span style="color: #b2b2b2; text-decoration: line-through"
-                                >500.000đ</span
-                                >
+                                <%if (p.getSale() != 0) {%>
+                                <span class="special-price">
+                                    <span class="amount"
+                                          style="font-size: 25px"><%=vnPrice.format(p.getSalePrice(priceProduct))%>đ</span>
+                                </span>
+                                <span style="color: #b2b2b2; text-decoration: line-through"><%=vnPrice.format(priceProduct)%>đ</span>
+                                <%} else {%>
+                                <span class="special-price">
+                                    <span class="amount"
+                                          style="font-size: 25px"><%=vnPrice.format(priceProduct)%>đ</span>
+                                </span>
+                                <%}%>
                             </p>
                         </div>
-                        <a href="#" class="see-all">Xem chi tiết</a>
+                        <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + p.getId())%>" class="see-all">Xem chi tiết</a>
                         <div class="quick-add-to-cart">
-                            <a class="single_add_to_cart_button" href="%">Mua Ngay </a>
+                            <a class="single_add_to_cart_button" href="#">Mua Ngay </a>
                         </div>
                         <div style="height: 200px; overflow-y: scroll">Ngon cực kì</div>
                     </div>
@@ -465,6 +298,7 @@
         </div>
     </div>
 </div>
+<%}%>
 
 <!-- Js Plugins -->
 <%@include file="script.jsp" %>

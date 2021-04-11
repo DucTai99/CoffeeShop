@@ -1,4 +1,9 @@
-<%@ page import="com.example.CoffeeShop.util.UrlUtils" %><%--
+<%@ page import="com.example.CoffeeShop.util.UrlUtils" %>
+<%@ page import="com.example.CoffeeShop.modal.TypeProduct" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.CoffeeShop.modal.User" %>
+<%@ page import="com.example.CoffeeShop.modal.Cart" %>
+<%@ page import="com.example.CoffeeShop.modal.PriceProduct" %><%--
   Created by IntelliJ IDEA.
   User: ASUS
   Date: 2/28/2021
@@ -6,6 +11,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    List<TypeProduct> listTypeProduct = (List<TypeProduct>) request.getAttribute("listTypeProduct");
+    User user = (User) session.getAttribute("user");
+    Cart cart = (Cart) session.getAttribute("cart");
+    Locale localeVN = new Locale("vi", "VN");
+    NumberFormat vnPrice = NumberFormat.getInstance(localeVN);
+%>
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
@@ -14,7 +26,8 @@
 <div class="humberger__menu__overlay"></div>
 <div class="humberger__menu__wrapper">
     <div class="humberger__menu__logo">
-        <a href="#"><img src=<%=UrlUtils.fullPathClient("img/Logo-Coffee.png")%> alt="" /></a>
+        <a href="<%=UrlUtils.pathHost("IndexController")%>"><img
+                src=<%=UrlUtils.fullPathClient("img/Logo-Coffee.png")%> alt=""/></a>
     </div>
     <div class="humberger__menu__cart">
         <ul>
@@ -26,7 +39,7 @@
     </div>
     <div class="humberger__menu__widget">
         <div class="header__top__right__language">
-            <img src=<%=UrlUtils.fullPathClient("img/language.png")%> alt="" />
+            <img src=<%=UrlUtils.fullPathClient("img/language.png")%> alt=""/>
             <div>English</div>
             <span class="arrow_carrot-down"></span>
             <ul>
@@ -35,19 +48,22 @@
             </ul>
         </div>
         <div class="header__top__right__auth">
-            <a href="#"><i class="fa fa-user"></i> Login</a>
+            <a href="<%=UrlUtils.fullPathClient("signIn.jsp")%>"><i
+                    class="fa fa-user"></i> <%=(user == null) ? "Login" : user.getAccountName()%>
+            </a>
         </div>
     </div>
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
-            <li class="active"><a href="./index.jps">Home</a></li>
+            <li class="active"><a href="<%=UrlUtils.pathHost("IndexController")%>">Home</a></li>
             <li>
-                <a href="#">Products</a>
+                <a href="<%=UrlUtils.pathHost("ShopGridController")%>">Products</a>
                 <ul class="header__menu__dropdown">
-                    <li><a href="./shopDetails.jsp">Coffee</a></li>
-                    <li><a href="./shopingCart.jsp">Tea</a></li>
-                    <li><a href="./checkout.jsp">Milk Tea</a></li>
-                    <li><a href="./blog-details.html">Bakery</a></li>
+                    <%for (TypeProduct typeProduct : listTypeProduct) {%>
+                    <li>
+                        <a href="<%=UrlUtils.pathHost("ShopGridController?idType=" + typeProduct.getId())+"#targetProduct"%>"><%=typeProduct.getTypeProduct()%>
+                        </a></li>
+                    <%}%>
                 </ul>
             </li>
             <li><a href="#">Member Card</a></li>
@@ -92,7 +108,7 @@
                             <a href="#"><i class="fa fa-pinterest-p"></i></a>
                         </div>
                         <div class="header__top__right__language">
-                            <img src=<%=UrlUtils.fullPathClient("img/language.png")%> alt="" />
+                            <img src=<%=UrlUtils.fullPathClient("img/language.png")%> alt=""/>
                             <div>English</div>
                             <span class="arrow_carrot-down"></span>
                             <ul>
@@ -101,7 +117,9 @@
                             </ul>
                         </div>
                         <div class="header__top__right__auth">
-                            <a href="#"><i class="fa fa-user"></i> Login</a>
+                            <a href="<%=UrlUtils.fullPathClient("signIn.jsp")%>"><i
+                                    class="fa fa-user"></i> <%=(user == null) ? "Login" : user.getAccountName()%>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -112,7 +130,7 @@
         <div class="row" style="align-items: center">
             <div class="col-lg-3">
                 <div class="header__logo">
-                    <a href="./index.jps"
+                    <a href="<%=UrlUtils.pathHost("IndexController")%>"
                     ><img src=<%=UrlUtils.fullPathClient("img/Logo-Coffee.png")%> alt=""
                     /></a>
                 </div>
@@ -124,15 +142,16 @@
                 >
                     <ul>
                         <li class="active">
-                            <a href="./index.jps" langkey="nav_home">Home</a>
+                            <a href="<%=UrlUtils.pathHost("IndexController")%>" langkey="nav_home">Home</a>
                         </li>
                         <li>
-                            <a href="./shopGrid.jsp" langkey="nav_shop">Products</a>
+                            <a href="<%=UrlUtils.pathHost("ShopGridController")%>" langkey="nav_shop">Products</a>
                             <ul class="header__menu__dropdown">
-                                <li><a href="./shopDetails.jsp">Coffee</a></li>
-                                <li><a href="./shopingCart.jsp">Tea</a></li>
-                                <li><a href="./checkout.jsp">Bakery</a></li>
-                                <li><a href="./checkout.jsp">Milk Tea</a></li>
+                                <%for (TypeProduct typeProduct : listTypeProduct) {%>
+                                <li>
+                                    <a href="<%=UrlUtils.pathHost("ShopGridController?idType=" + typeProduct.getId())+"#targetProduct"%>"><%=typeProduct.getTypeProduct()%>
+                                    </a></li>
+                                <%}%>
                             </ul>
                         </li>
                         <!-- <li><a href="./shopDetails.jsp">Coffee</a></li>
@@ -143,7 +162,7 @@
                         </li>
                     </ul>
                 </nav>
-                <input type="hidden" id="langCode" value="en" />
+                <input type="hidden" id="langCode" value="en"/>
             </div>
             <div class="col-lg-2">
                 <div class="header__cart">
@@ -153,53 +172,56 @@
                                 <p>Cart</p>
                                 <div class="coffee-cart-content">
                                     <i class="fa fa-shopping-cart"></i>
-                                    <span>2</span>
+                                    <%if (cart != null) {%>
+                                    <%if (cart.getAllQuantity() > 0) {%>
+                                    <span><%=cart.getAllQuantity()%></span>
+                                    <%}%>
+                                    <%}%>
                                 </div>
                             </a>
-                            <div
-                                    class="hidden-info-cart animate__animated animate__fadeInUp"
-                            >
+                            <%if (cart != null) {%>
+                            <%if (cart.getAllQuantity() > 0) {%>
+                            <div class="hidden-info-cart animate__animated animate__fadeInUp">
+                                <%for (int i = 0; i < cart.getListProduct().size();i++){%>
                                 <div class="content-item-cart-nav">
-<%--                                    <div class="item-in-cart-nav">--%>
-<%--                                        <div class=img-in-cart-nav">--%>
-<%--                                            <img src=<%=UrlUtils.fullPathClient("img/product/product-5.jpg")%> alt="" />--%>
-<%--                                        </div>--%>
-<%--                                        <div class="info-in-cart-nav">--%>
-<%--                                            <a href="#">Trà sữa chân châu đường đen</a>--%>
-<%--                                            <p>--%>
-<%--                                                <span>5</span> x <span>50.000đ</span>--%>
-<%--                                                <span class="old-price">75.000đ</span>--%>
-<%--                                            </p>--%>
-<%--                                        </div>--%>
-<%--                                        <a href="#" class="material-icons">delete_forever</a>--%>
-<%--                                    </div>--%>
                                     <div class="item-in-cart-nav">
                                         <div class="img-in-cart-nav">
-                                            <img src=<%=UrlUtils.fullPathClient("img/product/product-5.jpg")%> alt="" />
+                                            <img src=<%=UrlUtils.fullPathClient(cart.getListProduct().get(i).getImage())%> alt=""/>
                                         </div>
                                         <div class="info-in-cart-nav">
-                                            <a href="#">Trà sữa chân châu đường đen</a>
+                                            <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + cart.getListProduct().get(i).getId())%>"><%=cart.getListProduct().get(i).getProductName()%></a>
                                             <p>
-                                                <span>5</span> x <span>50.000đ</span>
-                                                <span class="old-price">75.000đ</span>
+                                                <%
+                                                    int price = cart.getPriceProductSize(cart.getListProduct().get(i), cart.getListProductsInCart().get(i).getIdSizeProduct());
+//                                                    for (PriceProduct priceProduct : cart.getListProduct().get(i).getPriceProducts()){
+//                                                        if (priceProduct.getSizeProduct().getId() == cart.getListProductsInCart().get(i).getIdSizeProduct()){
+//                                                            price = priceProduct.getPrice();
+//                                                        }
+//                                                    }
+                                                %>
+                                                <%if (cart.getListProduct().get(i).getSale() != 0) {%>
+                                                <span><%=cart.getListProductsInCart().get(i).getQuantity()%></span> x <span><%=vnPrice.format(cart.getListProduct().get(i).getSalePrice(price))%>đ</span>
+                                                <span class="old-price"><%=vnPrice.format(price)%>đ</span>
+                                                <%} else {%>
+                                                <span><%=cart.getListProductsInCart().get(i).getQuantity()%></span> x <span><%=vnPrice.format(price)%>đ</span>
+                                                <%}%>
+
                                             </p>
                                         </div>
                                         <a href="#" class="material-icons">delete_forever</a>
                                     </div>
                                 </div>
 
-                                <div
-                                        style="
-                        margin: 10px 0px;
-                        display: flex;
-                        justify-content: space-between;
-                      "
-                                >
+                                <%}%>
+                                <div style="margin: 10px 0px;display: flex;justify-content: space-between;">
                                     <h4 style="color: red">Tổng :</h4>
-                                    <h4 style="color: red">100.000đ</h4>
+                                    <h4 style="color: red"><%=vnPrice.format(cart.totalProduct(cart.getListProduct()))%>đ</h4>
                                 </div>
                                 <a class="check-out-cart-nav" href="#">Thanh toán</a>
                             </div>
+
+                            <%}%>
+                            <%}%>
                         </li>
                     </ul>
                 </div>

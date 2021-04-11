@@ -2,6 +2,8 @@
 <%@ page import="com.example.CoffeeShop.modal.Product" %>
 <%@ page import="java.text.NumberFormat" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.CoffeeShop.modal.TypeProduct" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -24,9 +26,10 @@
 
 <!-- Hero Section Begin -->
 <%
-    ArrayList<Product> listFavorite = (ArrayList<Product>) request.getAttribute("listFavorite");
-    Locale localeVN = new Locale("vi", "VN");
-    NumberFormat vnPrice = NumberFormat.getInstance(localeVN);
+    List<Product> listFavorite = (List<Product>) request.getAttribute("listFavorite");
+    List<Product> listLatest = (List<Product>) request.getAttribute("listLatest");
+    List<Product> listTopRated = (List<Product>) request.getAttribute("listTopRated");
+    List<Product> listReview = (List<Product>) request.getAttribute("listReview");
 %>
 <section class="hero">
     <div class="container">
@@ -38,10 +41,9 @@
                         <span>All departments</span>
                     </div>
                     <ul>
-                        <li><a href="#">Coffee</a></li>
-                        <li><a href="#">Tea</a></li>
-                        <li><a href="#">Milk Tea</a></li>
-                        <li><a href="#">Bakery</a></li>
+                        <%for (TypeProduct typeProduct : listTypeProduct){%>
+                            <li><a href="<%=UrlUtils.pathHost("ShopGridController?idType=" + typeProduct.getId())+"#targetProduct"%>"><%=typeProduct.getTypeProduct()%></a></li>
+                        <%}%>
                     </ul>
                 </div>
             </div>
@@ -175,8 +177,9 @@
                         </ul>
                     </div>
                     <div class="featured__item__text">
-                        <h6><a href=<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + product.getId())%>><%=product.getProductName()%>
-                        </a></h6>
+                        <h6>
+                            <a href=<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + product.getId())%>><%=product.getProductName()%>
+                            </a></h6>
                         <%
                             int priceProduct = product.getPriceProducts().get(0).getPrice();
                         %>
@@ -233,62 +236,32 @@
                     <h4>Latest Products</h4>
                     <div class="latest-product__slider owl-carousel">
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
+                            <% for (int i = 0; i < listLatest.size()/2; i++) {%>
+                            <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + listLatest.get(i).getId())%>" class="latest-product__item">
                                 <div class="latest-product__item__pic">
-                                    <img src=<%=UrlUtils.fullPathClient("img/latest-product/lp-1.jpg")%> alt=""/>
+                                    <img style="width: 110px; height: 110px" src=<%=UrlUtils.fullPathClient(listLatest.get(i).getImage())%> alt=""/>
                                 </div>
                                 <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security2</h6>
-                                    <span>$30.00</span>
+                                    <h6><%=listLatest.get(i).getProductName()%></h6>
+                                    <%int price = listLatest.get(i).getPriceProducts().get(0).getPrice();%>
+                                    <span><%=((listLatest.get(i).getSale()!=0) ? vnPrice.format(listLatest.get(i).getSalePrice(price)) : vnPrice.format(price))%>đ</span>
                                 </div>
                             </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src=<%=UrlUtils.fullPathClient("img/latest-product/lp-2.jpg")%> alt=""/>
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security3</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src=<%=UrlUtils.fullPathClient("img/latest-product/lp-3.jpg")%> alt=""/>
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security4</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
+                            <%}%>
                         </div>
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
+                            <% for (int i = listLatest.size()/2; i < listLatest.size(); i++) {%>
+                            <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + listLatest.get(i).getId())%>" class="latest-product__item">
                                 <div class="latest-product__item__pic">
-                                    <img src=<%=UrlUtils.fullPathClient("img/latest-product/lp-1.jpg")%> alt=""/>
+                                    <img style="width: 110px; height: 110px" src=<%=UrlUtils.fullPathClient(listLatest.get(i).getImage())%> alt=""/>
                                 </div>
                                 <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security5</h6>
-                                    <span>$30.00</span>
+                                    <h6><%=listLatest.get(i).getProductName()%></h6>
+                                    <%int price = listLatest.get(i).getPriceProducts().get(0).getPrice();%>
+                                    <span><%=((listLatest.get(i).getSale()!=0) ? vnPrice.format(listLatest.get(i).getSalePrice(price)) : vnPrice.format(price))%>đ</span>
                                 </div>
                             </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src=<%=UrlUtils.fullPathClient("img/latest-product/lp-2.jpg")%> alt=""/>
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security6</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src=<%=UrlUtils.fullPathClient("img/latest-product/lp-3.jpg")%> alt=""/>
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security7</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
+                            <%}%>
                         </div>
                     </div>
                 </div>
@@ -298,63 +271,34 @@
                     <h4>Top Rated Products</h4>
                     <div class="latest-product__slider owl-carousel">
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
+                            <% for (int i = 0; i < listTopRated.size()/2; i++) {%>
+                            <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + listTopRated.get(i).getId())%>" class="latest-product__item">
                                 <div class="latest-product__item__pic">
-                                    <img src=<%=UrlUtils.fullPathClient("img/latest-product/lp-1.jpg")%> alt=""/>
+                                    <img style="width: 110px; height: 110px" src=<%=UrlUtils.fullPathClient(listTopRated.get(i).getImage())%> alt=""/>
                                 </div>
                                 <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
+                                    <h6><%=listTopRated.get(i).getProductName()%></h6>
+                                    <%int price = listTopRated.get(i).getPriceProducts().get(0).getPrice();%>
+                                    <span><%=((listTopRated.get(i).getSale()!=0) ? vnPrice.format(listTopRated.get(i).getSalePrice(price)) : vnPrice.format(price))%>đ</span>
                                 </div>
                             </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src=<%=UrlUtils.fullPathClient("img/latest-product/lp-2.jpg")%> alt=""/>
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src=<%=UrlUtils.fullPathClient("img/latest-product/lp-3.jpg")%> alt=""/>
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
+                            <%}%>
                         </div>
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
+                            <% for (int i = listTopRated.size()/2; i < listTopRated.size(); i++) {%>
+                            <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + listTopRated.get(i).getId())%>" class="latest-product__item">
                                 <div class="latest-product__item__pic">
-                                    <img src=<%=UrlUtils.fullPathClient("img/latest-product/lp-1.jpg")%> alt=""/>
+                                    <img style="width: 110px; height: 110px" src=<%=UrlUtils.fullPathClient(listTopRated.get(i).getImage())%> alt=""/>
                                 </div>
                                 <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
+                                    <h6><%=listTopRated.get(i).getProductName()%></h6>
+                                    <%int price = listTopRated.get(i).getPriceProducts().get(0).getPrice();%>
+                                    <span><%=((listTopRated.get(i).getSale()!=0) ? vnPrice.format(listTopRated.get(i).getSalePrice(price)) : vnPrice.format(price))%>đ</span>
                                 </div>
                             </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="img/latest-product/lp-2.jpg" alt=""/>
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="img/latest-product/lp-3.jpg" alt=""/>
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
+                            <%}%>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -363,62 +307,32 @@
                     <h4>Review Products</h4>
                     <div class="latest-product__slider owl-carousel">
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
+                            <% for (int i = 0; i < listReview.size()/2; i++) {%>
+                            <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + listReview.get(i).getId())%>" class="latest-product__item">
                                 <div class="latest-product__item__pic">
-                                    <img src="img/latest-product/lp-1.jpg" alt=""/>
+                                    <img style="width: 110px; height: 110px" src=<%=UrlUtils.fullPathClient(listReview.get(i).getImage())%> alt=""/>
                                 </div>
                                 <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
+                                    <h6><%=listReview.get(i).getProductName()%></h6>
+                                    <%int price = listReview.get(i).getPriceProducts().get(0).getPrice();%>
+                                    <span><%=((listReview.get(i).getSale()!=0) ? vnPrice.format(listReview.get(i).getSalePrice(price)) : vnPrice.format(price))%>đ</span>
                                 </div>
                             </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="img/latest-product/lp-2.jpg" alt=""/>
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="img/latest-product/lp-3.jpg" alt=""/>
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
+                            <%}%>
                         </div>
                         <div class="latest-prdouct__slider__item">
-                            <a href="#" class="latest-product__item">
+                            <% for (int i = listReview.size()/2; i < listReview.size(); i++) {%>
+                            <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + listReview.get(i).getId())%>" class="latest-product__item">
                                 <div class="latest-product__item__pic">
-                                    <img src="img/latest-product/lp-1.jpg" alt=""/>
+                                    <img style="width: 110px; height: 110px" src=<%=UrlUtils.fullPathClient(listReview.get(i).getImage())%> alt=""/>
                                 </div>
                                 <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
+                                    <h6><%=listReview.get(i).getProductName()%></h6>
+                                    <%int price = listReview.get(i).getPriceProducts().get(0).getPrice();%>
+                                    <span><%=((listReview.get(i).getSale()!=0) ? vnPrice.format(listReview.get(i).getSalePrice(price)) : vnPrice.format(price))%>đ</span>
                                 </div>
                             </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="img/latest-product/lp-2.jpg" alt=""/>
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
-                            <a href="#" class="latest-product__item">
-                                <div class="latest-product__item__pic">
-                                    <img src="img/latest-product/lp-3.jpg" alt=""/>
-                                </div>
-                                <div class="latest-product__item__text">
-                                    <h6>Crab Pool Security</h6>
-                                    <span>$30.00</span>
-                                </div>
-                            </a>
+                            <%}%>
                         </div>
                     </div>
                 </div>
@@ -480,9 +394,9 @@
                                 <%}%>
                             </p>
                         </div>
-                        <a href="#" class="see-all">Xem chi tiết</a>
+                        <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + product.getId())%>" class="see-all">Xem chi tiết</a>
                         <div class="quick-add-to-cart">
-                            <a class="single_add_to_cart_button" href="%">Mua Ngay </a>
+                            <a class="single_add_to_cart_button" href="#">Mua Ngay </a>
                         </div>
                         <div style="height: 200px; overflow-y: scroll">Ngon cực kì</div>
                     </div>

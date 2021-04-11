@@ -12,7 +12,7 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="footer__about">
                     <div class="footer__about__logo">
-                        <a href="./index.jps"
+                        <a href="<%=UrlUtils.pathHost("IndexController")%>"
                         ><img src=<%=UrlUtils.fullPathClient("img/Logo-Coffee.png")%> alt=""
                         /></a>
                     </div>

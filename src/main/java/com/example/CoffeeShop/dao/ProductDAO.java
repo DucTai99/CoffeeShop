@@ -6,33 +6,42 @@ import com.example.CoffeeShop.modal.SizeProduct;
 import com.example.CoffeeShop.modal.TypeProduct;
 import com.example.CoffeeShop.util.ConnectionUtils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ProductDAO {
+    static int productDisplay = 6;
+    static int favoriteProductDisplay = 8;
+    static int saleProductDisplay = 5;
+    static int relatedProductDisplay = 4;
 
-    public static ArrayList<Product> getAllProduct() {
+    public static List<Product> getAllProductWithType(int idType) {
+        String type = (idType == 0) ? "" : "AND p.type= ?";
         String sql = "SELECT * FROM `product` AS p " +
                 "INNER JOIN typeproduct AS tp ON p.type = tp.id_type_product " +
                 "INNER JOIN priceproduct AS pp ON p.id_product = pp.product_id " +
                 "INNER JOIN sizeproduct AS sp ON pp.size_id = sp.id_size_product " +
-                "WHERE p.actived = 1";
-        ArrayList<Product> listProduct = null;
+                "WHERE p.actived = 1 " + type;
+        List<Product> listProduct = null;
         Connection connection = null;
         try {
             // ket noi voi database
             connection = ConnectionUtils.getConnection();
             // thuc hien truy van sql
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            if (type.length() > 0){
+                preparedStatement.setInt(1,idType);
+            }
             // thuc hien luu tat ca du lieu tu sql
             ResultSet resultSet = preparedStatement.executeQuery();
             // khoi tao 1 list chua tat ca San Pham
             listProduct = new ArrayList<Product>();
             // khoi tao 1 list chua tat ca Gia San Pham
-            ArrayList<PriceProduct> listAllPrice = new ArrayList<PriceProduct>();
+            List<PriceProduct> listAllPrice = new ArrayList<PriceProduct>();
             while (resultSet.next()) {
                 // gan id San Pham
                 int idProduct = resultSet.getInt(1);
@@ -110,14 +119,21 @@ public class ProductDAO {
         }
         return listProduct;
     }
-
-    public static ArrayList<Product> getAllFavoriteProduct() {
+    public static List<Product> getProductPage(int idType, int indexPage){
+        int fromIndex = productDisplay * (indexPage - 1);
+        int toIndex = (fromIndex + productDisplay > getAllProductWithType(idType).size()) ? getAllProductWithType(idType).size() : fromIndex + productDisplay ;
+        return getAllProductWithType(idType).subList(fromIndex,toIndex);
+    }
+    public static int numberOfPage(int idType){
+        return (int) Math.ceil((double)getAllProductWithType(idType).size()/ productDisplay);
+    }
+    public static List<Product> getAllFavoriteProduct() {
         String sql = "SELECT * FROM `product` AS p " +
                 "INNER JOIN typeproduct AS tp ON p.type = tp.id_type_product " +
                 "INNER JOIN priceproduct AS pp ON p.id_product = pp.product_id " +
                 "INNER JOIN sizeproduct AS sp ON pp.size_id = sp.id_size_product " +
                 "WHERE p.actived = 1 AND p.favorite = 1";
-        ArrayList<Product> listProduct = null;
+        List<Product> listProduct = null;
         Connection connection = null;
         try {
             // ket noi voi database
@@ -129,7 +145,7 @@ public class ProductDAO {
             // khoi tao 1 list chua tat ca San Pham
             listProduct = new ArrayList<Product>();
             // khoi tao 1 list chua tat ca Gia San Pham
-            ArrayList<PriceProduct> listAllPrice = new ArrayList<PriceProduct>();
+            List<PriceProduct> listAllPrice = new ArrayList<PriceProduct>();
             while (resultSet.next()) {
                 // gan id San Pham
                 int idProduct = resultSet.getInt(1);
@@ -207,9 +223,9 @@ public class ProductDAO {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return listProduct;
+        int display = (listProduct.size() > favoriteProductDisplay ? favoriteProductDisplay : listProduct.size());
+        return listProduct.subList(0,display);
     }
-
     public static Product getProductById(int id) {
         String sql = "SELECT * FROM `product` AS p \n" +
                 "INNER JOIN typeproduct AS tp ON p.type = tp.id_type_product \n" +
@@ -268,7 +284,7 @@ public class ProductDAO {
                 }
             }
             product.setPriceProducts(listPriceProduct);
-
+            ConnectionUtils.closeQuietly(connection);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -276,15 +292,13 @@ public class ProductDAO {
         }
         return product;
     }
-
     // Ánh sửa trong indexController rồi á
-    public static ArrayList<Product> getLastestProduct(){
-        String sql = "SELECT * FROM `product` AS p \n" +
-                "INNER JOIN typeproduct AS tp ON p.type = tp.id_type_product\n" +
-                "INNER JOIN priceproduct AS pp ON p.id_product = pp.product_id \n" +
-                "INNER JOIN sizeproduct AS sp ON pp.size_id = sp.id_size_product \n" +
-                "ORDER BY create_date DESC " ;
-        ArrayList<Product> listProduct = null;
+    public static List<Product> getLastestProduct(){
+        String sql = "SELECT * FROM `product` AS p INNER JOIN typeproduct " +
+                "AS tp ON p.type = tp.id_type_product INNER JOIN priceproduct " +
+                "AS pp ON p.id_product = pp.product_id INNER JOIN sizeproduct " +
+                "AS sp ON pp.size_id = sp.id_size_product ORDER BY p.create_date DESC" ;
+        List<Product> listProduct = null;
         Connection connection = null;
         try {
             // ket noi voi database
@@ -297,7 +311,6 @@ public class ProductDAO {
             listProduct = new ArrayList<Product>();
             // khoi tao 1 list chua tat ca Gia San Pham
             ArrayList<PriceProduct> listAllPrice = new ArrayList<PriceProduct>();
-            Outer:
             while (resultSet.next()) {
                 // gan id San Pham
                 int idProduct = resultSet.getInt(1);
@@ -351,7 +364,6 @@ public class ProductDAO {
                     // them gia tien cua 1 size vao list chua tat ca gia san pham
                     listAllPrice.add(priceProduct);
                 }
-
             }
             // duyet tat ca san pham trong list product
             for (Product p : listProduct) {
@@ -365,6 +377,13 @@ public class ProductDAO {
                         listPriceProduct.add(pp);
                     }
                 }
+                // sap xep theo size ( s - m - l )
+                Collections.sort(listPriceProduct, new Comparator<PriceProduct>() {
+                    @Override
+                    public int compare(PriceProduct o1, PriceProduct o2) {
+                        return o1.getSizeProduct().getId() - o2.getSizeProduct().getId();
+                    }
+                });
                 // dat lai size va price la list size va price san pham
                 p.setPriceProducts(listPriceProduct);
             }
@@ -374,21 +393,67 @@ public class ProductDAO {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return listProduct;
+        int display = (listProduct.size() > productDisplay ? productDisplay : listProduct.size());
+        return listProduct.subList(0,display);
     }
-
-
+    public static List<Integer> getListIdProductTopRated(){
+        String sql = "SELECT pic.product_id, SUM(pic.quantity) AS \"tong_so_luong\" " +
+                "FROM `productsincart` AS pic WHERE bought = 1 GROUP BY pic.product_id " +
+                "ORDER BY tong_so_luong DESC";
+        List<Integer> listIdProduct = null;
+        Connection connection = null;
+        try {
+            // ket noi voi database
+            connection = ConnectionUtils.getConnection();
+            // thuc hien truy van sql
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            // thuc hien luu tat ca du lieu tu sql
+            ResultSet resultSet = preparedStatement.executeQuery();
+            // khoi tao 1 list chua tat ca San Pham
+            listIdProduct = new ArrayList<Integer>();
+            // khoi tao 1 list chua tat ca Gia San Pham
+            while (resultSet.next()) {
+                listIdProduct.add(resultSet.getInt("product_id"));
+            }
+            ConnectionUtils.closeQuietly(connection);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return listIdProduct;
+    }
     // Xem cho ánh sql nhé !! ánh chọn product từ productincart đếm thuộc tính bought á
     // lấy limit 4 sản phẩm nha
     // phẩm được mua nhiều nhất.
-    public static ArrayList<Product> getTopRatedProduct(){
-        String sql = "SELECT *\n" +
-                "FROM `product` AS p INNER JOIN productsincart AS pandc ON p.id_product = pandc.product_id\n" +
-                "INNER JOIN cart AS c ON pandc.cart_id = c.id_cart\n" +
-                "INNER JOIN bill AS b ON c.id_cart = b.cart_id \n" +
-                "ORDER BY bought DESC\n"
-                 ;
-        ArrayList<Product> listProduct = null;
+    public static List<Product> getTopRatedProduct(){
+        List<Product> listProduct = new ArrayList<Product>();
+        List<Integer> listIdProduct = getListIdProductTopRated();
+        for (Integer id: listIdProduct) {
+            listProduct.add(getProductById(id));
+        }
+        int sub = (listProduct.size() > 6 ? 6 : listProduct.size());
+        return listProduct.subList(0,sub);
+    }
+    public static List<Product> getReviewProduct(){
+        List<Product> listProduct = new ArrayList<Product>(getAllProductWithType(0));
+        Collections.shuffle(listProduct);
+        int display = (listProduct.size() > productDisplay ? productDisplay : listProduct.size());
+        return listProduct.subList(0,display);
+    }
+    public static List<Product> getListRelatedProduct(int idType){
+        List<Product> listProduct = new ArrayList<Product>(getAllProductWithType(idType));
+        Collections.shuffle(listProduct);
+        int display = (listProduct.size() > relatedProductDisplay ? relatedProductDisplay : listProduct.size());
+        return listProduct.subList(0,display);
+    }
+    public static List<Product> getAllSaleProduct() {
+        String sql = "SELECT * FROM `product` AS p " +
+                "INNER JOIN typeproduct AS tp ON p.type = tp.id_type_product " +
+                "INNER JOIN priceproduct AS pp ON p.id_product = pp.product_id " +
+                "INNER JOIN sizeproduct AS sp ON pp.size_id = sp.id_size_product " +
+                "WHERE p.actived = 1 AND p.sale > 0";
+        List<Product> listProduct = null;
         Connection connection = null;
         try {
             // ket noi voi database
@@ -400,8 +465,7 @@ public class ProductDAO {
             // khoi tao 1 list chua tat ca San Pham
             listProduct = new ArrayList<Product>();
             // khoi tao 1 list chua tat ca Gia San Pham
-            ArrayList<PriceProduct> listAllPrice = new ArrayList<PriceProduct>();
-            Outer:
+            List<PriceProduct> listAllPrice = new ArrayList<PriceProduct>();
             while (resultSet.next()) {
                 // gan id San Pham
                 int idProduct = resultSet.getInt(1);
@@ -414,6 +478,7 @@ public class ProductDAO {
                         break;
                     }
                 }
+                // nếu product chưa tồn tại thì mình thực hiện cu lệnh if còn không là else
                 if (!productIsExist) {
                     // khoi tao 1 product moi
                     Product product = new Product();
@@ -459,7 +524,7 @@ public class ProductDAO {
             }
             // duyet tat ca san pham trong list product
             for (Product p : listProduct) {
-                // khoi tao 1 list chua size va price cua san pham
+                // khoi tao 1 list chua size va price 4cua san pham
                 ArrayList<PriceProduct> listPriceProduct = new ArrayList<PriceProduct>();
                 // duyet tat ca size va price cua tat ca san pham
                 for (PriceProduct pp : listAllPrice) {
@@ -478,6 +543,55 @@ public class ProductDAO {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return listProduct;
+        int display = (listProduct.size() > saleProductDisplay ? saleProductDisplay : listProduct.size());
+        return listProduct.subList(0,display);
+    }
+    public static List<Product> fakeData(){
+        List<Product> productList = new ArrayList<Product>();
+        for (int i = 0; i < 33; i++){
+            Product product = new Product();
+            ArrayList<PriceProduct> listPriceProduct = new ArrayList<PriceProduct>();
+            product.setId(i);
+            product.setProductName("product" + i);
+            // khoi tao 1 loai cua san pham
+            TypeProduct typeProduct = new TypeProduct();
+            typeProduct.setId(i);
+            typeProduct.setTypeProduct("type" + i);
+            product.setTypeProduct(typeProduct);
+            product.setSale((i%2 == 0) ? 0 : 5);
+            product.setImage("img/latest-product/lp-1.jpg");
+            product.setFavorite(true);
+            product.setActived(true);
+            // khoi tao 1 size cua san pham
+            SizeProduct sizeProduct = new SizeProduct();
+            sizeProduct.setId(i);
+            sizeProduct.setSizeName("S");
+            // khoi tao 1 gia tien cua 1 size cua san pham
+            PriceProduct priceProduct = new PriceProduct();
+            priceProduct.setIdProduct(i);
+            priceProduct.setSizeProduct(sizeProduct);
+            priceProduct.setPrice(50000);
+            // them gia tien cua 1 size vao list chua tat ca gia san pham
+            listPriceProduct.add(priceProduct);
+            product.setPriceProducts(listPriceProduct);
+            product.setCreateDate(Date.valueOf(LocalDate.now()));
+            productList.add(product);
+        }
+
+        return productList;
+    }
+
+    public static List<Product> getProductPageFake(int indexPage){
+        int fromIndex = productDisplay * (indexPage - 1);
+        int toIndex = (fromIndex + productDisplay > fakeData().size()) ? fakeData().size() : fromIndex + productDisplay ;
+        return fakeData().subList(fromIndex,toIndex);
+    }
+
+    public static int numberOfPageFake(){
+        return (int) Math.ceil(fakeData().size()/ productDisplay);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getLastestProduct());
     }
 }

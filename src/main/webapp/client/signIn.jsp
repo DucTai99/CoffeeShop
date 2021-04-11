@@ -14,8 +14,8 @@
             rel="stylesheet"
     />
     <link
-            rel="stylesheet"
-            href="fonts/material-icon/css/material-design-iconic-font.min.css"
+            href=<%=UrlUtils.fullPathClient("fonts/material-icon/css/material-design-iconic-font.min.css")%>
+                    rel="stylesheet"
     />
     <link
             href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&display=swap"
@@ -23,7 +23,7 @@
     />
 
     <!-- Main css -->
-    <link rel="stylesheet" href="css/login.css"/>
+    <link href=<%=UrlUtils.fullPathClient("css/login.css")%> rel="stylesheet"/>
 </head>
 <body>
 <div class="main">
@@ -32,18 +32,24 @@
         <div class="container">
             <div class="signin-content">
                 <div class="close-form">
-                    <span class="material-icons"> close </span>
+                    <a href="<%=UrlUtils.pathHost("IndexController")%>">
+                        <span class="material-icons"> close </span>
+                    </a>
                 </div>
                 <div class="signin-image">
                     <figure>
-                        <img alt="sing up image" src=<%=UrlUtils.fullPathClient("img/signin-image.jpg")%>/>
+                        <img src=<%=UrlUtils.fullPathClient("img/signin.jpg")%> alt="sing-up-image"/>
                     </figure>
                     <a href="#" class="signup-image-link">Create an account</a>
                 </div>
 
                 <div class="signin-form">
                     <h2 class="form-title">Sign up</h2>
-                    <form method="POST" class="register-form" id="login-form">
+                    <h4 class="form-title" style="color: red">
+                        <%=(request.getAttribute("message") == null) ? "" : request.getAttribute("message")%>
+                    </h4>
+                    <form action="<%=UrlUtils.pathHost("SignInController")%>" method="POST" class="register-form"
+                          id="login-form">
                         <div class="form-group">
                             <label for="your_name"
                             ><i class="zmdi zmdi-account material-icons-name"></i
@@ -64,17 +70,17 @@
                                     placeholder="Password"
                             />
                         </div>
-                        <div class="form-group">
-                            <input
-                                    type="checkbox"
-                                    name="remember-me"
-                                    id="remember-me"
-                                    class="agree-term"
-                            />
-                            <label for="remember-me" class="label-agree-term"
-                            ><span><span></span></span>Remember me</label
-                            >
-                        </div>
+                        <%--                        <div class="form-group">--%>
+                        <%--                            <input--%>
+                        <%--                                    type="checkbox"--%>
+                        <%--                                    name="remember-me"--%>
+                        <%--                                    id="remember-me"--%>
+                        <%--                                    class="agree-term"--%>
+                        <%--                            />--%>
+                        <%--                            <label for="remember-me" class="label-agree-term"--%>
+                        <%--                            ><span><span></span></span>Remember me</label--%>
+                        <%--                            >--%>
+                        <%--                        </div>--%>
                         <div class="form-group form-button">
                             <input
                                     type="submit"
