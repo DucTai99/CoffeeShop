@@ -245,40 +245,40 @@ public class ProductDAO {
             while (resultSet.next()) {
                 if (!productExist){
                     productExist = true;
-                    product.setId(resultSet.getInt(1));
-                    product.setProductName(resultSet.getString(2));
+                    product.setId(resultSet.getInt("id_product"));
+                    product.setProductName(resultSet.getString("product_name"));
                     // khoi tao 1 loai cua san pham
                     TypeProduct typeProduct = new TypeProduct();
-                    typeProduct.setId(resultSet.getInt(9));
-                    typeProduct.setTypeProduct(resultSet.getString(10));
+                    typeProduct.setId(resultSet.getInt("type"));
+                    typeProduct.setTypeProduct(resultSet.getString("type_product"));
                     product.setTypeProduct(typeProduct);
-                    product.setSale(resultSet.getInt(4));
-                    product.setImage(resultSet.getString(5));
-                    product.setFavorite((resultSet.getInt(6) == 1) ? true : false);
-                    product.setActived((resultSet.getInt(7) == 1) ? true : false);
-                    product.setCreateDate(resultSet.getDate(8));
+                    product.setSale(resultSet.getInt("sale"));
+                    product.setImage(resultSet.getString("image"));
+                    product.setFavorite((resultSet.getInt("favorite") == 1) ? true : false);
+                    product.setActived((resultSet.getInt("actived") == 1) ? true : false);
+                    product.setCreateDate(resultSet.getDate("create_date"));
                     // khoi tao 1 size cua san pham
                     SizeProduct sizeProduct = new SizeProduct();
-                    sizeProduct.setId(resultSet.getInt(14));
-                    sizeProduct.setSizeName(resultSet.getString(15));
+                    sizeProduct.setId(resultSet.getInt("size_id"));
+                    sizeProduct.setSizeName(resultSet.getString("size_name"));
                     // khoi tao 1 gia tien cua 1 size cua san pham
                     PriceProduct priceProduct = new PriceProduct();
-                    priceProduct.setIdProduct(resultSet.getInt(1));
+                    priceProduct.setIdProduct(resultSet.getInt("id_product"));
                     priceProduct.setSizeProduct(sizeProduct);
-                    priceProduct.setPrice(resultSet.getInt(13));
+                    priceProduct.setPrice(resultSet.getInt("price"));
                     // them gia tien cua 1 size vao list chua tat ca gia san pham
                     listPriceProduct.add(priceProduct);
                 }
                 else {
                     // khoi tao 1 size cua san pham
                     SizeProduct sizeProduct = new SizeProduct();
-                    sizeProduct.setId(resultSet.getInt(14));
-                    sizeProduct.setSizeName(resultSet.getString(15));
+                    sizeProduct.setId(resultSet.getInt("size_id"));
+                    sizeProduct.setSizeName(resultSet.getString("size_name"));
                     // khoi tao 1 gia tien cua 1 size cua san pham
                     PriceProduct priceProduct = new PriceProduct();
-                    priceProduct.setIdProduct(resultSet.getInt(1));
+                    priceProduct.setIdProduct(resultSet.getInt("id_product"));
                     priceProduct.setSizeProduct(sizeProduct);
-                    priceProduct.setPrice(resultSet.getInt(13));
+                    priceProduct.setPrice(resultSet.getInt("price"));
                     // them gia tien cua 1 size vao list chua tat ca gia san pham
                     listPriceProduct.add(priceProduct);
                 }
@@ -423,12 +423,14 @@ public class ProductDAO {
         }
         return listIdProduct;
     }
+
     // Xem cho ánh sql nhé !! ánh chọn product từ productincart đếm thuộc tính bought á
     // lấy limit 4 sản phẩm nha
     // phẩm được mua nhiều nhất.
     public static List<Product> getTopRatedProduct(){
         List<Product> listProduct = new ArrayList<Product>();
         List<Integer> listIdProduct = getListIdProductTopRated();
+        System.out.println("list id : " +listIdProduct);
         for (Integer id: listIdProduct) {
             listProduct.add(getProductById(id));
         }

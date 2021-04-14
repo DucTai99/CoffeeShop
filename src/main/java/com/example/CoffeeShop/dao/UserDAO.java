@@ -42,7 +42,7 @@ public class UserDAO {
         return user;
     }
     public static User getUserByAccountName(String accountName){
-        String sql = "SELECT * FROM `user` AS u INNER JOIN userdetail AS ud ON u.id_user = ud.user_id INNER JOIN role AS r ON u.role = r.id_role WHERE u.account_name = ?";
+        String sql = "SELECT * FROM `user` AS u INNER JOIN role AS r ON u.role = r.id_role WHERE u.account_name = ?";
         Connection connection = null;
         User user = null;
         try {
@@ -60,7 +60,7 @@ public class UserDAO {
             role.setId(resultSet.getInt("id_role"));
             role.setRoleName(resultSet.getString("role_name"));
             user.setRole(role);
-            user.setUserName(resultSet.getString("user_detail_name"));
+            user.setUserName(resultSet.getString("user_name"));
             user.setEmail(resultSet.getString("email"));
             user.setPhone(resultSet.getInt("phone"));
             user.setAddress(resultSet.getString("address"));
