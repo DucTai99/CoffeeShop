@@ -430,7 +430,6 @@ public class ProductDAO {
     public static List<Product> getTopRatedProduct(){
         List<Product> listProduct = new ArrayList<Product>();
         List<Integer> listIdProduct = getListIdProductTopRated();
-        System.out.println("list id : " +listIdProduct);
         for (Integer id: listIdProduct) {
             listProduct.add(getProductById(id));
         }

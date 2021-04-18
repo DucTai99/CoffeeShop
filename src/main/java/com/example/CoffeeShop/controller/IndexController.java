@@ -25,9 +25,6 @@ public class IndexController extends HttpServlet {
         List<Product> listLatest = ProductDAO.getLastestProduct() ;
 //        //TopRatedProduct
         List<Product> listTopRated = ProductDAO.getTopRatedProduct();
-        for (Product p : listTopRated) {
-            System.out.println(p.toString());
-        }
         List<Product> listReview = ProductDAO.getReviewProduct();
         List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
         request.setAttribute("listLatest",listLatest);

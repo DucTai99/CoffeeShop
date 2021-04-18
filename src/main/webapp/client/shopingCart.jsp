@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="java.text.NumberFormat" %>
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
@@ -27,10 +29,11 @@
                         <span>All departments</span>
                     </div>
                     <ul>
-                        <li><a href="#">Coffee</a></li>
-                        <li><a href="#">Tea</a></li>
-                        <li><a href="#">Milk Tea</a></li>
-                        <li><a href="#">Bakery</a></li>
+                        <%for (TypeProduct typeProduct : listTypeProduct) {%>
+                        <li>
+                            <a href="<%=UrlUtils.pathHost("ShopGridController?idType=" + typeProduct.getId())+"#targetProduct"%>"><%=typeProduct.getTypeProduct()%>
+                            </a></li>
+                        <%}%>
                     </ul>
                 </div>
             </div>
@@ -98,31 +101,37 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <%for (ProductsInCart productsInCart : cart.getListProductsInCart()) {%>
                         <tr>
                             <td class="shoping__cart__item">
-                                <img src=<%=UrlUtils.fullPathClient("img/cart/cart-1.jpg")%> alt=""/>
-                                <h5>Vegetable’s Package</h5>
+                                <img style="width: 100px; height: 100px" src=<%=UrlUtils.fullPathClient(productsInCart.getProduct().getImage())%> alt=""/>
+                                <h5><%=productsInCart.getProduct().getProductName()%></h5>
                             </td>
                             <td class="shoping__cart__price">
-                                <span class="old-price-cart">75.000đ</span>
-                                <span>55.000đ</span>
+                                <%
+                                    int price = cart.getPriceProductSize(productsInCart);
+                                %>
+                                <%if (productsInCart.getSale() != 0) {%>
+                                <span class="old-price-cart"><%=vnPrice.format(price)%>đ</span>
+                                <span><%=vnPrice.format(productsInCart.getProduct().getSalePrice(price))%>đ</span>
+                                <%} else {%>
+                                <span><%=vnPrice.format(price)%>đ</span>
+                                <%}%>
                             </td>
                             <td class="shoping__cart__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
-                                        <input type="text" value="1"/>
+                                        <input type="text" value="<%=productsInCart.getQuantity()%>"/>
                                     </div>
                                 </div>
                             </td>
-                            <td class="shoping__cart__total">$110.00</td>
+                            <td class="shoping__cart__total"><%=vnPrice.format(cart.totalProduct(productsInCart))%>đ</td>
                             <td>
                                 <div class="form-check">
                                     <input
-                                            class="form-check-input position-static"
-                                            id="blankCheckbox"
+                                            class="form-check-input position-static blankCheckbox"
                                             type="checkbox"
                                             value="option1"
-                                            checked
                                             aria-label="..."
                                     />
                                 </div>
@@ -131,72 +140,8 @@
                                 <span class="icon_close"></span>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="shoping__cart__item">
-                                <img src="img/cart/cart-1.jpg" alt=""/>
-                                <h5>Vegetable’s Package</h5>
-                            </td>
-                            <td class="shoping__cart__price">
-                                <span class="old-price-cart">75.000đ</span>
-                                <span>55.000đ</span>
-                            </td>
-                            <td class="shoping__cart__quantity">
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1"/>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="shoping__cart__total">$110.00</td>
-                            <td>
-                                <div class="form-check">
-                                    <input
-                                            class="form-check-input position-static"
-                                            id="blankCheckbox"
-                                            type="checkbox"
-                                            value="option1"
-                                            checked
-                                            aria-label="..."
-                                    />
-                                </div>
-                            </td>
-                            <td class="shoping__cart__item__close">
-                                <span class="icon_close"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="shoping__cart__item">
-                                <img src="img/cart/cart-1.jpg" alt=""/>
-                                <h5>Vegetable’s Package</h5>
-                            </td>
-                            <td class="shoping__cart__price">
-                                <span class="old-price-cart">75.000đ</span>
-                                <span>55.000đ</span>
-                            </td>
-                            <td class="shoping__cart__quantity">
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1"/>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="shoping__cart__total">$110.00</td>
-                            <td>
-                                <div class="form-check">
-                                    <input
-                                            class="form-check-input position-static"
-                                            id="blankCheckbox"
-                                            type="checkbox"
-                                            value="option1"
-                                            checked
-                                            aria-label="..."
-                                    />
-                                </div>
-                            </td>
-                            <td class="shoping__cart__item__close">
-                                <span class="icon_close"></span>
-                            </td>
-                        </tr>
+
+                        <%}%>
                         </tbody>
                     </table>
                 </div>
@@ -206,7 +151,7 @@
             <div class="col-lg-12">
                 <div class="shoping__cart__btns">
                     <a href="#" class="primary-btn cart-btn">Delete All</a>
-                    <a href="#" class="primary-btn cart-btn cart-btn-right"
+                    <a href="<%=UrlUtils.pathHost("ShopGridController")%>" class="primary-btn cart-btn cart-btn-right"
                     ><span class="icon_loading"></span> Continue Shopping</a
                     >
                 </div>
@@ -226,9 +171,9 @@
                 <div class="shoping__checkout">
                     <h5>Cart Total</h5>
                     <ul>
-                        <li>Subtotal <span>454.000đ</span></li>
-                        <li>Sale <span>20%</span></li>
-                        <li>Total <span>394.000đ</span></li>
+                        <li>Subtotal <span><%=vnPrice.format(cart.totalAllProduct())%>đ</span></li>
+<%--                        <li>Sale <span>20%</span></li>--%>
+                        <li>Total <span><%=vnPrice.format(cart.totalAllProduct())%>đ</span></li>
                     </ul>
                     <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
                 </div>

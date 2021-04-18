@@ -1,9 +1,6 @@
 <%@ page import="com.example.CoffeeShop.util.UrlUtils" %>
-<%@ page import="com.example.CoffeeShop.modal.TypeProduct" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.CoffeeShop.modal.User" %>
-<%@ page import="com.example.CoffeeShop.modal.Cart" %>
-<%@ page import="com.example.CoffeeShop.modal.PriceProduct" %><%--
+<%@ page import="com.example.CoffeeShop.modal.*" %><%--
   Created by IntelliJ IDEA.
   User: ASUS
   Date: 2/28/2021
@@ -154,8 +151,6 @@
                                 <%}%>
                             </ul>
                         </li>
-                        <!-- <li><a href="./shopDetails.jsp">Coffee</a></li>
-                        <li><a href="./blog.html">Tea</a></li> -->
                         <li><a href="./blog.html">Member Card</a></li>
                         <li>
                             <a href="./contact.jsp" langkey="nav_contact">Contact</a>
@@ -182,44 +177,39 @@
                             <%if (cart != null) {%>
                             <%if (cart.getAllQuantity() > 0) {%>
                             <div class="hidden-info-cart animate__animated animate__fadeInUp">
-                                <%for (int i = 0; i < cart.getListProduct().size();i++){%>
                                 <div class="content-item-cart-nav">
+                                    <%for (ProductsInCart productsInCart : cart.getListProductsInCart()) {%>
                                     <div class="item-in-cart-nav">
                                         <div class="img-in-cart-nav">
-                                            <img src=<%=UrlUtils.fullPathClient(cart.getListProduct().get(i).getImage())%> alt=""/>
+                                            <img src=<%=UrlUtils.fullPathClient(productsInCart.getProduct().getImage())%> alt=""/>
                                         </div>
                                         <div class="info-in-cart-nav">
-                                            <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + cart.getListProduct().get(i).getId())%>"><%=cart.getListProduct().get(i).getProductName()%></a>
+                                            <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + productsInCart.getProduct().getId())%>"><%=productsInCart.getProduct().getProductName()%>
+                                            </a>
                                             <p>
                                                 <%
-                                                    int price = cart.getPriceProductSize(cart.getListProduct().get(i), cart.getListProductsInCart().get(i).getIdSizeProduct());
-//                                                    for (PriceProduct priceProduct : cart.getListProduct().get(i).getPriceProducts()){
-//                                                        if (priceProduct.getSizeProduct().getId() == cart.getListProductsInCart().get(i).getIdSizeProduct()){
-//                                                            price = priceProduct.getPrice();
-//                                                        }
-//                                                    }
+                                                    int price = cart.getPriceProductSize(productsInCart);
                                                 %>
-                                                <%if (cart.getListProduct().get(i).getSale() != 0) {%>
-                                                <span><%=cart.getListProductsInCart().get(i).getQuantity()%></span> x <span><%=vnPrice.format(cart.getListProduct().get(i).getSalePrice(price))%>đ</span>
+                                                <%if (productsInCart.getSale() != 0) {%>
+                                                <span><%=productsInCart.getQuantity()%></span> x
+                                                <span><%=vnPrice.format(productsInCart.getProduct().getSalePrice(price))%>đ</span>
                                                 <span class="old-price"><%=vnPrice.format(price)%>đ</span>
                                                 <%} else {%>
-                                                <span><%=cart.getListProductsInCart().get(i).getQuantity()%></span> x <span><%=vnPrice.format(price)%>đ</span>
+                                                <span><%=productsInCart.getQuantity()%></span> x
+                                                <span><%=vnPrice.format(price)%>đ</span>
                                                 <%}%>
-
                                             </p>
                                         </div>
                                         <a href="#" class="material-icons">delete_forever</a>
                                     </div>
+                                    <%}%>
                                 </div>
-
-                                <%}%>
                                 <div style="margin: 10px 0px;display: flex;justify-content: space-between;">
                                     <h4 style="color: red">Tổng :</h4>
-                                    <h4 style="color: red"><%=vnPrice.format(cart.totalProduct(cart.getListProduct()))%>đ</h4>
+                                    <h4 style="color: red"><%=vnPrice.format(cart.totalAllProduct())%>đ</h4>
                                 </div>
-                                <a class="check-out-cart-nav" href="#">Thanh toán</a>
+                                <a class="check-out-cart-nav" href="<%=UrlUtils.pathHost("ShopingCartController")%>">Thanh toán</a>
                             </div>
-
                             <%}%>
                             <%}%>
                         </li>

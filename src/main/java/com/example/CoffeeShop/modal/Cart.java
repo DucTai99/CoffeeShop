@@ -14,7 +14,7 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(int id, User user,List<ProductsInCart> listProductsInCart, String note) {
+    public Cart(int id, User user, List<ProductsInCart> listProductsInCart, String note) {
         this.id = id;
         this.user = user;
         this.listProductsInCart = listProductsInCart;
@@ -53,41 +53,45 @@ public class Cart {
         this.note = note;
     }
 
-    public List<Product> getListProduct(){
-        List<Product> listProduct = new ArrayList<Product>();
-        for (ProductsInCart productsInCart : listProductsInCart){
-            listProduct.add(ProductDAO.getProductById(productsInCart.getIdProduct()));
-        }
-        return listProduct;
-    }
-
-    public int getPriceProductSize(Product product, int idSizeProduct){
+    public int getPriceProductSize(ProductsInCart productsInCart) {
         int price = 0;
-        for (PriceProduct priceProduct : product.getPriceProducts()){
-            if (priceProduct.getSizeProduct().getId() == idSizeProduct){
-                    price += priceProduct.getPrice();
-                }
+        for (PriceProduct priceProduct : productsInCart.getProduct().getPriceProducts()) {
+            if (priceProduct.getSizeProduct().getId() == productsInCart.getIdSizeProduct()) {
+                price += priceProduct.getPrice();
+            }
         }
         return price;
     }
-    public int getAllQuantity(){
+
+    public int getAllQuantity() {
         int sum = 0;
-        for (ProductsInCart productsInCart : listProductsInCart){
+        for (ProductsInCart productsInCart : listProductsInCart) {
             sum += productsInCart.getQuantity();
         }
         return sum;
     }
 
-    public int totalProduct(List<Product> list){
+    public int totalProduct(ProductsInCart productsInCart) {
         int total = 0;
-        for (int i = 0; i < list.size();i++){
-            int price = getPriceProductSize(list.get(i),listProductsInCart.get(i).getIdSizeProduct());
-            if (list.get(i).getSale() > 0) {
-                total = total + (list.get(i).getSalePrice(price) * listProductsInCart.get(i).getQuantity());
+        int price = getPriceProductSize(productsInCart);
+        if (productsInCart.getSale() > 0) {
+            total = total + (productsInCart.getProduct().getSalePrice(price) * productsInCart.getQuantity());
+        } else {
+            total = total + (price * productsInCart.getQuantity());
+        }
+        return total;
+    }
+
+    public int totalAllProduct() {
+        int total = 0;
+        for (ProductsInCart productsInCart : listProductsInCart) {
+            int price = getPriceProductSize(productsInCart);
+            if (productsInCart.getSale() > 0) {
+                total = total + (productsInCart.getProduct().getSalePrice(price) * productsInCart.getQuantity());
             } else {
-                total = total + (price * listProductsInCart.get(i).getQuantity());
+                total = total + (price * productsInCart.getQuantity());
             }
         }
-         return total;
+        return total;
     }
 }

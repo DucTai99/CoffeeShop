@@ -1,8 +1,8 @@
 package com.example.CoffeeShop.dao;
 
 import com.example.CoffeeShop.modal.Cart;
+import com.example.CoffeeShop.modal.Product;
 import com.example.CoffeeShop.modal.ProductsInCart;
-import com.example.CoffeeShop.modal.Role;
 import com.example.CoffeeShop.modal.User;
 import com.example.CoffeeShop.util.ConnectionUtils;
 
@@ -20,6 +20,7 @@ public class CartDAO {
         Connection connection = null;
         Cart cart = null;
         List<ProductsInCart> listProduct = null;
+        List<Integer> listIdProduct = null;
         try {
             // ket noi voi database
             connection = ConnectionUtils.getConnection();
@@ -28,11 +29,12 @@ public class CartDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             cart = new Cart();
             listProduct = new ArrayList<ProductsInCart>();
+            listIdProduct = new ArrayList<Integer>();
             while (resultSet.next()) {
                 int idProduct = resultSet.getInt("product_id");
                 boolean productIsExist = false;
-                for (int i = 0; i < listProduct.size(); i++) {
-                    if (idProduct == listProduct.get(i).getIdProduct()) {
+                for (int i = 0; i < listIdProduct.size(); i++) {
+                    if (idProduct == listIdProduct.get(i)) {
                         productIsExist = true;
                         break;
                     }
@@ -42,7 +44,7 @@ public class CartDAO {
                     cart.setUser(user);
                     cart.setNote("");
                     ProductsInCart productsInCart = new ProductsInCart();
-                    productsInCart.setIdProduct(idProduct);
+                    listIdProduct.add(idProduct);
                     productsInCart.setIdSizeProduct(resultSet.getInt("size_product_id"));
                     productsInCart.setSale(resultSet.getInt("sale"));
                     productsInCart.setQuantity(resultSet.getInt("quantity"));
@@ -51,7 +53,7 @@ public class CartDAO {
                     listProduct.add(productsInCart);
                 } else {
                     ProductsInCart productsInCart = new ProductsInCart();
-                    productsInCart.setIdProduct(idProduct);
+                    listIdProduct.add(idProduct);
                     productsInCart.setIdSizeProduct(resultSet.getInt("size_product_id"));
                     productsInCart.setSale(resultSet.getInt("sale"));
                     productsInCart.setQuantity(resultSet.getInt("quantity"));
@@ -59,6 +61,9 @@ public class CartDAO {
                     productsInCart.setBought((resultSet.getInt("bought") == 1) ? true : false);
                     listProduct.add(productsInCart);
                 }
+            }
+            for (int i = 0; i < listProduct.size(); i++) {
+                listProduct.get(i).setProduct(ProductDAO.getProductById(listIdProduct.get(i)));
             }
             cart.setListProductsInCart(listProduct);
             ConnectionUtils.closeQuietly(connection);
@@ -73,16 +78,18 @@ public class CartDAO {
     public static boolean addProductToCart(Cart cart, int idProduct, int quantity, int idSizeProduct, int sale) {
         boolean isProductInCart = false;
         for (ProductsInCart productsInCart : cart.getListProductsInCart()) {
-            if (productsInCart.getIdProduct() == idProduct) {
-                productsInCart.setQuantity(productsInCart.getIdProduct() + quantity);
+            if (productsInCart.getProduct().getId() == idProduct) {
+                productsInCart.setQuantity(productsInCart.getQuantity() + quantity);
                 isProductInCart = true;
                 return true;
             }
         }
         if (!isProductInCart) {
-            cart.getListProductsInCart().add(new ProductsInCart(idProduct, idSizeProduct, sale, quantity, false, false));
+            Product product = ProductDAO.getProductById(idProduct);
+            cart.getListProductsInCart().add(new ProductsInCart(product, idSizeProduct, sale, quantity, false, false));
             return true;
         }
         return false;
     }
+
 }

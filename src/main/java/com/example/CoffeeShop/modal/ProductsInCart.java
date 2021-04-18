@@ -1,7 +1,7 @@
 package com.example.CoffeeShop.modal;
 
 public class ProductsInCart {
-    private int idProduct;
+    private Product product;
     private int idSizeProduct;
     private int sale;
     private int quantity;
@@ -11,8 +11,8 @@ public class ProductsInCart {
     public ProductsInCart() {
     }
 
-    public ProductsInCart(int idProduct, int idSizeProduct, int sale, int quantity, boolean selected, boolean bought) {
-        this.idProduct = idProduct;
+    public ProductsInCart(Product product, int idSizeProduct, int sale, int quantity, boolean selected, boolean bought) {
+        this.product = product;
         this.idSizeProduct = idSizeProduct;
         this.sale = sale;
         this.quantity = quantity;
@@ -20,12 +20,12 @@ public class ProductsInCart {
         this.bought = bought;
     }
 
-    public int getIdProduct() {
-        return idProduct;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public int getIdSizeProduct() {
@@ -66,5 +66,17 @@ public class ProductsInCart {
 
     public void setBought(boolean bought) {
         this.bought = bought;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductsInCart{" +
+                "product=" + product.getProductName() +
+                ", idSizeProduct=" + idSizeProduct +
+                ", sale=" + sale +
+                ", quantity=" + quantity +
+                ", selected=" + selected +
+                ", bought=" + bought +
+                '}';
     }
 }
