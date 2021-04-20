@@ -68,7 +68,7 @@
                 </div>
                 <div class="hero__item set-bg" data-setbg=<%=UrlUtils.fullPathClient("img/background1.jpg")%>>
                     <div class="hero__text">
-                        <span>Coffe Shop</span>
+                        <span>Coffee Shop</span>
                         <h2>Coffee <br/>& Tea</h2>
                         <a href="#" class="primary-btn">SHOP NOW</a>
                     </div>
@@ -87,41 +87,41 @@
                 <div class="col-lg-3">
                     <div
                             class="categories__item set-bg"
-                            data-setbg=<%=UrlUtils.fullPathClient("img/categories/cat-1.jpg")%>
+                            data-setbg=<%=UrlUtils.fullPathClient("img/imgProduct/C-Latte.png")%>
                     >
-                        <h5><a href="#">Fresh Fruit</a></h5>
+                        <h5><a href="#">Coffee</a></h5>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div
                             class="categories__item set-bg"
-                            data-setbg=<%=UrlUtils.fullPathClient("img/categories/cat-2.jpg")%>
+                            data-setbg=<%=UrlUtils.fullPathClient("img/imgProduct/C-Latte.png")%>
                     >
-                        <h5><a href="#">Dried Fruit</a></h5>
+                        <h5><a href="#">Trà Trái Cây</a></h5>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div
                             class="categories__item set-bg"
-                            data-setbg=<%=UrlUtils.fullPathClient("img/categories/cat-3.jpg")%>
+                            data-setbg=<%=UrlUtils.fullPathClient("img/imgProduct/C-Cappuccino.png")%>
                     >
-                        <h5><a href="#">Vegetables</a></h5>
+                        <h5><a href="#">Freeze</a></h5>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div
                             class="categories__item set-bg"
-                            data-setbg=<%=UrlUtils.fullPathClient("img/categories/cat-4.jpg")%>
+                            data-setbg=<%=UrlUtils.fullPathClient("img/imgProduct/C-Cappuccino.png")%>
                     >
-                        <h5><a href="#">drink fruits</a></h5>
+                        <h5><a href="#">Trà Sữa</a></h5>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div
                             class="categories__item set-bg"
-                            data-setbg=<%=UrlUtils.fullPathClient("img/categories/cat-5.jpg")%>
+                            data-setbg=<%=UrlUtils.fullPathClient("img/imgProduct/C-Cappuccino.png")%>
                     >
-                        <h5><a href="#">drink fruits</a></h5>
+                        <h5><a href="#">Macchiato</a></h5>
                     </div>
                 </div>
             </div>
