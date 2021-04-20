@@ -79,15 +79,17 @@ public class CartDAO {
         boolean isProductInCart = false;
         for (ProductsInCart productsInCart : cart.getListProductsInCart()) {
             if (productsInCart.getProduct().getId() == idProduct) {
-                productsInCart.setQuantity(productsInCart.getQuantity() + quantity);
-                isProductInCart = true;
-                return true;
+                int quantityTotal = productsInCart.getQuantity() + quantity;
+                if (ProductsInCartDAO.updateProductsInCart(idProduct, cart.getId(), quantityTotal)){
+                    isProductInCart = true;
+                    return true;
+                }
             }
         }
         if (!isProductInCart) {
-            Product product = ProductDAO.getProductById(idProduct);
-            cart.getListProductsInCart().add(new ProductsInCart(product, idSizeProduct, sale, quantity, false, false));
-            return true;
+            if (ProductsInCartDAO.insertProductsInCart(idProduct,cart.getId(),idSizeProduct,sale,quantity)){
+                return true;
+            }
         }
         return false;
     }

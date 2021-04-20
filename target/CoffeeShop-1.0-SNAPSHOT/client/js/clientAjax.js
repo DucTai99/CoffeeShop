@@ -53,8 +53,44 @@ var client = {
                     change.html('');
                     change.html(response);
                 }
-            })
-        })
+            });
+        });
+        $('#search-form').submit(function (event){
+            event.preventDefault();
+        });
+        $('#search-input').on('keyup',function (){
+            var productName = $(this).val();
+            var change = $('.search-result');
+            $.ajax({
+                type: "GET",
+                url: "/CoffeeShop/AjaxSearchProductController",
+                data: {
+                    "productName": productName
+                },
+                success: function (response) {
+                    change.html('');
+                    change.html(response);
+                }
+            });
+        });
+        $('.add-quantily').on('click',function (event){
+            event.preventDefault();
+            var idProduct = $(this).data('idproduct');
+            alert("Đã thêm vào giỏ hàng");
+            console.log(idProduct);
+            var change = $('.header__cart ul');
+            $.ajax({
+                type: "GET",
+                url: "/CoffeeShop/AjaxAddProductsToCartController",
+                data: {
+                    "idProduct": idProduct
+                },
+                success: function (response) {
+                    change.html('');
+                    change.html(response);
+                }
+            });
+        });
     }
 }
 client.init();

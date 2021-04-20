@@ -8,7 +8,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 
 @WebServlet(name = "AjaxAddProductToCartController", value = "/AjaxAddProductToCartController")
-public class AjaxAddProductToCartController extends HttpServlet {
+public class AjaxSelectProductToCartController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -16,7 +16,7 @@ public class AjaxAddProductToCartController extends HttpServlet {
         int idProduct = Integer.parseInt(request.getParameter("idProduct"));
         int subTotal = cart.subTotalPriceWithIdProduct(idProduct);
         request.setAttribute("subTotal",subTotal);
-        request.getRequestDispatcher("client/ajaxAddProductToCart.jsp").forward(request,response);
+        request.getRequestDispatcher("client/ajaxSelectProductToCart.jsp").forward(request,response);
     }
 
     @Override

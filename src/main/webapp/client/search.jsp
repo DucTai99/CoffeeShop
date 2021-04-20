@@ -7,23 +7,13 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="hero__search__form">
-    <form action="#">
+    <form id="search-form" action="#">
         <div class="hero__search__categories">All Categories</div>
-        <input type="text" placeholder="What do you need?"/>
-        <button type="submit" class="site-btn">SEARCH</button>
+        <input id="search-input" type="text" autocomplete="off" placeholder="What do you need?"/>
+        <button style="cursor: none" type="submit" class="site-btn">SEARCH</button>
     </form>
     <div class="search-result">
-<%--        <div class="item-search">--%>
-<%--            <div class="img-in-search">--%>
-<%--                <img src="img/product/product-5.jpg" alt="" />--%>
-<%--            </div>--%>
-<%--            <div class="info-in-search">--%>
-<%--                <a href="#">Trà sữa chân châu đường đen</a>--%>
-<%--                <p>--%>
-<%--                    <span>50.000đ</span>--%>
-<%--                    <span class="old-price">75.000đ</span>--%>
-<%--                </p>--%>
-<%--            </div>--%>
-<%--        </div>--%>
+
     </div>
 </div>
+<script src= <%= UrlUtils.fullPathClient("js/clientAjax.js")%>></script>

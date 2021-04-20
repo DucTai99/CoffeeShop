@@ -182,7 +182,8 @@
                                                 ></a>
                                             </li>
                                             <li>
-                                                <a href="#"><i class="fa fa-shopping-cart"></i></a>
+                                                <a class="add-quantily" data-idproduct=<%=product.getId()%> href="#"><i class="fa fa-shopping-cart"></i></a>
+
                                             </li>
                                         </ul>
                                     </div>
@@ -258,7 +259,8 @@
                                             ></a>
                                         </li>
                                         <li>
-                                            <a href="#"><i class="fa fa-shopping-cart"></i></a>
+                                            <a class="add-quantily" data-idproduct=<%=product.getId()%> href="#"><i class="fa fa-shopping-cart"></i></a>
+
                                         </li>
                                     </ul>
                                 </div>
