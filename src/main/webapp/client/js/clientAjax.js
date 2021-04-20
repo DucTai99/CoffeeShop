@@ -39,6 +39,21 @@ var client = {
                     change.html(response);
                 }
             })
+        });
+        $('.blankCheckbox').on('click',function (){
+            var idProduct = $(this).data('idproduct');
+            var change = $('.shoping__checkout ul');
+            $.ajax({
+                type: "GET",
+                url: "/CoffeeShop/AjaxAddProductToCartController",
+                data: {
+                    "idProduct": idProduct
+                },
+                success: function (response) {
+                    change.html('');
+                    change.html(response);
+                }
+            })
         })
     }
 }

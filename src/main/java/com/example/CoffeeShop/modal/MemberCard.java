@@ -4,16 +4,16 @@ public class MemberCard {
     private int id;
     private int point;
     private TypeMemberCard typeMemberCard;
-    private UserDetail userDetail;
+   private  User user;
 
     public MemberCard() {
     }
 
-    public MemberCard(int id, int point, TypeMemberCard typeMemberCard, UserDetail userDetail) {
+    public MemberCard(int id, int point, TypeMemberCard typeMemberCard,User user) {
         this.id = id;
         this.point = point;
         this.typeMemberCard = typeMemberCard;
-        this.userDetail = userDetail;
+        this.user = user;
     }
 
     public int getId() {
@@ -40,11 +40,11 @@ public class MemberCard {
         this.typeMemberCard = typeMemberCard;
     }
 
-    public UserDetail getUserDetail() {
-        return userDetail;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserDetail(UserDetail userDetail) {
-        this.userDetail = userDetail;
+    public void setUserDetail(User userDetail) {
+        this.user = userDetail;
     }
 }

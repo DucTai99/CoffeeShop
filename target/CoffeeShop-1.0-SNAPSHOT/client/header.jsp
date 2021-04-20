@@ -115,7 +115,7 @@
                         </div>
                         <div class="header__top__right__auth">
                             <a href="<%=UrlUtils.fullPathClient("signIn.jsp")%>"><i
-                                    class="fa fa-user"></i> <%=(user == null) ? "Login" : user.getAccountName()%>
+                                    class="fa fa-user"></i> <%=(user == null) ? "Login" : user.getUserName()%>
                             </a>
                         </div>
                     </div>

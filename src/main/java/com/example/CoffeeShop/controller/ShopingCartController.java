@@ -1,6 +1,7 @@
 package com.example.CoffeeShop.controller;
 
 import com.example.CoffeeShop.dao.TypeProductDAO;
+import com.example.CoffeeShop.modal.Cart;
 import com.example.CoffeeShop.modal.TypeProduct;
 
 import javax.servlet.*;
@@ -13,7 +14,11 @@ import java.util.List;
 public class ShopingCartController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
         List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
+        int subTotal = cart.subTotalPrice();
+        request.setAttribute("subTotal",subTotal);
         request.setAttribute("listTypeProduct",listTypeProduct);
         request.getRequestDispatcher("client/shopingCart.jsp").forward(request,response);
     }

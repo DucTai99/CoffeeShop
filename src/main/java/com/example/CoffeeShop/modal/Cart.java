@@ -52,7 +52,7 @@ public class Cart {
     public void setNote(String note) {
         this.note = note;
     }
-
+// lấy sp size
     public int getPriceProductSize(ProductsInCart productsInCart) {
         int price = 0;
         for (PriceProduct priceProduct : productsInCart.getProduct().getPriceProducts()) {
@@ -62,7 +62,7 @@ public class Cart {
         }
         return price;
     }
-
+// lấy tổng số lượng sản phẩm số lượng sp trên cart
     public int getAllQuantity() {
         int sum = 0;
         for (ProductsInCart productsInCart : listProductsInCart) {
@@ -93,5 +93,39 @@ public class Cart {
             }
         }
         return total;
+    }
+    public int subTotalPrice(){
+        int subPrice = getAllTotalPriceSelected();
+        return subPrice;
+    }
+
+    public int subTotalPriceWithIdProduct(int idProduct){
+        handleSelectedProductInCart(idProduct);
+        int subPrice = getAllTotalPriceSelected();
+        return subPrice;
+    }
+
+    public int getAllTotalPriceSelected(){
+        int subPrice = 0;
+        for (ProductsInCart productsInCart: listProductsInCart) {
+            if (productsInCart.isSelected()){
+                int price = getPriceProductSize(productsInCart);
+                if (productsInCart.getSale() > 0) {
+                    subPrice = subPrice + (productsInCart.getProduct().getSalePrice(price) * productsInCart.getQuantity());
+                } else {
+                    subPrice = subPrice + (price * productsInCart.getQuantity());
+                }
+            }
+        }
+        return subPrice;
+    }
+
+    public void handleSelectedProductInCart(int idProduct){
+        for (ProductsInCart productsInCart: listProductsInCart) {
+            if (productsInCart.getProduct().getId() == idProduct){
+                productsInCart.setSelected(!productsInCart.isSelected());
+                break;
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ import com.example.CoffeeShop.util.ConnectionUtils;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import java.io.Console;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -27,6 +28,10 @@ public class IndexController extends HttpServlet {
         List<Product> listTopRated = ProductDAO.getTopRatedProduct();
         List<Product> listReview = ProductDAO.getReviewProduct();
         List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
+        //---------------------------------------------
+//        List<Product> listFind = (List<Product>) ProductDAO.findProduct();
+//        request.setAttribute("listFind", listFind);
+        //---------------------------------------------
         request.setAttribute("listLatest",listLatest);
         request.setAttribute("listFavorite",listFavorite);
         request.setAttribute("listTopRated",listTopRated);

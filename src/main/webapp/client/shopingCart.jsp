@@ -17,7 +17,9 @@
 
 <body>
 <%@include file="header.jsp" %>
-
+<%
+    int subTotal = (int) request.getAttribute("subTotal");
+%>
 <!-- Hero Section Begin -->
 <section class="hero hero-normal">
     <div class="container">
@@ -131,6 +133,8 @@
                                     <input
                                             class="form-check-input position-static blankCheckbox"
                                             type="checkbox"
+                                            <%=(productsInCart.isSelected()) ? "checked" : ""%>
+                                            data-idproduct = <%=productsInCart.getProduct().getId()%>
                                             value="option1"
                                             aria-label="..."
                                     />
@@ -171,9 +175,9 @@
                 <div class="shoping__checkout">
                     <h5>Cart Total</h5>
                     <ul>
-                        <li>Subtotal <span><%=vnPrice.format(cart.totalAllProduct())%>đ</span></li>
+                        <li>Subtotal <span><%=vnPrice.format(subTotal)%>đ</span></li>
 <%--                        <li>Sale <span>20%</span></li>--%>
-                        <li>Total <span><%=vnPrice.format(cart.totalAllProduct())%>đ</span></li>
+                        <li>Total <span><%=vnPrice.format(subTotal)%>đ</span></li>
                     </ul>
                     <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
                 </div>
