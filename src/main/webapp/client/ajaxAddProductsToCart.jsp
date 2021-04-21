@@ -53,7 +53,7 @@
                         <%}%>
                     </p>
                 </div>
-                <a href="#" class="material-icons">delete_forever</a>
+                <a href="#" data-idproduct="<%=productsInCart.getProduct().getId()%>" class="material-icons delete-product-nav">delete_forever</a>
             </div>
             <%}%>
         </div>
@@ -66,3 +66,21 @@
     <%}%>
     <%}%>
 </li>
+<script>
+    $('.delete-product-nav').on('click', function (event) {
+        event.preventDefault();
+        var idProduct = $(this).data('idproduct');
+        var change = $('.header__cart ul');
+        $.ajax({
+            type: "GET",
+            url: "/CoffeeShop/AjaxRemoveProductFromCartNavController",
+            data: {
+                "idProduct": idProduct
+            },
+            success: function (response) {
+                change.html('');
+                change.html(response);
+            }
+        });
+    })
+</script>

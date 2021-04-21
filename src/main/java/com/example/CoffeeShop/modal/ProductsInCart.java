@@ -6,18 +6,16 @@ public class ProductsInCart {
     private int sale;
     private int quantity;
     private boolean selected;
-    private boolean bought;
 
     public ProductsInCart() {
     }
 
-    public ProductsInCart(Product product, int idSizeProduct, int sale, int quantity, boolean selected, boolean bought) {
+    public ProductsInCart(Product product, int idSizeProduct, int sale, int quantity, boolean selected) {
         this.product = product;
         this.idSizeProduct = idSizeProduct;
         this.sale = sale;
         this.quantity = quantity;
         this.selected = selected;
-        this.bought = bought;
     }
 
     public Product getProduct() {
@@ -60,13 +58,6 @@ public class ProductsInCart {
         this.selected = selected;
     }
 
-    public boolean isBought() {
-        return bought;
-    }
-
-    public void setBought(boolean bought) {
-        this.bought = bought;
-    }
 
     @Override
     public String toString() {
@@ -76,7 +67,6 @@ public class ProductsInCart {
                 ", sale=" + sale +
                 ", quantity=" + quantity +
                 ", selected=" + selected +
-                ", bought=" + bought +
                 '}';
     }
 }

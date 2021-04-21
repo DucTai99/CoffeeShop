@@ -1,24 +1,19 @@
 package com.example.CoffeeShop.modal;
 
-import com.example.CoffeeShop.dao.ProductDAO;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class Cart {
     private int id;
     private User user;
     private List<ProductsInCart> listProductsInCart;
-    private String note;
 
     public Cart() {
     }
 
-    public Cart(int id, User user, List<ProductsInCart> listProductsInCart, String note) {
+    public Cart(int id, User user, List<ProductsInCart> listProductsInCart) {
         this.id = id;
         this.user = user;
         this.listProductsInCart = listProductsInCart;
-        this.note = note;
     }
 
     public int getId() {
@@ -45,13 +40,6 @@ public class Cart {
         this.listProductsInCart = listProductsInCart;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
 // lấy sp size
     public int getPriceProductSize(ProductsInCart productsInCart) {
         int price = 0;

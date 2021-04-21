@@ -15,7 +15,7 @@
     <%@include file="link.jsp" %>
 </head>
 
-<body>
+<body id="body">
 <%@include file="header.jsp" %>
 <%
     int subTotal = (int) request.getAttribute("subTotal");
@@ -116,7 +116,7 @@
                             </td>
                             <td class="shoping__cart__quantity">
                                 <div class="quantity">
-                                    <div class="pro-qty">
+                                    <div class="pro-qty-cart">
                                         <input type="text" value="<%=productsInCart.getQuantity()%>"/>
                                     </div>
                                 </div>

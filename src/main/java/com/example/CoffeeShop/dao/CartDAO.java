@@ -1,7 +1,6 @@
 package com.example.CoffeeShop.dao;
 
 import com.example.CoffeeShop.modal.Cart;
-import com.example.CoffeeShop.modal.Product;
 import com.example.CoffeeShop.modal.ProductsInCart;
 import com.example.CoffeeShop.modal.User;
 import com.example.CoffeeShop.util.ConnectionUtils;
@@ -15,62 +14,25 @@ import java.util.List;
 
 public class CartDAO {
     public static Cart getCartByUser(User user) {
-        String sql = "SELECT * FROM `cart` AS c INNER JOIN productsincart AS pic ON c.id_cart = pic.cart_id WHERE pic.selected = 0 " +
-                "AND pic.bought = 0 AND c.user_id = ?";
+        String sql = "SELECT * FROM `cart` AS c WHERE c.user_id = ?";
         Connection connection = null;
         Cart cart = null;
-        List<ProductsInCart> listProduct = null;
-        List<Integer> listIdProduct = null;
         try {
             // ket noi voi database
             connection = ConnectionUtils.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, user.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.last();
             cart = new Cart();
-            listProduct = new ArrayList<ProductsInCart>();
-            listIdProduct = new ArrayList<Integer>();
-            while (resultSet.next()) {
-                int idProduct = resultSet.getInt("product_id");
-                boolean productIsExist = false;
-                for (int i = 0; i < listIdProduct.size(); i++) {
-                    if (idProduct == listIdProduct.get(i)) {
-                        productIsExist = true;
-                        break;
-                    }
-                }
-                if (!productIsExist) {
-                    cart.setId(resultSet.getInt("id_cart"));
-                    cart.setUser(user);
-                    cart.setNote("");
-                    ProductsInCart productsInCart = new ProductsInCart();
-                    listIdProduct.add(idProduct);
-                    productsInCart.setIdSizeProduct(resultSet.getInt("size_product_id"));
-                    productsInCart.setSale(resultSet.getInt("sale"));
-                    productsInCart.setQuantity(resultSet.getInt("quantity"));
-                    productsInCart.setSelected((resultSet.getInt("selected") == 1) ? true : false);
-                    productsInCart.setBought((resultSet.getInt("bought") == 1) ? true : false);
-                    listProduct.add(productsInCart);
-                } else {
-                    ProductsInCart productsInCart = new ProductsInCart();
-                    listIdProduct.add(idProduct);
-                    productsInCart.setIdSizeProduct(resultSet.getInt("size_product_id"));
-                    productsInCart.setSale(resultSet.getInt("sale"));
-                    productsInCart.setQuantity(resultSet.getInt("quantity"));
-                    productsInCart.setSelected((resultSet.getInt("selected") == 1) ? true : false);
-                    productsInCart.setBought((resultSet.getInt("bought") == 1) ? true : false);
-                    listProduct.add(productsInCart);
-                }
-            }
-            for (int i = 0; i < listProduct.size(); i++) {
-                listProduct.get(i).setProduct(ProductDAO.getProductById(listIdProduct.get(i)));
-            }
-            cart.setListProductsInCart(listProduct);
+            cart.setId(resultSet.getInt("id_cart"));
+            cart.setUser(user);
+            cart.setListProductsInCart(ProductsInCartDAO.getListProductInCart(resultSet.getInt("id_cart")));
             ConnectionUtils.closeQuietly(connection);
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        } catch (ClassNotFoundException classNotFoundException) {
-            classNotFoundException.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return cart;
     }
@@ -80,14 +42,14 @@ public class CartDAO {
         for (ProductsInCart productsInCart : cart.getListProductsInCart()) {
             if (productsInCart.getProduct().getId() == idProduct) {
                 int quantityTotal = productsInCart.getQuantity() + quantity;
-                if (ProductsInCartDAO.updateProductsInCart(idProduct, cart.getId(), quantityTotal)){
+                if (ProductsInCartDAO.updateProductsInCart(cart.getId(), idProduct, quantityTotal, idSizeProduct)) {
                     isProductInCart = true;
                     return true;
                 }
             }
         }
         if (!isProductInCart) {
-            if (ProductsInCartDAO.insertProductsInCart(idProduct,cart.getId(),idSizeProduct,sale,quantity)){
+            if (ProductsInCartDAO.insertProductsInCart(cart.getId(), idProduct, idSizeProduct, sale, quantity)) {
                 return true;
             }
         }

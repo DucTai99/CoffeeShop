@@ -134,15 +134,6 @@
                 <div class="section-title">
                     <h2>Favorite Product</h2>
                 </div>
-                <!-- <div class="featured__controls">
-                  <ul>
-                    <li class="active" data-filter="*">All</li>
-                    <li data-filter=".oranges">Coffee</li>
-                    <li data-filter=".fresh-meat">Tea</li>
-                    <li data-filter=".fresh-meat">Milk Tea</li>
-                    <li data-filter=".fastfood">Bakery</li>
-                  </ul>
-                </div> -->
             </div>
         </div>
         <div class="row featured__filter">
@@ -168,7 +159,11 @@
                                 ></a>
                             </li>
                             <li>
+                                <%if(cart != null){%>
                                 <a class="add-quantily" data-idproduct=<%=product.getId()%> href="#"><i class="fa fa-shopping-cart"></i></a>
+                                <%} else {%>
+                                <a href="<%=UrlUtils.fullPathClient("signIn.jsp")%>"><i class="fa fa-shopping-cart"></i></a>
+                                <%}%>
                             </li>
                         </ul>
                     </div>

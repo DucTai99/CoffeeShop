@@ -16,15 +16,20 @@ public class ShopingCartController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
-        List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
-        int subTotal = cart.subTotalPrice();
-        request.setAttribute("subTotal",subTotal);
-        request.setAttribute("listTypeProduct",listTypeProduct);
-        request.getRequestDispatcher("client/shopingCart.jsp").forward(request,response);
+        if (cart != null) {
+            List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
+            int subTotal = cart.subTotalPrice();
+            request.setAttribute("subTotal", subTotal);
+            request.setAttribute("listTypeProduct", listTypeProduct);
+            request.getRequestDispatcher("client/shopingCart.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("client/signIn.jsp");
+        }
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request,response);
+        doGet(request, response);
     }
 }

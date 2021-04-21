@@ -403,8 +403,8 @@ public class ProductDAO {
     }
 
     public static List<Integer> getListIdProductTopRated() {
-        String sql = "SELECT pic.product_id, SUM(pic.quantity) AS \"tong_so_luong\" " +
-                "FROM `productsincart` AS pic WHERE bought = 1 GROUP BY pic.product_id " +
+        String sql = "SELECT pib.product_id, SUM(pib.quantity) AS \"tong_so_luong\" " +
+                "FROM `productsinbill` AS pib GROUP BY pib.product_id " +
                 "ORDER BY tong_so_luong DESC";
         List<Integer> listIdProduct = null;
         Connection connection = null;
@@ -430,6 +430,15 @@ public class ProductDAO {
         return listIdProduct;
     }
 
+    public static List<Product> getTopRatedProduct() {
+        List<Product> listProduct = new ArrayList<Product>();
+        List<Integer> listIdProduct = getListIdProductTopRated();
+        for (Integer id : listIdProduct) {
+            listProduct.add(getProductById(id));
+        }
+        int sub = (listProduct.size() > 6 ? 6 : listProduct.size());
+        return listProduct.subList(0, sub);
+    }
 
     public static List<Product> findProduct(String productName) {
         List<Product> listProduct = new ArrayList<Product>();
@@ -441,7 +450,6 @@ public class ProductDAO {
                     "INNER JOIN sizeproduct AS sp ON pp.size_id = sp.id_size_product " +
                     "WHERE p.product_name Like ? ORDER BY p.id_product";
             Connection connection = null;
-
             try {
                 // ket noi voi database
                 connection = ConnectionUtils.getConnection();
@@ -533,15 +541,7 @@ public class ProductDAO {
         return listProduct;
     }
 
-    public static List<Product> getTopRatedProduct() {
-        List<Product> listProduct = new ArrayList<Product>();
-        List<Integer> listIdProduct = getListIdProductTopRated();
-        for (Integer id : listIdProduct) {
-            listProduct.add(getProductById(id));
-        }
-        int sub = (listProduct.size() > 6 ? 6 : listProduct.size());
-        return listProduct.subList(0, sub);
-    }
+
 
     public static List<Product> getReviewProduct() {
         List<Product> listProduct = new ArrayList<Product>(getAllProductWithType(0));

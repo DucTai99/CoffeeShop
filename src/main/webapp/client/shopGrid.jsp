@@ -29,8 +29,6 @@
     int numberOfPage = (int) request.getAttribute("numberOfPage");
     int idType = (int) request.getAttribute("idType");
     int pageCurrent = (int) request.getAttribute("pageCurrent");
-    String pageIndex = (pageCurrent == 1) ? "" : "&page=";
-    String typeIndex = (idType == 0) ? "" : "&idType=";
 %>
 <!-- Hero Section Begin -->
 <section class="hero hero-normal">
@@ -182,8 +180,11 @@
                                                 ></a>
                                             </li>
                                             <li>
+                                                <%if(cart != null){%>
                                                 <a class="add-quantily" data-idproduct=<%=product.getId()%> href="#"><i class="fa fa-shopping-cart"></i></a>
-
+                                                <%} else {%>
+                                                <a href="<%=UrlUtils.fullPathClient("signIn.jsp")%>"><i class="fa fa-shopping-cart"></i></a>
+                                                <%}%>
                                             </li>
                                         </ul>
                                     </div>
@@ -259,8 +260,11 @@
                                             ></a>
                                         </li>
                                         <li>
+                                            <%if(cart != null){%>
                                             <a class="add-quantily" data-idproduct=<%=product.getId()%> href="#"><i class="fa fa-shopping-cart"></i></a>
-
+                                            <%} else {%>
+                                            <a href="<%=UrlUtils.fullPathClient("signIn.jsp")%>"><i class="fa fa-shopping-cart"></i></a>
+                                            <%}%>
                                         </li>
                                     </ul>
                                 </div>

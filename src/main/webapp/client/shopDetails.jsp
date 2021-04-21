@@ -116,6 +116,7 @@
                                     class=<%=(i == 0) ? "'nav-link active'" : "nav-link"%>
                                             id=<%="pills-tab-" + product.getPriceProducts().get(i).getSizeProduct().getSizeName()%>
                                     data-toggle="pill"
+                                    data-idsize="<%=product.getPriceProducts().get(i).getSizeProduct().getId()%>"
                                     href=<%="#pills-"+product.getPriceProducts().get(i).getSizeProduct().getSizeName()%>
                                             role="tab"
                                     aria-controls=<%="pills-"+product.getPriceProducts().get(i).getSizeProduct().getSizeName()%>
@@ -153,7 +154,11 @@
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="primary-btn">ADD TO CARD</a>
+                    <%if(cart != null){%>
+                    <a href="#" data-idproduct="<%=product.getId()%>" class="primary-btn add-products">ADD TO CARD</a>
+                    <%} else {%>
+                    <a href="<%=UrlUtils.fullPathClient("signIn.jsp")%>" class="primary-btn">ADD TO CARD</a>
+                    <%}%>
                     <ul>
                         <li>
                             <b>Shipping</b>
@@ -207,7 +212,11 @@
                                 ></a>
                             </li>
                             <li>
+                                <%if(cart != null){%>
                                 <a class="add-quantily" data-idproduct=<%=p.getId()%> href="#"><i class="fa fa-shopping-cart"></i></a>
+                                <%} else {%>
+                                <a href="<%=UrlUtils.fullPathClient("signIn.jsp")%>"><i class="fa fa-shopping-cart"></i></a>
+                                <%}%>
                             </li>
                         </ul>
                     </div>

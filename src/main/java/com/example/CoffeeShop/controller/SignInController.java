@@ -2,6 +2,7 @@ package com.example.CoffeeShop.controller;
 
 import com.example.CoffeeShop.dao.CartDAO;
 import com.example.CoffeeShop.dao.ProductDAO;
+import com.example.CoffeeShop.dao.ProductsInCartDAO;
 import com.example.CoffeeShop.dao.UserDAO;
 import com.example.CoffeeShop.modal.Cart;
 import com.example.CoffeeShop.modal.Product;

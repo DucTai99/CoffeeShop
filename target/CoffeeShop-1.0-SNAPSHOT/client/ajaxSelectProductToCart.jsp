@@ -1,6 +1,5 @@
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.text.NumberFormat" %>
-<%@ page import="com.example.CoffeeShop.modal.Cart" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     int subTotal = (int) request.getAttribute("subTotal");

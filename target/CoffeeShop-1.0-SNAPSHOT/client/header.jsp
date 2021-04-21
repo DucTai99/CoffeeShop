@@ -163,7 +163,7 @@
                 <div class="header__cart">
                     <ul>
                         <li class="coffee-cart">
-                            <a href="#">
+                            <a href="<%=UrlUtils.pathHost("ShopingCartController")%>">
                                 <p>Cart</p>
                                 <div class="coffee-cart-content">
                                     <i class="fa fa-shopping-cart"></i>
@@ -200,7 +200,7 @@
                                                 <%}%>
                                             </p>
                                         </div>
-                                        <a href="#" class="material-icons">delete_forever</a>
+                                        <a href="#" data-idproduct="<%=productsInCart.getProduct().getId()%>" class="material-icons delete-product-nav">delete_forever</a>
                                     </div>
                                     <%}%>
                                 </div>
