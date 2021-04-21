@@ -18,6 +18,9 @@
 </head>
 
 <body>
+<%
+    List<Bill> listBill = (List<Bill>) request.getAttribute("listBill");
+%>
 <%@include file="header.jsp" %>
 <!-- Hero Section Begin -->
 <section class="hero hero-normal">
@@ -90,7 +93,7 @@
                             <div class="col-lg-12">
                                 <div class="checkout__input">
                                     <p>Full Name<span>*</span></p>
-                                    <input type="text"/>
+                                    <input type="text" value="<%=user.getUserName()%>"/>
                                 </div>
                             </div>
                         </div>
@@ -98,6 +101,7 @@
                             <p>Address<span>*</span></p>
                             <input
                                     type="text"
+                                    value="<%=user.getAddress()%>"
                                     placeholder="Street Address"
                                     class="checkout__input__add"
                             />
@@ -106,13 +110,16 @@
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>Phone<span>*</span></p>
-                                    <input type="text"/>
+                                    <input type="text"
+                                           value="<%=user.getPhone()%>"
+
+                                    />
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>Email<span>*</span></p>
-                                    <input type="text"/>
+                                    <input type="text" value="<%=user.getEmail()%>"/>
                                 </div>
                             </div>
                         </div>
@@ -129,6 +136,7 @@
                 <div class="col-lg-12 col-md-12">
                     <div class="checkout__order">
                         <h4>My Bill</h4>
+                        <%for (Bill bill : listBill) {%>
                         <div
                                 style="
                     border-radius: 10px;
@@ -138,15 +146,16 @@
                         >
                             <div class="checkout__order__products">Bill 1</div>
                             <ul>
-                                <li>Vegetable’s Package <span>$75.99</span></li>
-                                <li>Fresh Vegetable <span>$151.99</span></li>
-                                <li>Organic Bananas <span>$53.99</span></li>
+                                <%for (ProductInBill productInBill : bill.getProductInBill()) {%>
+                                <li><%=productInBill.getProduct().getProductName()%> x <%=productInBill.getQuantity()%> <span><%=vnPrice.format(bill.totalProduct(productInBill))%>đ</span></li>
+                                <%}%>
                                 <li class="checkout__order__total"></li>
                                 <li class="checkout__order__total">
-                                    Total <span>$750.99</span>
+                                    Total <span><%=vnPrice.format(bill.totalAllProduct())%>đ</span>
                                 </li>
                             </ul>
                         </div>
+                        <%}%>
                     </div>
                 </div>
             </div>

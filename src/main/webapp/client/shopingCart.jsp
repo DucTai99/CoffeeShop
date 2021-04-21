@@ -187,7 +187,7 @@
 <%--                        <li>Sale <span>20%</span></li>--%>
                         <li>Total <span><%=vnPrice.format(subTotal)%>đ</span></li>
                     </ul>
-                    <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
+                    <a href="<%=UrlUtils.pathHost("CheckOutController")%>" class="primary-btn">PROCEED TO CHECKOUT</a>
                 </div>
             </div>
         </div>

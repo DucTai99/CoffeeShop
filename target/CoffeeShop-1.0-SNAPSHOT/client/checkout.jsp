@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="java.text.NumberFormat" %>
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
@@ -15,7 +17,9 @@
 
 <body>
 <%@include file="header.jsp" %>
-
+<%--<%--%>
+<%--    int subTotal = (int) request.getAttribute("subTotal");--%>
+<%--%>--%>
 <!-- Hero Section Begin -->
 <section class="hero hero-normal">
     <div class="container">
@@ -109,6 +113,7 @@
                             <p>Address<span>*</span></p>
                             <input
                                     type="text"
+                                    value="<%=user.getAddress()%>"
                                     placeholder="Street Address"
                                     class="checkout__input__add"
                             />
@@ -149,7 +154,7 @@
                                 Products <span>Total</span>
                             </div>
                             <ul>
-                                <li>Vegetable’s Package <span>$75.99</span></li>
+                                <li > <span>$75.99</span></li>
                                 <li>Fresh Vegetable <span>$151.99</span></li>
                                 <li>Organic Bananas <span>$53.99</span></li>
                             </ul>

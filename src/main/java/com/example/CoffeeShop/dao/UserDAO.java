@@ -78,6 +78,10 @@ public class UserDAO {
         return user;
     }
 
+    public static void updateUserById(int idUser){
+
+    }
+
     public static boolean userIsExist(String accountName, String accountPassword) {
         String sql = "SELECT * FROM `user` AS u WHERE u.account_name = ? AND u.account_password = ? AND u.actived = 1";
         Connection connection = null;
