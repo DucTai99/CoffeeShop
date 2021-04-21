@@ -113,10 +113,19 @@
                                 <li><a class="en-UK" href="#">English</a></li>
                             </ul>
                         </div>
-                        <div class="header__top__right__auth">
-                            <a href="<%=UrlUtils.fullPathClient("signIn.jsp")%>"><i
-                                    class="fa fa-user"></i> <%=(user == null) ? "Login" : user.getUserName()%>
+                        <div class="header__top__right__auth" style="display: inline-flex">
+                            <%if (user == null){%>
+                            <a href="<%=UrlUtils.fullPathClient("signIn.jsp")%>">
+                                <i class="fa fa-user"></i> Login
                             </a>
+                            <%}else {%>
+                            <a href="<%=UrlUtils.pathHost("MyAccountController")%>" style="display: inline-block; margin-right: 5px">
+                                <i class="fa fa-user"></i> <%=user.getUserName()%>
+                            </a>
+                            <a href="<%=UrlUtils.pathHost("LogOutController")%>" style="font-size: 20px" class="material-icons">
+                                logout
+                            </a>
+                            <%}%>
                         </div>
                     </div>
                 </div>

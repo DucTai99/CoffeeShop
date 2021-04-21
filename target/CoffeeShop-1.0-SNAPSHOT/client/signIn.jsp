@@ -40,7 +40,7 @@
                     <figure>
                         <img src=<%=UrlUtils.fullPathClient("img/signin.jpg")%> alt="sing-up-image"/>
                     </figure>
-                    <a href="#" class="signup-image-link">Create an account</a>
+                    <a href="<%=UrlUtils.fullPathClient("signUp.jsp")%>" class="signup-image-link">Create an account</a>
                 </div>
 
                 <div class="signin-form">
@@ -58,7 +58,7 @@
                                     type="text"
                                     name="your_name"
                                     id="your_name"
-                                    placeholder="Your Name"
+                                    placeholder="Your Account Name"
                             />
                         </div>
                         <div class="form-group">

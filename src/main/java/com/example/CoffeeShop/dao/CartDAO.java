@@ -5,10 +5,7 @@ import com.example.CoffeeShop.modal.ProductsInCart;
 import com.example.CoffeeShop.modal.User;
 import com.example.CoffeeShop.util.ConnectionUtils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +33,22 @@ public class CartDAO {
         }
         return cart;
     }
-
+    public static void insertCart(User user) {
+        String sql = "INSERT INTO `cart` (user_id) VALUES (?);";
+        Connection connection = null;
+        try {
+            // ket noi voi database
+            connection = ConnectionUtils.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, user.getId());
+            preparedStatement.executeUpdate();
+            ConnectionUtils.closeQuietly(connection);
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        } catch (ClassNotFoundException classNotFoundException) {
+            classNotFoundException.printStackTrace();
+        }
+    }
     public static boolean addProductToCart(Cart cart, int idProduct, int quantity, int idSizeProduct, int sale) {
         boolean isProductInCart = false;
         for (ProductsInCart productsInCart : cart.getListProductsInCart()) {

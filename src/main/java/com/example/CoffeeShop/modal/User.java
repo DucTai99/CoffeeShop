@@ -9,7 +9,7 @@ public class User {
     private Role role;
     private String userName;
     private String email;
-    private int phone;
+    private String phone;
     private String address;
     private boolean actived;
     private Date createDate;
@@ -17,7 +17,7 @@ public class User {
     public User() {
     }
 
-    public User(int id, String accountName, String accountPassword, Role role, String userName, String email, int phone, String address, boolean actived, Date createDate) {
+    public User(int id, String accountName, String accountPassword, Role role, String userName, String email, String phone, String address, boolean actived, Date createDate) {
         this.id = id;
         this.accountName = accountName;
         this.accountPassword = accountPassword;
@@ -78,11 +78,11 @@ public class User {
         this.email = email;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

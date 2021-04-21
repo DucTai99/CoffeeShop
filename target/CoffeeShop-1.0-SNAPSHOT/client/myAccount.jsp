@@ -1,3 +1,7 @@
+<%@ page import="com.example.CoffeeShop.modal.Product" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="java.text.NumberFormat" %>
+<%@ page import="com.example.CoffeeShop.modal.SizeProduct" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -15,7 +19,6 @@
 
 <body>
 <%@include file="header.jsp" %>
-
 <!-- Hero Section Begin -->
 <section class="hero hero-normal">
     <div class="container">
@@ -63,10 +66,10 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
-                    <h2>Checkout</h2>
+                    <h2>My Account</h2>
                     <div class="breadcrumb__option">
                         <a href="<%=UrlUtils.pathHost("IndexController")%>">Home</a>
-                        <span>Checkout</span>
+                        <span>My Account</span>
                     </div>
                 </div>
             </div>
@@ -75,32 +78,18 @@
 </section>
 <!-- Breadcrumb Section End -->
 
-<!-- Checkout Section Begin -->
+<!-- My Account Section Begin -->
 <section class="checkout spad">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h6>
-                    <span class="icon_tag_alt"></span> Have a coupon?
-                    <a href="#">Click here</a> to enter your code
-                </h6>
-            </div>
-        </div>
         <div class="checkout__form">
-            <h4>Billing Details</h4>
+            <h4>My Information</h4>
             <form action="#">
                 <div class="row">
-                    <div class="col-lg-8 col-md-6">
+                    <div class="col-lg-12 col-md-12">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="checkout__input">
-                                    <p>Fist Name<span>*</span></p>
-                                    <input type="text"/>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="checkout__input">
-                                    <p>Last Name<span>*</span></p>
+                                    <p>Full Name<span>*</span></p>
                                     <input type="text"/>
                                 </div>
                             </div>
@@ -127,81 +116,48 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="checkout__input__checkbox">
-                          <label for="diff-acc">
-                            Ship to a different address?
-                            <input type="checkbox" id="diff-acc" />
-                            <span class="checkmark"></span>
-                          </label>
-                        </div> -->
-                        <div class="checkout__input">
-                            <p>Order notes<span>*</span></p>
-                            <input
-                                    type="text"
-                                    placeholder="Notes about your order, e.g. special notes for delivery."
-                            />
-                        </div>
                     </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="checkout__order">
-                            <h4>Your Order</h4>
-                            <div class="checkout__order__products">
-                                Products <span>Total</span>
-                            </div>
+                </div>
+                <input
+                        type="submit"
+                        class="site-btn"
+                        value="UPDATE INFORMATION"
+                        style="width: 100%; margin-bottom: 20px"
+                />
+            </form>
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="checkout__order">
+                        <h4>My Bill</h4>
+                        <div
+                                style="
+                    border-radius: 10px;
+                    border: 1px solid #e1e1e1;
+                    padding: 10px;
+                  "
+                        >
+                            <div class="checkout__order__products">Bill 1</div>
                             <ul>
                                 <li>Vegetable’s Package <span>$75.99</span></li>
                                 <li>Fresh Vegetable <span>$151.99</span></li>
                                 <li>Organic Bananas <span>$53.99</span></li>
+                                <li class="checkout__order__total"></li>
+                                <li class="checkout__order__total">
+                                    Total <span>$750.99</span>
+                                </li>
                             </ul>
-                            <div class="checkout__order__subtotal">
-                                Subtotal <span>$750.99</span>
-                            </div>
-                            <div
-                                    class="checkout__order__subtotal"
-                                    style="border-top: none; padding-top: 0px"
-                            >
-                                Sale <span>1%</span>
-                            </div>
-                            <div class="checkout__order__total">
-                                Total <span>$750.99</span>
-                            </div>
-                            <form action="">
-                                <div class="checkout__order__products">Payment</div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="payment">
-                                        Cash
-                                        <input type="checkbox" id="payment"/>
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="paypal">
-                                        Paypal
-                                        <input type="checkbox" id="paypal"/>
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <input
-                                        type="submit"
-                                        class="site-btn"
-                                        value="PLACE ORDER"
-                                        style="width: 100%"
-                                />
-                                <!-- <button type="submit" >PLACE ORDER</button> -->
-                            </form>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </section>
-<!-- Checkout Section End -->
+<!-- My Account Section End -->
 
 <!-- Footer Section Begin -->
 <%@include file="footer.jsp" %>
 <!-- Footer Section End -->
-
 <!-- Js Plugins -->
 <%@include file="script.jsp" %>
 </body>

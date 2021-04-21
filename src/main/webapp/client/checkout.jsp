@@ -27,10 +27,11 @@
                         <span>All departments</span>
                     </div>
                     <ul>
-                        <li><a href="#">Coffee</a></li>
-                        <li><a href="#">Tea</a></li>
-                        <li><a href="#">Milk Tea</a></li>
-                        <li><a href="#">Bakery</a></li>
+                        <%for (TypeProduct typeProduct : listTypeProduct) {%>
+                        <li>
+                            <a href="<%=UrlUtils.pathHost("ShopGridController?idType=" + typeProduct.getId())+"#targetProduct"%>"><%=typeProduct.getTypeProduct()%>
+                            </a></li>
+                        <%}%>
                     </ul>
                 </div>
             </div>
