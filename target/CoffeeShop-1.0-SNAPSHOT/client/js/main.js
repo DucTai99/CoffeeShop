@@ -202,9 +202,9 @@
     /*-------------------
 		Quantity change
 	--------------------- */
-    var proQtyCart = $('.pro-qty-cart');
-    proQtyCart.prepend('<span class="dec qtybtn">-</span>');
-    proQtyCart.append('<span class="inc qtybtn">+</span>');
+    // var proQtyCart = $('.pro-qty-cart');
+    // proQtyCart.prepend('<span class="dec qtybtn">-</span>');
+    // proQtyCart.append('<span class="inc qtybtn">+</span>');
     var proQty = $('.pro-qty');
     proQty.prepend('<span class="dec qtybtn">-</span>');
     proQty.append('<span class="inc qtybtn">+</span>');
@@ -227,6 +227,24 @@
         }
         $button.parent().find('input').val(newVal);
 
+    });
+    $('.pro-qty-cart').on('click', '.qtybtn', function () {
+        var oldValue = $(this).parent().find('.quantity-product').val();
+        if ($(this).hasClass('inc')) {
+            if (oldValue < 30) {
+                var newVal = parseFloat(oldValue) + 1;
+            } else {
+                newVal = 30;
+            }
+        } else {
+            // Don't allow decrementing below zero
+            if (oldValue > 1) {
+                var newVal = parseFloat(oldValue) - 1;
+            } else {
+                newVal = 1;
+            }
+        }
+        $(this).parent().find('.quantity-product').val(newVal);
     });
 
 })(jQuery);

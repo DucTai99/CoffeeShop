@@ -1,8 +1,11 @@
 package com.example.CoffeeShop.controller;
 
+import com.example.CoffeeShop.dao.CartDAO;
+import com.example.CoffeeShop.dao.ProductsInCartDAO;
 import com.example.CoffeeShop.dao.TypeProductDAO;
 import com.example.CoffeeShop.modal.Cart;
 import com.example.CoffeeShop.modal.TypeProduct;
+import com.example.CoffeeShop.modal.User;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -16,20 +19,62 @@ public class ShopingCartController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
+        User user = (User) session.getAttribute("user");
         if (cart != null) {
-            List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
-            int subTotal = cart.subTotalPrice();
-            request.setAttribute("subTotal", subTotal);
-            request.setAttribute("listTypeProduct", listTypeProduct);
-            request.getRequestDispatcher("client/shopingCart.jsp").forward(request, response);
+            if (request.getParameter("deleteAll") != null) {
+                ProductsInCartDAO.removeAllProductsInCart(cart.getId());
+                Cart cartNew = CartDAO.getCartByUser(user);
+                List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
+                int subTotal = cartNew.subTotalPrice();
+                session.setAttribute("cart", cartNew);
+                request.setAttribute("subTotal", subTotal);
+                request.setAttribute("listTypeProduct", listTypeProduct);
+                request.getRequestDispatcher("client/shopingCart.jsp").forward(request, response);
+            } else {
+                List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
+                int subTotal = cart.subTotalPrice();
+                request.setAttribute("subTotal", subTotal);
+                request.setAttribute("listTypeProduct", listTypeProduct);
+                request.getRequestDispatcher("client/shopingCart.jsp").forward(request, response);
+            }
+
         } else {
             response.sendRedirect("client/signIn.jsp");
         }
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
+        User user = (User) session.getAttribute("user");
+        if (cart != null) {
+            int idProduct = Integer.parseInt(request.getParameter("idProduct"));
+            int idSizeProduct = Integer.parseInt(request.getParameter("idSizeProduct"));
+            if (request.getParameter("quantity") != null) {
+                int quantity = Integer.parseInt(request.getParameter("quantity"));
+                CartDAO.updateQuantity(cart, idProduct, quantity, idSizeProduct);
+                Cart cartNew = CartDAO.getCartByUser(user);
+                List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
+                int subTotal = cartNew.subTotalPrice();
+                session.setAttribute("cart", cartNew);
+                request.setAttribute("subTotal", subTotal);
+                request.setAttribute("listTypeProduct", listTypeProduct);
+                request.getRequestDispatcher("client/shopingCart.jsp").forward(request, response);
+            } else {
+                if (ProductsInCartDAO.removeProductsInCart(cart.getId(), idProduct)) {
+                    Cart cartNew = CartDAO.getCartByUser(user);
+                    List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
+                    int subTotal = cartNew.subTotalPrice();
+                    session.setAttribute("cart", cartNew);
+                    request.setAttribute("subTotal", subTotal);
+                    request.setAttribute("listTypeProduct", listTypeProduct);
+                    request.getRequestDispatcher("client/shopingCart.jsp").forward(request, response);
+                }
+            }
+
+        } else {
+            response.sendRedirect("client/signIn.jsp");
+        }
     }
 }

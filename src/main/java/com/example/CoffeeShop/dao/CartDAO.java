@@ -68,4 +68,8 @@ public class CartDAO {
         return false;
     }
 
+    public static void updateQuantity(Cart cart, int idProduct, int quantity, int idSizeProduct){
+        if (ProductsInCartDAO.updateProductsInCart(cart.getId(), idProduct, quantity, idSizeProduct)) {
+        }
+    }
 }

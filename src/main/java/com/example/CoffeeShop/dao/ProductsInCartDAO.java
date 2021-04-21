@@ -127,4 +127,20 @@ public class ProductsInCartDAO {
         }
         return result;
     }
+    public static void removeAllProductsInCart(int cartId){
+        String sql = "DELETE FROM productsincart WHERE cart_id = ?";
+        Connection connection = null;
+        try {
+            // ket noi voi database
+            connection = ConnectionUtils.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,cartId);
+            preparedStatement.executeUpdate();
+            ConnectionUtils.closeQuietly(connection);
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        } catch (ClassNotFoundException classNotFoundException) {
+            classNotFoundException.printStackTrace();
+        }
+    }
 }

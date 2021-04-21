@@ -15,7 +15,7 @@
     <%@include file="link.jsp" %>
 </head>
 
-<body id="body">
+<body>
 <%@include file="header.jsp" %>
 <%
     int subTotal = (int) request.getAttribute("subTotal");
@@ -85,6 +85,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="shoping__cart__table">
+                    <%if (cart.getListProductsInCart().size() > 0){%>
                     <table>
                         <thead>
                         <tr>
@@ -116,9 +117,15 @@
                             </td>
                             <td class="shoping__cart__quantity">
                                 <div class="quantity">
-                                    <div class="pro-qty-cart">
-                                        <input type="text" value="<%=productsInCart.getQuantity()%>"/>
-                                    </div>
+                                    <form action="<%=UrlUtils.pathHost("ShopingCartController")%>" method="POST">
+                                        <input type="hidden" name="idProduct" value="<%=productsInCart.getProduct().getId()%>">
+                                        <input type="hidden" name="idSizeProduct" value="<%=productsInCart.getIdSizeProduct()%>">
+                                        <div class="pro-qty-cart">
+                                            <input type="submit" class="dec qtybtn" value="-">
+                                            <input class="quantity-product" type="text" name="quantity" value="<%=productsInCart.getQuantity()%>"/>
+                                            <input type="submit" class="inc qtybtn" value="+">
+                                        </div>
+                                    </form>
                                 </div>
                             </td>
                             <td class="shoping__cart__total"><%=vnPrice.format(cart.totalProduct(productsInCart))%>đ</td>
@@ -135,20 +142,27 @@
                                 </div>
                             </td>
                             <td class="shoping__cart__item__close">
-                                <span class="icon_close"></span>
+                                <form action="<%=UrlUtils.pathHost("ShopingCartController")%>" method="POST">
+                                    <input type="hidden" name="idProduct" value="<%=productsInCart.getProduct().getId()%>">
+                                    <input type="hidden" name="idSizeProduct" value="<%=productsInCart.getIdSizeProduct()%>">
+                                    <button style="background: transparent; border: none; width: 15px" type="submit" class="icon_close"></button>
+                                </form>
                             </td>
                         </tr>
 
                         <%}%>
                         </tbody>
                     </table>
+                    <%} else {%>
+                    <h3 style="color: red;margin-bottom: 20px; text-align: center">Hiện không có sản phẩm trong giỏ hàng</h3>
+                    <%}%>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="shoping__cart__btns">
-                    <a href="#" class="primary-btn cart-btn">Delete All</a>
+                    <a href="<%=UrlUtils.pathHost("ShopingCartController?deleteAll=true")%>" class="primary-btn cart-btn">Delete All</a>
                     <a href="<%=UrlUtils.pathHost("ShopGridController")%>" class="primary-btn cart-btn cart-btn-right"
                     ><span class="icon_loading"></span> Continue Shopping</a
                     >

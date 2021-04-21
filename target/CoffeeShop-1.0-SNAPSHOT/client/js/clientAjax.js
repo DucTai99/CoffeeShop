@@ -127,24 +127,6 @@ var client = {
                 }
             });
         });
-        $('.pro-qty-cart').on('click', '.qtybtn', function () {
-            var oldValue = $(this).parent().find('input').val();
-            if ($(this).hasClass('inc')) {
-                if (oldValue < 30) {
-                    var newVal = parseFloat(oldValue) + 1;
-                } else {
-                    newVal = 30;
-                }
-            } else {
-                // Don't allow decrementing below zero
-                if (oldValue > 1) {
-                    var newVal = parseFloat(oldValue) - 1;
-                } else {
-                    newVal = 1;
-                }
-            }
-            $(this).parent().find('input').val(newVal);
-        });
     }
 }
 client.init();
