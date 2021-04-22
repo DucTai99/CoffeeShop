@@ -86,14 +86,17 @@
     <div class="container">
         <div class="checkout__form">
             <h4>My Information</h4>
-            <form action="#">
+            <%if (request.getAttribute("message") != null){%>
+            <h5 style="color: red;text-align: center"><%=request.getAttribute("message")%></h5>
+            <%}%>
+            <form action="<%=UrlUtils.pathHost("UpdateInformationController")%>" method="POST">
                 <div class="row">
                     <div class="col-lg-12 col-md-12">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="checkout__input">
                                     <p>Full Name<span>*</span></p>
-                                    <input type="text" value="<%=user.getUserName()%>"/>
+                                    <input type="text" name="name" value="<%=user.getUserName()%>"/>
                                 </div>
                             </div>
                         </div>
@@ -102,6 +105,7 @@
                             <input
                                     type="text"
                                     value="<%=user.getAddress()%>"
+                                    name="address"
                                     placeholder="Street Address"
                                     class="checkout__input__add"
                             />
@@ -111,6 +115,7 @@
                                 <div class="checkout__input">
                                     <p>Phone<span>*</span></p>
                                     <input type="text"
+                                           name="phone"
                                            value="<%=user.getPhone()%>"
 
                                     />
@@ -119,7 +124,7 @@
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>Email<span>*</span></p>
-                                    <input type="text" value="<%=user.getEmail()%>"/>
+                                    <input type="text" name="email" value="<%=user.getEmail()%>"/>
                                 </div>
                             </div>
                         </div>
@@ -136,22 +141,28 @@
                 <div class="col-lg-12 col-md-12">
                     <div class="checkout__order">
                         <h4>My Bill</h4>
+
                         <%for (Bill bill : listBill) {%>
                         <div
                                 style="
                     border-radius: 10px;
                     border: 1px solid #e1e1e1;
+                    margin-bottom: 20px;
                     padding: 10px;
                   "
                         >
-                            <div class="checkout__order__products">Bill 1</div>
+                            <div class="checkout__order__products">Bill - <%=bill.getCreateDate()%></div>
                             <ul>
-                                <%for (ProductInBill productInBill : bill.getProductInBill()) {%>
+                                <%for (ProductInBill productInBill : bill.getListproductInBill()) {%>
                                 <li><%=productInBill.getProduct().getProductName()%> x <%=productInBill.getQuantity()%> <span><%=vnPrice.format(bill.totalProduct(productInBill))%>đ</span></li>
                                 <%}%>
-                                <li class="checkout__order__total"></li>
                                 <li class="checkout__order__total">
-                                    Total <span><%=vnPrice.format(bill.totalAllProduct())%>đ</span>
+                                    <%if(bill.getSalePercent() > 0){%>
+                                    Sale <span><%=bill.getSalePercent()%>%</span>
+                                    <%}%>
+                                </li>
+                                <li class="checkout__order__total">
+                                    Total <span><%=vnPrice.format(bill.getTotal())%>đ</span>
                                 </li>
                             </ul>
                         </div>

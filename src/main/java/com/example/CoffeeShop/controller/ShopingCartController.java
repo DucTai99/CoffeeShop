@@ -26,14 +26,22 @@ public class ShopingCartController extends HttpServlet {
                 Cart cartNew = CartDAO.getCartByUser(user);
                 List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
                 int subTotal = cartNew.subTotalPrice();
-                session.setAttribute("cart", cartNew);
+                int saleCode = (cart.getSaleCode() == null) ? 0 : cart.getSaleCode().getSale();
+                int total = cart.totalWithSaleCode();
                 request.setAttribute("subTotal", subTotal);
+                request.setAttribute("saleCode", saleCode);
+                request.setAttribute("total", total);
+                session.setAttribute("cart", cartNew);
                 request.setAttribute("listTypeProduct", listTypeProduct);
                 request.getRequestDispatcher("client/shopingCart.jsp").forward(request, response);
             } else {
                 List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
                 int subTotal = cart.subTotalPrice();
+                int saleCode = (cart.getSaleCode() == null) ? 0 : cart.getSaleCode().getSale();
+                int total = cart.totalWithSaleCode();
                 request.setAttribute("subTotal", subTotal);
+                request.setAttribute("saleCode", saleCode);
+                request.setAttribute("total", total);
                 request.setAttribute("listTypeProduct", listTypeProduct);
                 request.getRequestDispatcher("client/shopingCart.jsp").forward(request, response);
             }
@@ -57,8 +65,12 @@ public class ShopingCartController extends HttpServlet {
                 Cart cartNew = CartDAO.getCartByUser(user);
                 List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
                 int subTotal = cartNew.subTotalPrice();
-                session.setAttribute("cart", cartNew);
+                int saleCode = (cartNew.getSaleCode() == null) ? 0 : cartNew.getSaleCode().getSale();
+                int total = cartNew.totalWithSaleCode();
                 request.setAttribute("subTotal", subTotal);
+                request.setAttribute("saleCode", saleCode);
+                request.setAttribute("total", total);
+                session.setAttribute("cart", cartNew);
                 request.setAttribute("listTypeProduct", listTypeProduct);
                 request.getRequestDispatcher("client/shopingCart.jsp").forward(request, response);
             } else {
@@ -66,8 +78,12 @@ public class ShopingCartController extends HttpServlet {
                     Cart cartNew = CartDAO.getCartByUser(user);
                     List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
                     int subTotal = cartNew.subTotalPrice();
-                    session.setAttribute("cart", cartNew);
+                    int saleCode = (cartNew.getSaleCode() == null) ? 0 : cartNew.getSaleCode().getSale();
+                    int total = cartNew.totalWithSaleCode();
                     request.setAttribute("subTotal", subTotal);
+                    request.setAttribute("saleCode", saleCode);
+                    request.setAttribute("total", total);
+                    session.setAttribute("cart", cartNew);
                     request.setAttribute("listTypeProduct", listTypeProduct);
                     request.getRequestDispatcher("client/shopingCart.jsp").forward(request, response);
                 }

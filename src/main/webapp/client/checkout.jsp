@@ -19,7 +19,11 @@
 <%@include file="header.jsp" %>
 <%
     int subTotal = (int) request.getAttribute("subTotal");
+    int saleCode = (int) request.getAttribute("saleCode");
+    int idSale = (int) request.getAttribute("idSale");
+    int total = (int) request.getAttribute("total");
     List<ProductsInCart> listProduct = (List<ProductsInCart>) request.getAttribute("listProductSelect");
+    String message = (String) request.getAttribute("message");
 %>
 <!-- Hero Section Begin -->
 <section class="hero hero-normal">
@@ -93,14 +97,17 @@
         </div>
         <div class="checkout__form">
             <h4>Billing Details</h4>
-            <form action="<%=UrlUtils.pathHost("MessageCheckOutController")%>" method="POST" >
+            <%if (request.getAttribute("message") != null){%>
+            <h5 style="color: red;text-align: center"><%=message%></h5>
+            <%}%>
+            <form action="<%=UrlUtils.pathHost("MessageCheckOutController")%>" method="POST">
                 <div class="row">
                     <div class="col-lg-8 col-md-6">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="checkout__input">
                                     <p>Full Name<span>*</span></p>
-                                    <input type="text" name="name" value="<%=user.getUserName()%>"/>
+                                    <input required type="text" name="name" value="<%=user.getUserName()%>"/>
                                 </div>
                             </div>
                         </div>
@@ -110,6 +117,7 @@
                                     type="text"
                                     value="<%=user.getAddress()%>"
                                     name="address"
+                                    required
                                     placeholder="Street Address"
                                     class="checkout__input__add"
                             />
@@ -118,13 +126,13 @@
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>Phone<span>*</span></p>
-                                    <input type="text" name="phone" value="<%=user.getPhone()%>"/>
+                                    <input required type="text" name="phone" value="<%=user.getPhone()%>"/>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>Email<span>*</span></p>
-                                    <input type="text" name="email" value="<%=user.getEmail()%>"/>
+                                    <input type="email" required name="email" value="<%=user.getEmail()%>"/>
                                 </div>
                             </div>
                         </div>
@@ -139,7 +147,7 @@
                             <p>Order notes<span>*</span></p>
                             <input
                                     type="text"
-                                    name = "note"
+                                    name="note"
                                     placeholder="Notes about your order, e.g. special notes for delivery."
                             />
                         </div>
@@ -152,38 +160,41 @@
                             </div>
                             <ul>
                                 <%for (ProductsInCart productsInCart : listProduct) {%>
-                                <li><%=productsInCart.getProduct().getProductName()%> x <%=productsInCart.getQuantity()%> <span><%=vnPrice.format(cart.totalProduct(productsInCart))%>đ</span></li>
+                                <li><%=productsInCart.getProduct().getProductName()%>
+                                    x <%=productsInCart.getQuantity()%>
+                                    <span><%=vnPrice.format(cart.totalProduct(productsInCart))%>đ</span></li>
                                 <%}%>
                             </ul>
                             <div class="checkout__order__subtotal">
                                 Subtotal <span><%=vnPrice.format(subTotal)%>đ</span>
+                                <input type="hidden" name="subtotal" value="<%=subTotal%>"/>
                             </div>
-<%--                            <%if ()%>--%>
-<%--                            <div--%>
-<%--                                    class="checkout__order__subtotal"--%>
-<%--                                    style="border-top: none; padding-top: 0px"--%>
-<%--                            >--%>
-<%--                                Sale <span>1%</span>--%>
-<%--                            </div>--%>
+                            <%if (saleCode != 0){%>
+                            <div class="checkout__order__subtotal" style="border-top: none; padding-top: 0px">
+                                Sale <span><%=saleCode%>%</span>
+                                <input type="hidden" name="sale" value="<%=idSale%>"/>
+                            </div>
+                            <%}%>
                             <div class="checkout__order__total">
-                                Total <span><%=vnPrice.format(subTotal)%>đ</span>
+                                Total <span><%=vnPrice.format(total)%>đ</span>
+                                <input type="hidden" name="total" value="<%=total%>"/>
                             </div>
                             <form action="">
                                 <div class="checkout__order__products">Payment</div>
                                 <div class="checkout__input__checkbox">
-<%--                                    <label for="payment">--%>
-                                        Cash
-<%--                                        <input type="checkbox" id="payment"/>--%>
-<%--                                        <span class="checkmark"></span>--%>
-<%--                                    </label>--%>
+                                    <%--                                    <label for="payment">--%>
+                                    Cash
+                                    <%--                                        <input type="checkbox" id="payment"/>--%>
+                                    <%--                                        <span class="checkmark"></span>--%>
+                                    <%--                                    </label>--%>
                                 </div>
-<%--                                <div class="checkout__input__checkbox">--%>
-<%--                                    <label for="paypal">--%>
-<%--                                        Paypal--%>
-<%--                                        <input type="checkbox" id="paypal"/>--%>
-<%--                                        <span class="checkmark"></span>--%>
-<%--                                    </label>--%>
-<%--                                </div>--%>
+                                <%--                                <div class="checkout__input__checkbox">--%>
+                                <%--                                    <label for="paypal">--%>
+                                <%--                                        Paypal--%>
+                                <%--                                        <input type="checkbox" id="paypal"/>--%>
+                                <%--                                        <span class="checkmark"></span>--%>
+                                <%--                                    </label>--%>
+                                <%--                                </div>--%>
                                 <input
                                         type="submit"
                                         class="site-btn"

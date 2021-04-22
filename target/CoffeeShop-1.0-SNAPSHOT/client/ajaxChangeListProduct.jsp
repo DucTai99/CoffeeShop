@@ -3,7 +3,8 @@
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.text.NumberFormat" %>
 <%@ page import="com.example.CoffeeShop.modal.TypeProduct" %>
-<%@ page import="com.example.CoffeeShop.util.UrlUtils" %><%--
+<%@ page import="com.example.CoffeeShop.util.UrlUtils" %>
+<%@ page import="com.example.CoffeeShop.modal.Cart" %><%--
   Created by IntelliJ IDEA.
   User: ASUS
   Date: 4/2/2021
@@ -15,6 +16,7 @@
     List<Product> listProductType = (List<Product>) request.getAttribute("listProductType");
     List<Product> listProductPage = (List<Product>) request.getAttribute("listProductPage");
     List<TypeProduct> listTypeProduct = (List<TypeProduct>) request.getAttribute("listTypeProduct");
+    Cart cart = (Cart) session.getAttribute("cart");
     int numberOfPage = (int) request.getAttribute("numberOfPage");
     int idType = (int) request.getAttribute("idType");
     int pageCurrent = (int) request.getAttribute("pageCurrent");
@@ -73,7 +75,11 @@
                         ></a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
+                        <%if(cart != null){%>
+                        <a class="add-quantily" data-idproduct=<%=product.getId()%> href="#"><i class="fa fa-shopping-cart"></i></a>
+                        <%} else {%>
+                        <a href="<%=UrlUtils.fullPathClient("signIn.jsp")%>"><i class="fa fa-shopping-cart"></i></a>
+                        <%}%>
                     </li>
                 </ul>
             </div>

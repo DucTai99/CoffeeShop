@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class UserDAO {
     public static User getUserById(int idUser) {
-        String sql = "SELECT * FROM `user` AS u INNER JOIN userdetail AS ud ON u.id_user = ud.user_id INNER JOIN role AS r ON u.role = r.id_role WHERE u.id_user = ?";
+        String sql = "SELECT * FROM `user` AS u INNER JOIN role AS r ON u.role = r.id_role WHERE u.id_user = ?";
         Connection connection = null;
         User user = null;
         try {
@@ -29,7 +29,7 @@ public class UserDAO {
             role.setId(resultSet.getInt("id_role"));
             role.setRoleName(resultSet.getString("role_name"));
             user.setRole(role);
-            user.setUserName(resultSet.getString("user_detail_name"));
+            user.setUserName(resultSet.getString("user_name"));
             user.setEmail(resultSet.getString("email"));
             user.setPhone(resultSet.getString("phone"));
             user.setAddress(resultSet.getString("address"));
@@ -78,8 +78,25 @@ public class UserDAO {
         return user;
     }
 
-    public static void updateUserById(int idUser){
-
+    public static void updateUserById(int idUser,String userName, String email, String phone, String address){
+        String sql = "UPDATE user SET user_name = ?, email = ?, phone = ?, address = ? WHERE id_user = ?";
+        Connection connection = null;
+        try {
+            // ket noi voi database
+            connection = ConnectionUtils.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, userName);
+            preparedStatement.setString(2, email);
+            preparedStatement.setString(3,phone);
+            preparedStatement.setString(4,address);
+            preparedStatement.setInt(5,idUser);
+            preparedStatement.executeUpdate();
+            ConnectionUtils.closeQuietly(connection);
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        } catch (ClassNotFoundException classNotFoundException) {
+            classNotFoundException.printStackTrace();
+        }
     }
 
     public static boolean userIsExist(String accountName, String accountPassword) {

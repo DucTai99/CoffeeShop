@@ -6,6 +6,7 @@ public class Cart {
     private int id;
     private User user;
     private List<ProductsInCart> listProductsInCart;
+    private SaleCode saleCode;
 
     public Cart() {
     }
@@ -40,7 +41,15 @@ public class Cart {
         this.listProductsInCart = listProductsInCart;
     }
 
-// lấy sp size
+    public SaleCode getSaleCode() {
+        return saleCode;
+    }
+
+    public void setSaleCode(SaleCode saleCode) {
+        this.saleCode = saleCode;
+    }
+
+    // lấy sp size
     public int getPriceProductSize(ProductsInCart productsInCart) {
         int price = 0;
         for (PriceProduct priceProduct : productsInCart.getProduct().getPriceProducts()) {
@@ -115,5 +124,12 @@ public class Cart {
                 break;
             }
         }
+    }
+
+    public int totalWithSaleCode(){
+        int sale = (this.saleCode == null) ? 0 : this.saleCode.getSale();
+        double salePercent = (100.0 - sale) / 100.0;
+        int price = (int) Math.ceil(subTotalPrice() * salePercent);
+        return price;
     }
 }

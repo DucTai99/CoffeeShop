@@ -19,6 +19,8 @@
 <%@include file="header.jsp" %>
 <%
     int subTotal = (int) request.getAttribute("subTotal");
+    int saleCode = (int) request.getAttribute("saleCode");
+    int total = (int) request.getAttribute("total");
 %>
 <!-- Hero Section Begin -->
 <section class="hero hero-normal">
@@ -172,8 +174,8 @@
                 <div class="shoping__continue">
                     <div class="shoping__discount">
                         <h5>Discount Codes</h5>
-                        <form action="#">
-                            <input type="text" placeholder="Enter your coupon code"/>
+                        <form id="sale-code-form" action="#">
+                            <input id="sale-code-input" type="text" placeholder="Enter your coupon code"/>
                             <button type="submit" class="site-btn">APPLY COUPON</button>
                         </form>
                     </div>
@@ -184,8 +186,10 @@
                     <h5>Cart Total</h5>
                     <ul>
                         <li>Subtotal <span><%=vnPrice.format(subTotal)%>đ</span></li>
-<%--                        <li>Sale <span>20%</span></li>--%>
-                        <li>Total <span><%=vnPrice.format(subTotal)%>đ</span></li>
+                        <%if (saleCode != 0){%>
+                        <li>Sale <span><%=saleCode%>%</span></li>
+                        <%}%>
+                        <li>Total <span><%=vnPrice.format(total)%>đ</span></li>
                     </ul>
                     <a href="<%=UrlUtils.pathHost("CheckOutController")%>" class="primary-btn">PROCEED TO CHECKOUT</a>
                 </div>

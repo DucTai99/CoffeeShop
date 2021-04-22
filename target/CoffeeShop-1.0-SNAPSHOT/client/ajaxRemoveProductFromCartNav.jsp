@@ -16,7 +16,7 @@
     NumberFormat vnPrice = NumberFormat.getInstance(localeVN);
 %>
 <li class="coffee-cart">
-    <a href="#">
+    <a href="<%=UrlUtils.pathHost("ShopingCartController")%>">
         <p>Cart</p>
         <div class="coffee-cart-content">
             <i class="fa fa-shopping-cart"></i>

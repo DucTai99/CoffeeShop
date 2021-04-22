@@ -56,7 +56,28 @@ public class ProductInBillDAO {
         return listProduct;
     }
 
+    public static void insertProductsInCart(int idBill, int productId, int sizeProductId, int sale, int quantity){
+        String sql = "INSERT INTO productsinbill VALUES (?,?,?,?,?)";
+        Connection connection = null;
+        try {
+            // ket noi voi database
+            connection = ConnectionUtils.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idBill);
+            preparedStatement.setInt(2, productId);
+            preparedStatement.setInt(3, sizeProductId);
+            preparedStatement.setInt(4, sale);
+            preparedStatement.setInt(5, quantity);
+            preparedStatement.executeUpdate();
+            ConnectionUtils.closeQuietly(connection);
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        } catch (ClassNotFoundException classNotFoundException) {
+            classNotFoundException.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
-        System.out.println(getListProductInBill(1));
+        insertProductsInCart(3,9,2,0,8);
     }
 }

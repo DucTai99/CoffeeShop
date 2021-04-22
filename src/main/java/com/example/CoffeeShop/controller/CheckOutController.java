@@ -27,7 +27,13 @@ public class CheckOutController extends HttpServlet {
         }
         List<TypeProduct> listTypeProduct = TypeProductDAO.getAllTypeProduct();
         int subTotal = cart.subTotalPrice();
+        int saleCode = (cart.getSaleCode() == null) ? 0 : cart.getSaleCode().getSale();
+        int idSale = (cart.getSaleCode() == null) ? 0 : cart.getSaleCode().getId();
+        int total = cart.totalWithSaleCode();
         request.setAttribute("subTotal", subTotal);
+        request.setAttribute("saleCode", saleCode);
+        request.setAttribute("idSale", idSale);
+        request.setAttribute("total", total);
         request.setAttribute("listTypeProduct", listTypeProduct);
         request.setAttribute("listProductSelect", listProductSelect);
         request.getRequestDispatcher("client/checkout.jsp").forward(request, response);

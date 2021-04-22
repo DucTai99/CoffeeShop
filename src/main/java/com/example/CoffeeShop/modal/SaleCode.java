@@ -37,4 +37,13 @@ public class SaleCode {
     public void setSale(int sale) {
         this.sale = sale;
     }
+
+    @Override
+    public String toString() {
+        return "SaleCode{" +
+                "id=" + id +
+                ", nameSale='" + nameSale + '\'' +
+                ", sale=" + sale +
+                '}';
+    }
 }

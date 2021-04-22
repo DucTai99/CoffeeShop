@@ -63,8 +63,8 @@
                     <%}%>
                 </ul>
             </li>
-            <li><a href="#">Member Card</a></li>
-            <li><a href="./contact.jsp">Contact</a></li>
+<%--            <li><a href="#">Member Card</a></li>--%>
+            <li><a href="<%=UrlUtils.pathHost("ContactController")%>">Contact</a></li>
         </ul>
     </nav>
     <div id="mobile-menu-wrap"></div>
@@ -160,9 +160,9 @@
                                 <%}%>
                             </ul>
                         </li>
-                        <li><a href="./blog.html">Member Card</a></li>
+<%--                        <li><a href="./blog.html">Member Card</a></li>--%>
                         <li>
-                            <a href="./contact.jsp" langkey="nav_contact">Contact</a>
+                            <a href="<%=UrlUtils.pathHost("ContactController")%>" langkey="nav_contact">Contact</a>
                         </li>
                     </ul>
                 </nav>

@@ -45,7 +45,7 @@ var client = {
             var change = $('.shoping__checkout ul');
             $.ajax({
                 type: "GET",
-                url: "/CoffeeShop/AjaxAddProductToCartController",
+                url: "/CoffeeShop/AjaxSelectProductToCartController",
                 data: {
                     "idProduct": idProduct
                 },
@@ -120,6 +120,23 @@ var client = {
                 url: "/CoffeeShop/AjaxRemoveProductFromCartNavController",
                 data: {
                     "idProduct": idProduct
+                },
+                success: function (response) {
+                    change.html('');
+                    change.html(response);
+                }
+            });
+        });
+        $('#sale-code-form').submit(function (event) {
+            event.preventDefault();
+            var nameSale = $('#sale-code-input').val();
+            console.log(nameSale);
+            var change = $('.shoping__checkout ul');
+            $.ajax({
+                type: "GET",
+                url: "/CoffeeShop/AjaxAddSaleCodeController",
+                data: {
+                    "nameSale": nameSale
                 },
                 success: function (response) {
                     change.html('');

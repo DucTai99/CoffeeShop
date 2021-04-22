@@ -1,5 +1,7 @@
 package com.example.CoffeeShop.modal;
 
+import com.example.CoffeeShop.dao.SaleCodeDAO;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -48,7 +50,7 @@ public class Bill {
         this.total = total;
     }
 
-    public int getIdPayment(int payment) {
+    public int getIdPayment() {
         return idPayment;
     }
 
@@ -56,7 +58,7 @@ public class Bill {
         this.idPayment = idPayment;
     }
 
-    public int getIdStatus(int bill_status) {
+    public int getIdStatus() {
         return idStatus;
     }
 
@@ -64,7 +66,7 @@ public class Bill {
         this.idStatus = idStatus;
     }
 
-    public Date getCreateDate(Date create_date) {
+    public Date getCreateDate() {
         return createDate;
     }
 
@@ -72,7 +74,7 @@ public class Bill {
         this.createDate = createDate;
     }
 
-    public int getIdCart(int cart_id) {
+    public int getIdCart() {
         return idCart;
     }
 
@@ -80,7 +82,7 @@ public class Bill {
         this.idCart = idCart;
     }
 
-    public int getUser(int employee_id) {
+    public int getUser() {
         return user;
     }
 
@@ -88,7 +90,7 @@ public class Bill {
         this.user = user;
     }
 
-    public int getSaleCode(int sale_code_id) {
+    public int getSaleCode() {
         return saleCode;
     }
 
@@ -96,12 +98,20 @@ public class Bill {
         this.saleCode = saleCode;
     }
 
-    public List<ProductInBill> getProductInBill() {
+    public List<ProductInBill> getListproductInBill() {
         return listproductInBill;
     }
 
-    public void setProductInBill(List<ProductInBill> listproductInBill) {
+    public void setListproductInBill(List<ProductInBill> listproductInBill) {
         this.listproductInBill = listproductInBill;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public int getPriceProductSize(ProductInBill productInBill) {
@@ -135,6 +145,12 @@ public class Bill {
             }
         }
         return total;
+    }
+
+    public int getSalePercent(){
+        int idSaleCode = getSaleCode();
+        return SaleCodeDAO.saleByIdSale(idSaleCode).getSale();
+
     }
     public String toString() {
         return "Bill{" +
