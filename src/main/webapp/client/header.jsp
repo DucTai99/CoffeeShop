@@ -16,6 +16,7 @@
     NumberFormat vnPrice = NumberFormat.getInstance(localeVN);
 %>
 <!-- Page Preloder -->
+
 <div id="preloder">
     <div class="loader"></div>
 </div>
@@ -29,10 +30,20 @@
     <div class="humberger__menu__cart">
         <ul>
             <li>
-                <a href="#"><i class="fa fa-shopping-cart"></i> <span>3</span></a>
+                <a href="<%=UrlUtils.pathHost("ShopingCartController")%>"><i class="fa fa-shopping-cart"></i>
+                    <%if (cart != null) {%>
+                    <%if (cart.getAllQuantity() > 0) {%>
+                    <span><%=cart.getAllQuantity()%></span>
+                    <%}%>
+                    <%}%>
+                </a>
             </li>
         </ul>
-        <div class="header__cart__price">total: <span>150.000đ</span></div>
+        <%if (cart != null) {%>
+        <%if (cart.getAllQuantity() > 0) {%>
+        <div class="header__cart__price">total: <span><%=vnPrice.format(cart.totalAllProduct())%>đ</span></div>
+        <%}%>
+        <%}%>
     </div>
     <div class="humberger__menu__widget">
         <div class="header__top__right__language">
@@ -44,10 +55,21 @@
                 <li><a class="en-UK" href="#">English</a></li>
             </ul>
         </div>
-        <div class="header__top__right__auth">
-            <a href="<%=UrlUtils.fullPathClient("signIn.jsp")%>"><i
-                    class="fa fa-user"></i> <%=(user == null) ? "Login" : user.getAccountName()%>
+        <div class="header__top__right__auth" style="display: inline-flex">
+            <%if (user == null) {%>
+            <a href="<%=UrlUtils.fullPathClient("signIn.jsp")%>">
+                <i class="fa fa-user"></i> Login
             </a>
+            <%} else {%>
+            <a href="<%=UrlUtils.pathHost("MyAccountController")%>"
+               style="display: inline-block; margin-right: 5px">
+                <i class="fa fa-user"></i> <%=user.getUserName()%>
+            </a>
+            <a href="<%=UrlUtils.pathHost("LogOutController")%>" style="font-size: 20px"
+               class="material-icons">
+                logout
+            </a>
+            <%}%>
         </div>
     </div>
     <nav class="humberger__menu__nav mobile-menu">
@@ -63,7 +85,7 @@
                     <%}%>
                 </ul>
             </li>
-<%--            <li><a href="#">Member Card</a></li>--%>
+            <%--            <li><a href="#">Member Card</a></li>--%>
             <li><a href="<%=UrlUtils.pathHost("ContactController")%>">Contact</a></li>
         </ul>
     </nav>
@@ -76,8 +98,8 @@
     </div>
     <div class="humberger__menu__contact">
         <ul>
-            <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-            <li>Free Shipping for all Order of $99</li>
+            <li><i class="fa fa-envelope"></i> coffeeshop@gmail.com</li>
+            <li>Free Shipping for all Order</li>
         </ul>
     </div>
 </div>
@@ -91,8 +113,8 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="header__top__left">
                         <ul>
-                            <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                            <li>Free Shipping for all Order of $99</li>
+                            <li><i class="fa fa-envelope"></i> coffeeshop@gmail.com</li>
+                            <li>Free Shipping for all Order</li>
                         </ul>
                     </div>
                 </div>
@@ -114,15 +136,17 @@
                             </ul>
                         </div>
                         <div class="header__top__right__auth" style="display: inline-flex">
-                            <%if (user == null){%>
+                            <%if (user == null) {%>
                             <a href="<%=UrlUtils.fullPathClient("signIn.jsp")%>">
                                 <i class="fa fa-user"></i> Login
                             </a>
-                            <%}else {%>
-                            <a href="<%=UrlUtils.pathHost("MyAccountController")%>" style="display: inline-block; margin-right: 5px">
+                            <%} else {%>
+                            <a href="<%=UrlUtils.pathHost("MyAccountController")%>"
+                               style="display: inline-block; margin-right: 5px">
                                 <i class="fa fa-user"></i> <%=user.getUserName()%>
                             </a>
-                            <a href="<%=UrlUtils.pathHost("LogOutController")%>" style="font-size: 20px" class="material-icons">
+                            <a href="<%=UrlUtils.pathHost("LogOutController")%>" style="font-size: 20px"
+                               class="material-icons">
                                 logout
                             </a>
                             <%}%>
@@ -160,7 +184,7 @@
                                 <%}%>
                             </ul>
                         </li>
-<%--                        <li><a href="./blog.html">Member Card</a></li>--%>
+                        <%--                        <li><a href="./blog.html">Member Card</a></li>--%>
                         <li>
                             <a href="<%=UrlUtils.pathHost("ContactController")%>" langkey="nav_contact">Contact</a>
                         </li>
@@ -209,7 +233,8 @@
                                                 <%}%>
                                             </p>
                                         </div>
-                                        <a href="#" data-idproduct="<%=productsInCart.getProduct().getId()%>" class="material-icons delete-product-nav">delete_forever</a>
+                                        <a href="#" data-idproduct="<%=productsInCart.getProduct().getId()%>"
+                                           class="material-icons delete-product-nav">delete_forever</a>
                                     </div>
                                     <%}%>
                                 </div>
@@ -217,7 +242,8 @@
                                     <h4 style="color: red">Tổng :</h4>
                                     <h4 style="color: red"><%=vnPrice.format(cart.totalAllProduct())%>đ</h4>
                                 </div>
-                                <a class="check-out-cart-nav" href="<%=UrlUtils.pathHost("ShopingCartController")%>">Thanh toán</a>
+                                <a class="check-out-cart-nav" href="<%=UrlUtils.pathHost("ShopingCartController")%>">Thanh
+                                    toán</a>
                             </div>
                             <%}%>
                             <%}%>

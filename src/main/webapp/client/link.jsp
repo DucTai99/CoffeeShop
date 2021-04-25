@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<link rel="icon"
+      href="https://www.pinclipart.com/picdir/middle/132-1324399_coffee-icons-free-iconos-de-cafe-png-clipart.png">
 <link rel="preconnect" href="https://fonts.gstatic.com"/>
 <link
         href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&display=swap"

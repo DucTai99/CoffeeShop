@@ -212,11 +212,11 @@
                         <div class="row" id="targetProduct">
                             <div class="col-lg-4 col-md-5">
                                 <div class="filter__sort">
-                                    <span>Sort By</span>
-                                    <select>
-                                        <option value="0">Default</option>
-                                        <option value="0">Default</option>
-                                    </select>
+<%--                                    <span>Sort By</span>--%>
+<%--                                    <select>--%>
+<%--                                        <option value="0">Default</option>--%>
+<%--                                        <option value="0">Default</option>--%>
+<%--                                    </select>--%>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4">
