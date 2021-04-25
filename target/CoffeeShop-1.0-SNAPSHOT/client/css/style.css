@@ -3894,7 +3894,7 @@ a.see-all {
   width: 100%;
 }
 
-.quick-add-to-cart .single_add_to_cart_button {
+.quick-add-to-cart .single_add_to_cart_button, .quick-add-to-cart .single_add_to_cart_button-none{
   background: #fefefe none repeat scroll 0 0;
   border: medium none;
   color: #6b3906;

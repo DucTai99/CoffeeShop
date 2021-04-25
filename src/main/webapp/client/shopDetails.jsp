@@ -291,7 +291,11 @@
                         </div>
                         <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + p.getId())%>" class="see-all">Xem chi tiết</a>
                         <div class="quick-add-to-cart">
-                            <a class="single_add_to_cart_button" href="#">Mua Ngay </a>
+                            <%if (cart != null){%>
+                            <a class="single_add_to_cart_button" data-idproduct="<%=product.getId()%>" href="#">Mua Ngay </a>
+                            <%} else {%>
+                            <a class="single_add_to_cart_button-none" href="<%=UrlUtils.fullPathClient("signIn.jsp")%>">Mua Ngay </a>
+                            <%}%>
                         </div>
                         <div style="height: 200px; overflow-y: scroll">Ngon cực kì</div>
                     </div>

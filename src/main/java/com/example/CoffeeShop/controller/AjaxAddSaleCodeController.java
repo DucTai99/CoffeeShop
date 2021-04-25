@@ -19,17 +19,22 @@ public class AjaxAddSaleCodeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
-        String nameSale = request.getParameter("nameSale");
-        cart.setSaleCode(SaleCodeDAO.saleByNameSale(nameSale));
-        int subTotal = cart.subTotalPrice();
-        int saleCode = (cart.getSaleCode() == null) ? 0 : cart.getSaleCode().getSale();
-        int total = cart.totalWithSaleCode();
-        request.setAttribute("subTotal", subTotal);
-        request.setAttribute("saleCode", saleCode);
-        request.setAttribute("total", total);
-        session.setAttribute("cart", cart);
-        request.getRequestDispatcher("client/ajaxSelectProductToCart.jsp").forward(request,response);
+        if (cart != null) {
+            String nameSale = request.getParameter("nameSale");
+            cart.setSaleCode(SaleCodeDAO.saleByNameSale(nameSale));
+            int subTotal = cart.subTotalPrice();
+            int saleCode = (cart.getSaleCode() == null) ? 0 : cart.getSaleCode().getSale();
+            int total = cart.totalWithSaleCode();
+            request.setAttribute("subTotal", subTotal);
+            request.setAttribute("saleCode", saleCode);
+            request.setAttribute("total", total);
+            session.setAttribute("cart", cart);
+            request.getRequestDispatcher("client/ajaxSelectProductToCart.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("client/signIn.jsp");
+        }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

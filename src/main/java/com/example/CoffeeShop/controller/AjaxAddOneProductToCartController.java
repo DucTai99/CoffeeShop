@@ -17,18 +17,22 @@ public class AjaxAddOneProductToCartController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
-        User user = (User) session.getAttribute("user");
-        int idProduct = Integer.parseInt(request.getParameter("idProduct"));
-        Product product = ProductDAO.getProductById(idProduct);
-        if (CartDAO.addProductToCart(cart, idProduct, 1, 1, product.getSale())) {
-            Cart cartNew = CartDAO.getCartByUser(user);
-            session.setAttribute("cart", cartNew);
-            response.sendRedirect("client/ajaxAddOneProductToCart.jsp");
+        if (cart != null) {
+            User user = (User) session.getAttribute("user");
+            int idProduct = Integer.parseInt(request.getParameter("idProduct"));
+            Product product = ProductDAO.getProductById(idProduct);
+            if (CartDAO.addProductToCart(cart, idProduct, 1, 1, product.getSale())) {
+                Cart cartNew = CartDAO.getCartByUser(user);
+                session.setAttribute("cart", cartNew);
+                response.sendRedirect("client/ajaxAddOneProductToCart.jsp");
+            }
+        } else {
+            response.sendRedirect("client/signIn.jsp");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request,response);
+        doGet(request, response);
     }
 }

@@ -90,6 +90,23 @@ var client = {
                 }
             });
         });
+        $('.single_add_to_cart_button').on('click', function (event) {
+            event.preventDefault();
+            var idProduct = $(this).data('idproduct');
+            var change = $('.header__cart ul');
+            $.ajax({
+                type: "GET",
+                url: "/CoffeeShop/AjaxAddOneProductToCartController",
+                data: {
+                    "idProduct": idProduct
+                },
+                success: function (response) {
+                    alert("Đã thêm vào giỏ hàng");
+                    change.html('');
+                    change.html(response);
+                }
+            });
+        });
         $('.add-products').on('click', function (event) {
             event.preventDefault();
             var idProduct = $(this).data('idproduct');

@@ -17,19 +17,23 @@ public class AjaxSelectProductToCartController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
-        int idProduct = Integer.parseInt(request.getParameter("idProduct"));
-        int subTotal = cart.subTotalPriceWithIdProduct(idProduct);
-        int saleCode = (cart.getSaleCode() == null) ? 0 : cart.getSaleCode().getSale();
-        int total = cart.totalWithSaleCode();
-        request.setAttribute("subTotal",subTotal);
-        request.setAttribute("saleCode", saleCode);
-        request.setAttribute("total", total);
-        session.setAttribute("cart", cart);
-        request.getRequestDispatcher("client/ajaxSelectProductToCart.jsp").forward(request,response);
+        if (cart != null) {
+            int idProduct = Integer.parseInt(request.getParameter("idProduct"));
+            int subTotal = cart.subTotalPriceWithIdProduct(idProduct);
+            int saleCode = (cart.getSaleCode() == null) ? 0 : cart.getSaleCode().getSale();
+            int total = cart.totalWithSaleCode();
+            request.setAttribute("subTotal", subTotal);
+            request.setAttribute("saleCode", saleCode);
+            request.setAttribute("total", total);
+            session.setAttribute("cart", cart);
+            request.getRequestDispatcher("client/ajaxSelectProductToCart.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("client/signIn.jsp");
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request,response);
+        doGet(request, response);
     }
 }

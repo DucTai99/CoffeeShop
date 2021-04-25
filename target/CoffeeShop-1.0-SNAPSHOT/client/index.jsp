@@ -85,39 +85,39 @@
                             class="categories__item set-bg"
                             data-setbg=<%=UrlUtils.fullPathClient("img/imgProduct/C-Latte.png")%>
                     >
-                        <h5><a href="#">Coffee</a></h5>
+                        <h5><a href="<%=UrlUtils.pathHost("ShopGridController?idType=1")+"#targetProduct"%>">Coffee</a></h5>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div
                             class="categories__item set-bg"
-                            data-setbg=<%=UrlUtils.fullPathClient("img/imgProduct/C-Latte.png")%>
+                            data-setbg=<%=UrlUtils.fullPathClient("img/imgProduct/T-traphucbontu.png")%>
                     >
-                        <h5><a href="#">Trà Trái Cây</a></h5>
+                        <h5><a href="<%=UrlUtils.pathHost("ShopGridController?idType=2")+"#targetProduct"%>">Trà Trái Cây</a></h5>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div
                             class="categories__item set-bg"
-                            data-setbg=<%=UrlUtils.fullPathClient("img/imgProduct/C-Cappuccino.png")%>
+                            data-setbg=<%=UrlUtils.fullPathClient("img/imgProduct/F-campbt.png")%>
                     >
-                        <h5><a href="#">Freeze</a></h5>
+                        <h5><a href="<%=UrlUtils.pathHost("ShopGridController?idType=3")+"#targetProduct"%>">Freeze</a></h5>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div
                             class="categories__item set-bg"
-                            data-setbg=<%=UrlUtils.fullPathClient("img/imgProduct/C-Cappuccino.png")%>
+                            data-setbg=<%=UrlUtils.fullPathClient("img/imgProduct/T-trasuamacca.png")%>
                     >
-                        <h5><a href="#">Trà Sữa</a></h5>
+                        <h5><a href="<%=UrlUtils.pathHost("ShopGridController?idType=4")+"#targetProduct"%>">Trà Sữa</a></h5>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div
                             class="categories__item set-bg"
-                            data-setbg=<%=UrlUtils.fullPathClient("img/imgProduct/C-Cappuccino.png")%>
+                            data-setbg=<%=UrlUtils.fullPathClient("img/imgProduct/M-matcha.png")%>
                     >
-                        <h5><a href="#">Macchiato</a></h5>
+                        <h5><a href="<%=UrlUtils.pathHost("ShopGridController?idType=5")+"#targetProduct"%>">Macchiato</a></h5>
                     </div>
                 </div>
             </div>
@@ -205,12 +205,12 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="banner__pic">
-                    <img src=<%=UrlUtils.fullPathClient("img/banner/banner-1.jpg")%> alt=""/>
+                    <img src=<%=UrlUtils.fullPathClient("img/banner/banner.jpg")%> alt=""/>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="banner__pic">
-                    <img src=<%=UrlUtils.fullPathClient("img/banner/banner-2.jpg")%> alt=""/>
+                    <img src=<%=UrlUtils.fullPathClient("img/banner/banner2.jpg")%> alt=""/>
                 </div>
             </div>
         </div>
@@ -406,7 +406,11 @@
                         <a href="<%=UrlUtils.pathHost("ShopDetailController?idProduct=" + product.getId())%>"
                            class="see-all">Xem chi tiết</a>
                         <div class="quick-add-to-cart">
-                            <a class="single_add_to_cart_button" href="#">Mua Ngay </a>
+                            <%if (cart != null){%>
+                            <a class="single_add_to_cart_button" data-idproduct="<%=product.getId()%>" href="#">Mua Ngay </a>
+                            <%} else {%>
+                            <a class="single_add_to_cart_button-none" href="<%=UrlUtils.fullPathClient("signIn.jsp")%>">Mua Ngay </a>
+                            <%}%>
                         </div>
                         <div style="height: 200px; overflow-y: scroll">Ngon cực kì</div>
                     </div>

@@ -18,17 +18,21 @@ public class AjaxRemoveProductFromCartNavController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
-        User user = (User) session.getAttribute("user");
-        int idProduct = Integer.parseInt(request.getParameter("idProduct"));
-        if (ProductsInCartDAO.removeProductsInCart(cart.getId(),idProduct)) {
-            Cart cartNew = CartDAO.getCartByUser(user);
-            session.setAttribute("cart", cartNew);
-            response.sendRedirect("client/ajaxRemoveProductFromCartNav.jsp");
+        if (cart != null) {
+            User user = (User) session.getAttribute("user");
+            int idProduct = Integer.parseInt(request.getParameter("idProduct"));
+            if (ProductsInCartDAO.removeProductsInCart(cart.getId(), idProduct)) {
+                Cart cartNew = CartDAO.getCartByUser(user);
+                session.setAttribute("cart", cartNew);
+                response.sendRedirect("client/ajaxRemoveProductFromCartNav.jsp");
+            }
+        } else {
+            response.sendRedirect("client/signIn.jsp");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request,response);
+        doGet(request, response);
     }
 }
